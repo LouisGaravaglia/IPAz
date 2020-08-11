@@ -12,7 +12,9 @@ My demographic for potential users would be beer drinkers, but mainly beer drink
 
 **What data do you plan on using?** 
 
-I will be using the API from untapped (https://untappd.com/api/docs#beersearch). 
+I will be using the API from Untappd (https://untappd.com/api/docs#beersearch). Part of the requirment to use this API would be to give attribution to Untappd (ex: “Power by Untappd,” “Data provided by Untappd”). With the attached logo at bottom of site:
+
+![image info](./untappd/grey.png)
 
 **What does your database schema look like?**
 
@@ -24,9 +26,7 @@ This would allow me to have a model and section for essential beers that the use
 
 **What kinds of issues might you run into with your API?**
 
-I think my biggest issue is going to be sorting the description to find the hops. I doubt the majority of the descriptions will have the hops listed, so I may not be able to include that as a sortable parameter.
-
-Also, since there are so many beers, will I need to store all the beers, prior to the site loading, in a database? If not, what will the speed be like for making several API calls to get all of the possible beers down from their site.
+I will not be able to store any data from the untappd API, otherwise I would need to delete my caches every 24 hours. So it may take a hot second to pull down a request with matching parameters if i'm only making active calls to API when user submits. Depending on that speed I may need to think about doing a daily call to API and storing in DB and deleting every 24hrs.
 
 **Is there any sensitive information you need to secure?**
 
