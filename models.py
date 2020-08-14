@@ -213,6 +213,7 @@ class Wine(db.Model):
         return f"<User id={u.id} first_name={u.first_name} last_name={u.last_name} img_url={u.img_url}>"
     
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    wine_id = db.Column(db.Integer, nullable=False)
     winery = db.Column(db.String(50), nullable=False)
     country = db.Column(db.String(100))
     area = db.Column(db.String(100), nullable=False)
