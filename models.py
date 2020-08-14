@@ -1,9 +1,9 @@
 
+from datetime import datetime
+from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
-import datetime
 
-
-
+bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 
@@ -110,20 +110,54 @@ class User(db.Model):
         return f"<User id={u.id} first_name={u.first_name} last_name={u.last_name} img_url={u.img_url}>"
     
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(100))
-    username = db.Column(db.String(100))
-    password = db.Column(db.String(100))
+    name = db.Column(db.String(50), nullable=False)
+    username = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     bio = db.Column(db.String(2000), nullable=False)
     img_url = db.Column(db.String(100), nullable=False)
     posts = db.relationship("Post", backref="user", cascade="all, delete-orphan")
     
     
-    @property
-    def full_name(self):
-        """Return full name of user."""
-        
-        return f"{self.first_name}{self.last_name}"  
+    @classmethod
+    def signup(cls, name, username, password, bio, image_url):
+        """Sign up user.
+
+        Hashes password and adds user to system.
+        """
+
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+
+        user = User(
+            name=name,
+            username=username,
+            password=hashed_pwd,
+            bio=bio,
+            image_url=image_url,
+        )
+
+        db.session.add(user)
+        return user
+
+    @classmethod
+    def authenticate(cls, username, password):
+        """Find user with `username` and `password`.
+
+        This is a class method (call it on the class, not an individual user.)
+        It searches for a user whose password hash matches this password
+        and, if it finds such a user, returns that user object.
+
+        If can't find matching user (or if password is wrong), returns False.
+        """
+
+        user = cls.query.filter_by(username=username).first()
+
+        if user:
+            is_auth = bcrypt.check_password_hash(user.password, password)
+            if is_auth:
+                return user
+
+        return False
+
 
 # ===========================================================   POST   =========================================================== 
 
