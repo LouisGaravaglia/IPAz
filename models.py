@@ -345,7 +345,7 @@ class PostNoseTag(db.Model):
 # post_id int FK >- Review.id
 # tag_id int FK >- Mouth.id
 
-class PostMoutbTag(db.Model):
+class PostMouthTag(db.Model):
     """Tag on a post."""
 
     __tablename__ = "posts_mouth_tags"
@@ -387,7 +387,7 @@ class WineEyeTag(db.Model):
 # wine_id int 
 # tag_id int 
 
-class WineEyeTag(db.Model):
+class WineNoseTag(db.Model):
     """Tag on a post."""
 
     __tablename__ = "wines_nose_tags"
