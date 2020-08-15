@@ -117,6 +117,12 @@ class User(db.Model):
     img_url = db.Column(db.String(100), nullable=False)
     posts = db.relationship("Post", backref="user", cascade="all, delete-orphan")
     
+    @property
+    def full_name(self):
+        """Return full name of user."""
+        
+        return f"{self.first_name}{self.last_name}"  
+    
     
     @classmethod
     def signup(cls, name, username, password, bio, image_url):
@@ -226,12 +232,17 @@ class Wine(db.Model):
     rating = db.Column(db.Integer, nullable=False)
     fav_users = db.relationship('User', secondary="favorites", backref="fav_wines")
     
+    def serialize(self):
+        return {
+            'id': self.id,
+            'wine_id': self.wine_id,
+            'winery': self.winery,
+            'country': self.country,
+            'area': self.area
+        }
     
-    @property
-    def full_name(self):
-        """Return full name of user."""
-        
-        return f"{self.first_name}{self.last_name}"  
+    
+    
 
 # ===========================================================   FAVORITES   =========================================================== 
 
