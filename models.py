@@ -219,17 +219,16 @@ class Wine(db.Model):
         return f"<User id={u.id} first_name={u.first_name} last_name={u.last_name} img_url={u.img_url}>"
     
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    wine_id = db.Column(db.Integer, nullable=False)
-    winery = db.Column(db.String(50), nullable=False)
+    wine_id = db.Column(db.String(100), nullable=False)
+    winery = db.Column(db.String(200), nullable=False)
     country = db.Column(db.String(100))
-    area = db.Column(db.String(100), nullable=False)
+    area = db.Column(db.String(100))
     vintage = db.Column(db.String(100))
     varietal = db.Column(db.String(100))
-    style = db.Column(db.String(2000), nullable=False)
-    type = db.Column(db.String(2000), nullable=False)
+    type = db.Column(db.String(30), nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(100), nullable=False)
-    rating = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String(500))
+    rating = db.Column(db.Float)
     fav_users = db.relationship('User', secondary="favorites", backref="fav_wines")
     
     def serialize(self):
@@ -238,7 +237,13 @@ class Wine(db.Model):
             'wine_id': self.wine_id,
             'winery': self.winery,
             'country': self.country,
-            'area': self.area
+            'area': self.area,
+            'vintage': self.vintage,
+            'varietal': self.varietal,
+            'type': self.type,
+            'name': self.name,
+            'description': self.description,
+            'rating': self.rating
         }
     
     

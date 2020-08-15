@@ -6,8 +6,7 @@ from flask_cors import CORS
 from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm
-from models import db, connect_db, User, Post, Wine, Favorite, EyeTag, NoseTag, MouthTag, FinishTag, PostEyeTag, PostNoseTag, PostMouthTag, PostFinishTag, WineEyeTag, WineMouthTag, WineFinishTag
-
+from models import db, connect_db, User, Post, Wine, Favorite
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
@@ -452,14 +451,18 @@ def show_posts_by_tag_id(tag_id):
 
 # ===================================    API CALLS    =====================================
 
-@app.route('/api/get_top_rated')
-def make_api_call():
+@app.route('/api/get_red_wines')
+def get_red_wines():
     """shows all posts related to a particular tag"""  
     # import pdb
     # pdb.set_trace()
     
+    # Some servers may return a JSON object in a failed response (e.g. error details with HTTP 500). 
+    # Such JSON will be decoded and returned.
+    # To check that a request is successful, use r.raise_for_status() or check r.status_code is what you expect.
+    
     # amount = request.JSON["amount"]
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/mre/0/1"
+    baseURL = "https://quiniwine.com/api/pub/wineCategory/tre/0/10"
     headers = {'authorization': API_KEY}
     
     result = requests.get(f"{baseURL}", headers=headers)
@@ -467,6 +470,48 @@ def make_api_call():
     
     # This is an example of how you serialize each thing beofre you jsonify(todos=all_todos)
     # all_todos = [todo.serialize() for todo in Todo.query.all()]
+    data = result.json()
+    wine_array = data["items"]
+   
+    
+    # "Area": "Central Coast",
+    # "Country": "USA",
+    # "Name": "Soul Shaker",
+    # "Province": "CA",
+    # "Style": "",
+    # "Tags": "#LAWineFestAwards",
+    # "Type": "Red",
+    # "Varietal": "Cabernet Sauvignon, Petit Verdot, Syrah, Merlot",
+    # "Winery": "Ascension Cellars",
+    # "_id": "5564efe1b4f0c1030000009c",
+    # "count": 9,
+    # "id": "5564efe1b4f0c1030000009c",
+    # "nameClean": "Soul Shaker Ascension Cellars Cabernet Sauvignon, Petit Verdot, Syrah, Merlot",
+    # "rating": 89.50631553333335,
+    # "vintage": "2012"
 
+    for wine in wine_array:
+        new_wine = Wine(
+            wine_id = wine["_id"],
+            winery = wine["Winery"],
+            country = wine["Country"],
+            area = wine["Area"],
+            vintage = wine["vintage"],
+            varietal = wine["Varietal"],
+            type = wine["Type"],
+            name = wine["Name"],
+            rating = wine["rating"]
+        )
+        
+        db.session.add(new_wine)
+        db.session.commit()
  
-    return jsonify(result.json())
+    return jsonify(message="successful request")
+
+
+@app.route('/api/show_all_red_wines')
+def show_all_red_wines():
+    all_reds = [red.serialize() for red in Wine.query.all()]
+    return jsonify(red_wines=all_reds)
+    
+    
