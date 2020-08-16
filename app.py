@@ -444,7 +444,7 @@ def show_posts_by_tag_id(tag_id):
 def get_red_wines():
     """Get all top rated red wines from the API"""  
     
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/tre/0/10"
+    baseURL = "https://quiniwine.com/api/pub/wineCategory/tre/0/1000"
     headers = {'authorization': API_KEY}
     
     result = requests.get(f"{baseURL}", headers=headers)
@@ -480,7 +480,7 @@ def get_red_wines():
 def get_white_wines():
     """Get all top rated white wines from the API"""  
 
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/twh/0/10"
+    baseURL = "https://quiniwine.com/api/pub/wineCategory/twh/0/1000"
     headers = {'authorization': API_KEY}
     
     result = requests.get(f"{baseURL}", headers=headers)
@@ -515,7 +515,7 @@ def get_white_wines():
 def get_rose_wines():
     """Get all top rated rose wines from the API"""  
 
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/tro/0/10"
+    baseURL = "https://quiniwine.com/api/pub/wineCategory/tro/0/1000"
     headers = {'authorization': API_KEY}
     
     result = requests.get(f"{baseURL}", headers=headers)
@@ -625,33 +625,37 @@ def show_rose_varietals():
     return render_template("varietal_options.html", varietal_set=varietal_set)
 
 
-@app.route('/show_all_varietals')
-def show_all_varietals():
+# @app.route('/show_all_varietals')
+# def show_all_varietals():
     
-    all_list = []
-    varietal_set = set()
+#     all_list = []
+#     varietal_set = set()
     
-    all_options = [wine.varietal.split(",") for wine in Wine.query.all()]
+#     all_options = [wine.varietal.split(",") for wine in Wine.query.all()]
     
-    for options in all_options:
-        all_list = all_list + options
+#     for options in all_options:
+#         all_list = all_list + options
     
-    for item in all_list:
-        if item != "":
-            varietal_set.add(item.strip())
+#     for item in all_list:
+#         if item != "":
+#             varietal_set.add(item.strip())
         
-    # import pdb
-    # pdb.set_trace()    
+#     import pdb
+#     pdb.set_trace()    
         
-    return render_template("varietal_options.html", varietal_set=varietal_set)
+#     return render_template("varietal_options.html", varietal_set=varietal_set)
 
     
 
 # ===================================    WINE RESULTS   =====================================
 
-
-@app.route('/show_all_white')
-def show_all_white_wine():
-    all_white = Wine.query.filter_by(type='White').all()
+@app.route('/show_combined_question')
+def show_combined_question():
     
-    return render_template("white_wine.html", all_white=all_white)
+    return render_template("combined_only.html")
+
+@app.route('/show_wine_results')
+def show_wine_results():
+    all_results = Wine.query.filter_by(type='White').all()
+    
+    return render_template("wine_results.html", all_white=all_white)
