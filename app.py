@@ -141,6 +141,14 @@ def add_header(req):
     req.headers['Cache-Control'] = 'public, max-age=0'
     return req
 
+# ===================================    PICK TYPE OF WINE    =====================================
+
+
+@app.route('/wine_types')
+def show_wine_types():
+    """Show options for wine types to choose from"""
+    
+    return render_template("wine_types.html")
 
 
 # ===================================    USER PAGE / USERS    =====================================
@@ -540,22 +548,22 @@ def get_rose_wines():
 
 # ===================================    RETURN INFO   =====================================
 
-@app.route('/api/show_all_wines')
+@app.route('/show_all_wines')
 def show_all_wines():
     all_reds = [red.serialize() for red in Wine.query.all()]
     return jsonify(red_wines=all_reds)
 
-@app.route('/api/show_all_white')
+@app.route('/show_all_white')
 def show_all_white_wine():
     all_white = [white.serialize() for white in Wine.query.filter_by(type='White').all()]
     return jsonify(white_wines=all_white)
 
-@app.route('/api/show_all_red')
+@app.route('/show_all_red')
 def show_all_red_wine():
     all_red = [red.serialize() for red in Wine.query.filter_by(type='Red').all()]
     return jsonify(red_wines=all_red)
 
-@app.route('/api/show_all_rose')
+@app.route('/show_all_rose')
 def show_all_rose_wine():
     all_rose = [rose.serialize() for rose in Wine.query.filter_by(type='Rose').all()]
     return jsonify(rose_wines=all_rose)
