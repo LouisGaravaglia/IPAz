@@ -119,28 +119,9 @@ def logout():
 
 @app.route('/')
 def homepage():
-    """Show homepage:
-
-    - anon users: no messages
-    - logged in: 100 most recent messages of followed_users
-    """
+    """Show homepage"""
     
-    if g.user:
-        following_ids = [f.id for f in g.user.following] + [g.user.id]
-        messages = (Message
-                    .query
-                    .filter(Message.user_id.in_(following_ids))
-                    .order_by(Message.timestamp.desc())
-                    .limit(100)
-                    .all())
-        
-        
-        likes = [msg.id for msg in g.user.likes]
-
-        return render_template('home.html', messages=messages, likes=likes)
-
-    else:
-        return render_template('home-anon.html')
+    return render_template("home.html")
 
 
 ##############################################################################
