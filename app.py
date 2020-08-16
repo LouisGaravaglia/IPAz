@@ -453,42 +453,20 @@ def show_posts_by_tag_id(tag_id):
 
 @app.route('/api/get_red_wines')
 def get_red_wines():
-    """shows all posts related to a particular tag"""  
-    # import pdb
-    # pdb.set_trace()
+    """Get all top rated red wines from the API"""  
     
-    # Some servers may return a JSON object in a failed response (e.g. error details with HTTP 500). 
-    # Such JSON will be decoded and returned.
-    # To check that a request is successful, use r.raise_for_status() or check r.status_code is what you expect.
-    
-    # amount = request.JSON["amount"]
     baseURL = "https://quiniwine.com/api/pub/wineCategory/tre/0/10"
     headers = {'authorization': API_KEY}
     
     result = requests.get(f"{baseURL}", headers=headers)
-    # obj = { "wine_data": result.text.items}
-    
-    # This is an example of how you serialize each thing beofre you jsonify(todos=all_todos)
-    # all_todos = [todo.serialize() for todo in Todo.query.all()]
     data = result.json()
     wine_array = data["items"]
-   
     
-    # "Area": "Central Coast",
-    # "Country": "USA",
-    # "Name": "Soul Shaker",
-    # "Province": "CA",
-    # "Style": "",
-    # "Tags": "#LAWineFestAwards",
-    # "Type": "Red",
-    # "Varietal": "Cabernet Sauvignon, Petit Verdot, Syrah, Merlot",
-    # "Winery": "Ascension Cellars",
-    # "_id": "5564efe1b4f0c1030000009c",
-    # "count": 9,
-    # "id": "5564efe1b4f0c1030000009c",
-    # "nameClean": "Soul Shaker Ascension Cellars Cabernet Sauvignon, Petit Verdot, Syrah, Merlot",
-    # "rating": 89.50631553333335,
-    # "vintage": "2012"
+    # import pdb
+    # pdb.set_trace()
+    if result.status_code != 200:
+       return jsonify(message="There was an issue making an request for red wines to the API.") 
+   
 
     for wine in wine_array:
         new_wine = Wine(
@@ -506,12 +484,99 @@ def get_red_wines():
         db.session.add(new_wine)
         db.session.commit()
  
-    return jsonify(message="successful request")
+    return jsonify(message="Successful request. All red wines imported into database.")
 
 
-@app.route('/api/show_all_red_wines')
-def show_all_red_wines():
+@app.route('/api/get_white_wines')
+def get_white_wines():
+    """Get all top rated white wines from the API"""  
+
+    baseURL = "https://quiniwine.com/api/pub/wineCategory/twh/0/10"
+    headers = {'authorization': API_KEY}
+    
+    result = requests.get(f"{baseURL}", headers=headers)
+    data = result.json()
+    wine_array = data["items"]
+    
+    # import pdb
+    # pdb.set_trace()
+    if result.status_code != 200:
+       return jsonify(message="There was an issue making an request for white wines to the API.") 
+
+    for wine in wine_array:
+        new_wine = Wine(
+            wine_id = wine["_id"],
+            winery = wine["Winery"],
+            country = wine["Country"],
+            area = wine["Area"],
+            vintage = wine["vintage"],
+            varietal = wine["Varietal"],
+            type = wine["Type"],
+            name = wine["Name"],
+            rating = wine["rating"]
+        )
+        
+        db.session.add(new_wine)
+        db.session.commit()
+ 
+    return jsonify(message="Successful request. All white wines imported into database.")
+
+
+@app.route('/api/get_rose_wines')
+def get_rose_wines():
+    """Get all top rated rose wines from the API"""  
+
+    baseURL = "https://quiniwine.com/api/pub/wineCategory/tro/0/10"
+    headers = {'authorization': API_KEY}
+    
+    result = requests.get(f"{baseURL}", headers=headers)
+    data = result.json()
+    wine_array = data["items"]
+    
+    # import pdb
+    # pdb.set_trace()
+    if result.status_code != 200:
+       return jsonify(message="There was an issue making an request for rose wines to the API.") 
+    
+
+    for wine in wine_array:
+        new_wine = Wine(
+            wine_id = wine["_id"],
+            winery = wine["Winery"],
+            country = wine["Country"],
+            area = wine["Area"],
+            vintage = wine["vintage"],
+            varietal = wine["Varietal"],
+            type = wine["Type"],
+            name = wine["Name"],
+            rating = wine["rating"]
+        )
+        
+        db.session.add(new_wine)
+        db.session.commit()
+ 
+    return jsonify(message="Successful request. All rose wines imported into database.")
+
+# ===================================    RETURN INFO   =====================================
+
+@app.route('/api/show_all_wines')
+def show_all_wines():
     all_reds = [red.serialize() for red in Wine.query.all()]
     return jsonify(red_wines=all_reds)
+
+@app.route('/api/show_all_white')
+def show_all_white_wine():
+    all_white = [white.serialize() for white in Wine.query.filter_by(type='White').all()]
+    return jsonify(white_wines=all_white)
+
+@app.route('/api/show_all_red')
+def show_all_red_wine():
+    all_red = [red.serialize() for red in Wine.query.filter_by(type='Red').all()]
+    return jsonify(red_wines=all_red)
+
+@app.route('/api/show_all_rose')
+def show_all_rose_wine():
+    all_rose = [rose.serialize() for rose in Wine.query.filter_by(type='Rose').all()]
+    return jsonify(rose_wines=all_rose)
     
     
