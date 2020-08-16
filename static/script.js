@@ -25,5 +25,10 @@
 
 $("#wine-options").on("click", ".wine-option", function(e) {
   const selected_button = e.target;
-  selected_button.classList.toggle("is-active")
+  selected_button.classList.toggle("is-focused")
+})
+
+$("#combined-varietals").on("click", ".combined-varietals", function(e) {
+  const selected_button = e.target;
+  selected_button.classList.toggle("is-focused")
 })

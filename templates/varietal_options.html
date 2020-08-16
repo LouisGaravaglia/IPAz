@@ -10,12 +10,31 @@
 
   <div class="has-text-centered" id="wine-options">
   {% for varietal in varietal_set%}
-    <button class="button is-primary is-rounded mt-3 mx-3 wine-option">{{varietal}}</button>
+    <button class="button is-primary is-outlined is-rounded mt-3 mx-3 wine-option">{{varietal}}</button>
   {% endfor %}
   </div>
 
+<h2 class="subtitle has-text-centered mt-6">Do you want wines that ONLY contain the exact varietals you picked?</h2>
 
+<div class="has-text-centered" id="combined-varietals">
+<button class="button is-success is-outlined combined-varietals">
+    <span class="icon is-small">
+      <i class="fas fa-check"></i>
+    </span>
+    <span>Yes</span>
+  </button>
+  <button class="button is-success is-outlined combined-varietals">
+    <span class="icon is-small">
+      <i class="fas fa-times"></i>
+    </span>
+    <span>No</span>
+  </button>
+ </div>
+<h3 class="title is-3 has-text-centered mt-6">Ready for the results?</h3>
 
+<div class="has-text-centered" id="varietals-results">
+<button class="button is-large is-success">Yes please!</button>
+</div>
 
 
 
