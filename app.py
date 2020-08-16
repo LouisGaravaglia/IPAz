@@ -573,9 +573,19 @@ def return_all_rose_wine_json():
 
 @app.route('/show_red_options')
 def show_red_options():
-    all_types = [red.varietal.split(",") for red in Wine.query.filter_by(type='Red').all()]
     
-    return render_template("red_options.html", all_types=all_types)
+    mylist = []
+    varietals = set()
+    
+    all_options = [red.varietal.split(",") for red in Wine.query.filter_by(type='Red').all()]
+    
+    for options in all_options:
+        mylist = mylist + options
+    
+    for item in mylist:
+        varietals.add(item.strip())
+        
+    return render_template("red_options.html", varietals=varietals)
 
     
 

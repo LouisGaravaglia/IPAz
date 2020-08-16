@@ -1,24 +1,29 @@
-$("#make-call").on("submit", async function processForm(evt) {
+// $("#make-call").on("submit", async function processForm(evt) {
 
-  evt.preventDefault();
+//   evt.preventDefault();
 
 
-  const obj = await makeRequest();
+//   const obj = await makeRequest();
 
-  data = obj.items[0];
+//   data = obj.items[0];
 
-  console.log(data);
+//   console.log(data);
 
-});
+// });
    
 
-async function makeRequest() {
-  // const BASE_URL = "http://localhost:5000/"
+// async function makeRequest() {
+//   // const BASE_URL = "http://localhost:5000/"
 
-  const res = await axios.get("/api/get_top_rated");
+//   const res = await axios.get("/api/get_top_rated");
    
-  obj = res.data;
+//   obj = res.data;
 
-  return obj
+//   return obj
 
-}
+// }
+
+$("#wine-options").on("click", ".wine-option", function(e) {
+  const selected_button = e.target;
+  selected_button.classList.toggle("is-active")
+})
