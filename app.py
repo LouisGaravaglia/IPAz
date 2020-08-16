@@ -546,26 +546,44 @@ def get_rose_wines():
  
     return jsonify(message="Successful request. All rose wines imported into database.")
 
-# ===================================    RETURN INFO   =====================================
+# ===================================    RETURN JSON  =====================================
 
-@app.route('/show_all_wines')
-def show_all_wines():
+@app.route('/show_all_wines_json')
+def return_all_wines_json():
     all_reds = [red.serialize() for red in Wine.query.all()]
     return jsonify(red_wines=all_reds)
 
-@app.route('/show_all_white')
-def show_all_white_wine():
+@app.route('/show_all_white_json')
+def return_white_wine_json():
     all_white = [white.serialize() for white in Wine.query.filter_by(type='White').all()]
     return jsonify(white_wines=all_white)
 
-@app.route('/show_all_red')
-def show_all_red_wine():
+@app.route('/show_all_red_json')
+def return_red_wine_json():
     all_red = [red.serialize() for red in Wine.query.filter_by(type='Red').all()]
     return jsonify(red_wines=all_red)
 
-@app.route('/show_all_rose')
-def show_all_rose_wine():
+@app.route('/show_all_rose_json')
+def return_all_rose_wine_json():
     all_rose = [rose.serialize() for rose in Wine.query.filter_by(type='Rose').all()]
     return jsonify(rose_wines=all_rose)
+
+# ===================================    WINE TYPE OPTIONS   =====================================
+
+
+@app.route('/show_red_options')
+def show_red_options():
+    all_types = [red.varietal.split(",") for red in Wine.query.filter_by(type='Red').all()]
     
+    return render_template("red_options.html", all_types=all_types)
+
     
+
+# ===================================    WINE RESULTS   =====================================
+
+
+@app.route('/show_all_white')
+def show_all_white_wine():
+    all_white = Wine.query.filter_by(type='White').all()
+    
+    return render_template("white_wine.html", all_white=all_white)

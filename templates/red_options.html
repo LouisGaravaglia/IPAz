@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %} HOME {% endblock %}
+
+
+{% block content %}
+
+
+  <h1 class="title is-1 has-text-centered mt-6">What type of wine are you in the mood for?</h1>
+
+  <div class="has-text-centered">
+  {% for array in all_types%}
+    {% for type in array %}
+    <button class="button is-primary is-rounded mt-3 mx-3">{{type}}</button>
+    {% endfor %}
+  {% endfor %}
+  </div>
+
+
+
+{% endblock %}
