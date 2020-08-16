@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %} HOME {% endblock %}
+{% block title %} VARIETAL OPTIONS {% endblock %}
 
 
 {% block content %}
 
 
-  <h1 class="title is-1 has-text-centered mt-6">What type of wine are you in the mood for?</h1>
+  <h1 class="title is-1 has-text-centered mt-6">What types of wine are you in the mood for?</h1>
 
   <div class="has-text-centered" id="wine-options">
-  {% for varietal in varietals%}
+  {% for varietal in varietal_set%}
     <button class="button is-primary is-rounded mt-3 mx-3 wine-option">{{varietal}}</button>
   {% endfor %}
   </div>

@@ -568,24 +568,82 @@ def return_all_rose_wine_json():
     all_rose = [rose.serialize() for rose in Wine.query.filter_by(type='Rose').all()]
     return jsonify(rose_wines=all_rose)
 
-# ===================================    WINE TYPE OPTIONS   =====================================
+# ===================================    SHOW VARIETALS   =====================================
 
 
-@app.route('/show_red_options')
-def show_red_options():
+@app.route('/show_red_varietals')
+def show_red_varietals():
     
-    mylist = []
-    varietals = set()
+    red_list = []
+    varietal_set = set()
     
     all_options = [red.varietal.split(",") for red in Wine.query.filter_by(type='Red').all()]
     
     for options in all_options:
-        mylist = mylist + options
+        red_list = red_list + options
     
-    for item in mylist:
-        varietals.add(item.strip())
+    for item in red_list:
+        if item != "":
+            varietal_set.add(item.strip())
         
-    return render_template("red_options.html", varietals=varietals)
+    return render_template("varietal_options.html", varietal_set=varietal_set)
+
+
+@app.route('/show_white_varietals')
+def show_white_varietals():
+    
+    white_list = []
+    varietal_set = set()
+    
+    all_options = [white.varietal.split(",") for white in Wine.query.filter_by(type='White').all()]
+    
+    for options in all_options:
+        white_list = white_list + options
+    
+    for item in white_list:
+        if item != "":
+            varietal_set.add(item.strip())
+        
+    return render_template("varietal_options.html", varietal_set=varietal_set)
+
+
+@app.route('/show_rose_varietals')
+def show_rose_varietals():
+    
+    rose_list = []
+    varietal_set = set()
+    
+    all_options = [rose.varietal.split(",") for rose in Wine.query.filter_by(type='Rose').all()]
+    
+    for options in all_options:
+        rose_list = rose_list + options
+    
+    for item in rose_list:
+        if item != "":
+            varietal_set.add(item.strip())
+        
+    return render_template("varietal_options.html", varietal_set=varietal_set)
+
+
+@app.route('/show_all_varietals')
+def show_all_varietals():
+    
+    all_list = []
+    varietal_set = set()
+    
+    all_options = [wine.varietal.split(",") for wine in Wine.query.all()]
+    
+    for options in all_options:
+        all_list = all_list + options
+    
+    for item in all_list:
+        if item != "":
+            varietal_set.add(item.strip())
+        
+    # import pdb
+    # pdb.set_trace()    
+        
+    return render_template("varietal_options.html", varietal_set=varietal_set)
 
     
 
