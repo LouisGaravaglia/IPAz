@@ -671,7 +671,14 @@ def get_varietal_choices(new_varietal):
         varietals = []
    
     # all_varietals = []
-    varietals.append(new_varietal)
+    if new_varietal in varietals:
+        # import pdb
+        # pdb.set_trace() 
+        index = varietals.index(new_varietal)
+        varietals.pop(index)
+    else:
+        varietals.append(new_varietal)
+    
     # all_varietals.append(new_varietal)
     
     session['varietals'] = [wine for wine in varietals]
