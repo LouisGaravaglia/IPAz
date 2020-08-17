@@ -653,14 +653,25 @@ def show_rose_varietals():
 def get_varietal_choices(new_varietal):
     # import pdb
     # pdb.set_trace()   
-    if session.get('varietals') == True:
+    # if session.get('varietals') == True:
+    #     varietals = session['varietals']
+    # else:
+    #     varietals = []
+   
+    # varietals.append(new_varietal)
+    
+    # session['varietals'] = varietals
+    
+    if session['varietals']:
         varietals = session['varietals']
     else:
         varietals = []
    
+    # all_varietals = []
     varietals.append(new_varietal)
+    # all_varietals.append(new_varietal)
     
-    session['varietals'] = varietals
+    session['varietals'] = [wine for wine in varietals]
     # import pdb
     # pdb.set_trace() 
     
