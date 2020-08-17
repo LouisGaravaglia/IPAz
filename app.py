@@ -649,20 +649,40 @@ def show_rose_varietals():
 
 # ===================================    WINE RESULTS   =====================================
 
-@app.route('/show_combined_question/<varietals>')
-def get_varietal_choices(varietals):
+@app.route('/show_combined_question/<new_varietal>')
+def get_varietal_choices(new_varietal):
+    # import pdb
+    # pdb.set_trace()   
+    if session.get('varietals') == True:
+        varietals = session['varietals']
+    else:
+        varietals = []
+    
+    varietals.append(new_varietal)
     
     session['varietals'] = varietals
+    # import pdb
+    # pdb.set_trace() 
+    
+    return render_template("combined_only.html", varietals=varietals)
+  
 
 @app.route('/show_combined_question')
 def show_combined_question():
-    varietals = session['varietals']
+    # import pdb
+    # pdb.set_trace()   
+    # if 'varietals' in session:
+    #     varietals = session['varietals']
+    # else:
+    varietals = ['pie', 'cookies']
+    
+
     
     return render_template("combined_only.html", varietals=varietals)
 
 @app.route('/show_wine_results', methods=["GET", "POST"])
 def show_wine_results():
     data = request.args
-    import pdb
-    pdb.set_trace()   
+    # import pdb
+    # pdb.set_trace()   
     return render_template("wine_results.html", all_white=all_white)
