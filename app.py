@@ -709,11 +709,21 @@ def show_combined_question():
     varietals = session['varietals']
     
     if varietals == "" or varietals is None:
-        return redirect("/show_wine_results")
+        return redirect("/show_all_wine")
         
 
     
     return render_template("combined_only.html", varietals=varietals)
+
+@app.route('/show_all_wine', methods=["GET", "POST"])
+def show_all_wine_results():
+    
+    varietals = session['varietals']
+    
+    if varietals == "" or varietals is None:
+        all_wine = Wine.query.all()
+
+    return render_template("wine_results.html", wines=all_wine)
 
 @app.route('/show_wine_results', methods=["GET", "POST"])
 def show_wine_results():
