@@ -715,7 +715,7 @@ def show_combined_question():
     
     return render_template("combined_only.html", varietals=varietals)
 
-@app.route('/show_all_wine', methods=["GET", "POST"])
+@app.route('/show_all_wine')
 def show_all_wine_results():
     
     varietals = session['varietals']
@@ -725,16 +725,41 @@ def show_all_wine_results():
 
     return render_template("wine_results.html", wines=all_wine)
 
-@app.route('/show_wine_results', methods=["GET", "POST"])
-def show_wine_results():
+@app.route('/show_exact_results')
+def show_exact_wine_results():
     
     varietals = session['varietals']
+    all_wine = []
     
-    if varietals == "" or varietals is None:
-        all_wine = Wine.query.all()
-        return render_template("wine_results.html", wines=all_wine)
+    for varietal in varietals:
+        results = Wine.query.filter(Wine.varietal.ilike(varietal)).all()
+        # import pdb
+        # pdb.set_trace()   
+        for result in results:
+            all_wine.append(result)
+    
     
     
     # import pdb
     # pdb.set_trace()   
-    return render_template("wine_results.html", all_white=all_white)
+    return render_template("wine_results.html", wines=all_wine)
+
+
+@app.route('/show_close_to_results')
+def show_wine_results():
+    
+    varietals = session['varietals']
+    all_wine = []
+    
+    for varietal in varietals:
+        results = Wine.query.filter(Wine.varietal.ilike(f'%{varietal}%')).all()
+        # import pdb
+        # pdb.set_trace()   
+        for result in results:
+            all_wine.append(result)
+    
+    
+    
+    # import pdb
+    # pdb.set_trace()   
+    return render_template("wine_results.html", wines=all_wine)

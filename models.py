@@ -212,11 +212,7 @@ class Post(db.Model):
 class Wine(db.Model):
     
     __tablename__ = "wines"
-    
 
-    def __repr__(self):
-        u=self
-        return f"<User id={u.id} first_name={u.first_name} last_name={u.last_name} img_url={u.img_url}>"
     
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     wine_id = db.Column(db.String(200), nullable=False)
