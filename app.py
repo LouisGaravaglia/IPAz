@@ -694,6 +694,7 @@ def get_varietal_choices(new_varietal):
     session['varietals'] = [wine for wine in varietals]
     # import pdb
     # pdb.set_trace() 
+
     
     return render_template("combined_only.html", varietals=varietals)
   
@@ -707,14 +708,23 @@ def show_combined_question():
     # else:
     varietals = session['varietals']
     
-    
+    if varietals == "" or varietals is None:
+        return redirect("/show_wine_results")
+        
 
     
     return render_template("combined_only.html", varietals=varietals)
 
 @app.route('/show_wine_results', methods=["GET", "POST"])
 def show_wine_results():
-    data = request.args
+    
+    varietals = session['varietals']
+    
+    if varietals == "" or varietals is None:
+        all_wine = Wine.query.all()
+        return render_template("wine_results.html", wines=all_wine)
+    
+    
     # import pdb
     # pdb.set_trace()   
     return render_template("wine_results.html", all_white=all_white)

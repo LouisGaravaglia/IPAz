@@ -5,7 +5,7 @@
 
 {% block content %}
 
-
+{% for wine in wines%}
   <h1 class="title is-1 has-text-centered mt-6">Here are your results.</h1>
 
   <div class="has-text-centered">
@@ -24,10 +24,15 @@
   </header>
   <div class="card-content">
     <div class="content">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-      <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
-      <br>
-      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+    <p>{{wine.name}}</p>
+    <p>{{wine.winery}}</p>
+    <p>{{wine.country}}</p>
+    <p>{{wine.area}}</p>
+    <p>{{wine.vintage}}</p>
+    <p>{{wine.varietal}}</p>
+    <p>{{wine.type}}</p>
+    <p>{{wine.rating}}</p>
+      
     </div>
   </div>
   <footer class="card-footer">
@@ -36,7 +41,7 @@
     <a href="#" class="card-footer-item">Delete</a>
   </footer>
 </div>
-
+{% endfor %}
 
 
 {% endblock %}
