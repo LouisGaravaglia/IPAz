@@ -5,23 +5,42 @@
 
 {% block content %}
 
-
+  <div class="has-text-centered" id="varietals">
+  {% for varietal in varietals%}
+    <button class="button is-primary is-outlined is-rounded mt-3 mx-3 varietals">{{varietal}}</button>
+  {% endfor %}
+  </div>
   <h1 class="title is-1 has-text-centered mt-6">Do you want wines that ONLY contain the EXACT varietals you picked?</h1>
 
 <div class="has-text-centered" id="combined-varietals">
-<a href="/show_combined_question" class="button is-success is-outlined combined-varietals">
+  <button id="combined-question" class="button is-success is-outlined combined-varietals">
+    <span class="icon is-small">
+      <i class="fas fa-check"></i>
+    </span>
+    <span>Yes</span>
+  </button>
+  <button id="combined-question" class="button is-success is-outlined combined-varietals">
+    <span class="icon is-small">
+      <i class="fas fa-times"></i>
+    </span>
+    <span>No</span>
+  </button>
+ </div>
+
+ <!-- <div class="has-text-centered" id="combined-varietals">
+<a href="/show_combined_question" id="combined-question" class="button is-success is-outlined combined-varietals">
     <span class="icon is-small">
       <i class="fas fa-check"></i>
     </span>
     <span>Yes</span>
   </a>
-  <a href="/show_combined_question" class="button is-success is-outlined combined-varietals">
+  <a href="/show_combined_question" id="combined-question" class="button is-success is-outlined combined-varietals">
     <span class="icon is-small">
       <i class="fas fa-times"></i>
     </span>
     <span>No</span>
   </a>
- </div>
+ </div> -->
 
 
 

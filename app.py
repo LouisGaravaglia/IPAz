@@ -649,13 +649,20 @@ def show_rose_varietals():
 
 # ===================================    WINE RESULTS   =====================================
 
+@app.route('/show_combined_question/<varietals>')
+def get_varietal_choices(varietals):
+    
+    session['varietals'] = varietals
+
 @app.route('/show_combined_question')
 def show_combined_question():
+    varietals = session['varietals']
     
-    return render_template("combined_only.html")
+    return render_template("combined_only.html", varietals=varietals)
 
-@app.route('/show_wine_results')
+@app.route('/show_wine_results', methods=["GET", "POST"])
 def show_wine_results():
-    all_results = Wine.query.filter_by(type='White').all()
-    
+    data = request.args
+    import pdb
+    pdb.set_trace()   
     return render_template("wine_results.html", all_white=all_white)

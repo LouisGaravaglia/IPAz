@@ -9,17 +9,22 @@
   <h1 class="title is-1 has-text-centered mt-6">What types of wine are you in the mood for?</h1>
 <h2 class="subtitle has-text-centered mt-6">If you would like all styles of wine, you don't need to select anything.</h2>
 
-  <div class="has-text-centered" id="wine-options">
+  <div class="has-text-centered" id="varietals">
   {% for varietal in varietal_set%}
-    <button class="button is-primary is-outlined is-rounded mt-3 mx-3 wine-option">{{varietal}}</button>
+    <button class="button is-primary is-outlined is-rounded mt-3 mx-3 varietals">{{varietal}}</button>
   {% endfor %}
   </div>
 
 <h3 class="title is-3 has-text-centered mt-6">Ready for the results?</h3>
 
-<div class="has-text-centered" id="varietals-results">
-    <a href="/show_combined_question" class="button is-success is-large">Submit</a>
+<!-- <div class="has-text-centered">
+    <a href="/show_combined_question" id="varietals-submit" class="button is-success is-large">Submit</a>
+</div> -->
+<div class="has-text-centered">
+    <a id="varietals-submit" class="button is-success is-large">Submit</a>
 </div>
+
+
 
 
 
