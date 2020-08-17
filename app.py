@@ -663,8 +663,7 @@ def show_rose_varietals():
 
 @app.route('/show_combined_question/<new_varietal>')
 def get_varietal_choices(new_varietal):
-    # import pdb
-    # pdb.set_trace()   
+    
     # if session.get('varietals') == True:
     #     varietals = session['varietals']
     # else:
@@ -673,6 +672,8 @@ def get_varietal_choices(new_varietal):
     # varietals.append(new_varietal)
     
     # session['varietals'] = varietals
+    # import pdb
+    # pdb.set_trace()   
     
     if session['varietals']:
         varietals = session['varietals']
