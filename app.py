@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, session, make_response, redir
 from random import choice, randint
 from unittest import TestCase
 import requests
+import re
 from flask_cors import CORS
 from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
@@ -583,9 +584,13 @@ def show_red_varietals():
     for options in all_options:
         red_list = red_list + options
     
+    
+    
     for item in red_list:
-        if item != "":
-            varietal_set.add(item.strip())
+        has_number = re.search("\d", item)
+        if item != "" and not has_number:
+            title_case_item = item.title()
+            varietal_set.add(title_case_item.strip())
         
     return render_template("varietal_options.html", varietal_set=varietal_set)
 
@@ -603,8 +608,10 @@ def show_white_varietals():
         white_list = white_list + options
     
     for item in white_list:
-        if item != "":
-            varietal_set.add(item.strip())
+        has_number = re.search("\d", item)
+        if item != "" and not has_number:
+            title_case_item = item.title()
+            varietal_set.add(title_case_item.strip())
         
     return render_template("varietal_options.html", varietal_set=varietal_set)
 
@@ -622,8 +629,10 @@ def show_rose_varietals():
         rose_list = rose_list + options
     
     for item in rose_list:
-        if item != "":
-            varietal_set.add(item.strip())
+        has_number = re.search("\d", item)
+        if item != "" and not has_number:
+            title_case_item = item.title()
+            varietal_set.add(title_case_item.strip())
         
     return render_template("varietal_options.html", varietal_set=varietal_set)
 
