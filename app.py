@@ -576,6 +576,7 @@ def show_red_varietals():
     
     red_list = []
     varietal_set = set()
+    session['varietals'] = ""
     
     all_options = [red.varietal.split(",") for red in Wine.query.filter_by(type='Red').all()]
     
@@ -594,6 +595,7 @@ def show_white_varietals():
     
     white_list = []
     varietal_set = set()
+    session['varietals'] = ""
     
     all_options = [white.varietal.split(",") for white in Wine.query.filter_by(type='White').all()]
     
@@ -612,6 +614,7 @@ def show_rose_varietals():
     
     rose_list = []
     varietal_set = set()
+    session['varietals'] = ""
     
     all_options = [rose.varietal.split(",") for rose in Wine.query.filter_by(type='Rose').all()]
     
@@ -686,7 +689,7 @@ def show_combined_question():
     #     varietals = session['varietals']
     # else:
     varietals = session['varietals']
-    session['varietals'] = ""
+    
     
 
     
