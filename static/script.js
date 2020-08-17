@@ -23,35 +23,36 @@
 
 // }
 
-$("#varietals").on("click", ".varietals", function(e) {
-  const selected_button = e.target;
-  selected_button.classList.toggle("is-focused")
-})
-
-$("#varietals-submit").on("click", async function(e) {
-$("#hidden-selects").val([])
-
-const varietal_selects = [];
-$(".varietals").each(function(index, value) {
-  
-  if ($(value).hasClass('is-focused')) {
-    varietal_selects.push(value.innerText)
-  }
-})
-
-$("#hidden-selects").val(varietal_selects)
-selects = $("#hidden-selects").val()
-const data = await sendVarietals(selects)
-
-})
-
 // $("#varietals").on("click", ".varietals", function(e) {
 //   const selected_button = e.target;
 //   selected_button.classList.toggle("is-focused")
-//   sendVarietals()
-//   // await axios.get(`/show_combined_question/${selected_button.innerText}`)
+// })
+
+// $("#varietals-submit").on("click", async function(e) {
+// $("#hidden-selects").val([])
+
+// const varietal_selects = [];
+// $(".varietals").each(function(index, value) {
+  
+//   if ($(value).hasClass('is-focused')) {
+//     varietal_selects.push(value.innerText)
+//   }
+// })
+
+// $("#hidden-selects").val(varietal_selects)
+// selects = $("#hidden-selects").val()
+// const data = await sendVarietals(selects)
 
 // })
+
+$("#varietals").on("click", ".varietals", async function(e) {
+  const selected_button = e.target;
+  selected_button.classList.toggle("is-focused")
+  varietal = selected_button.innerText
+  const data = await sendVarietals(varietal)
+  // await axios.get(`/show_combined_question/${selected_button.innerText}`)
+
+})
 
 // $("#varietals-submit").on("click", function(e) {
 // $("#hidden-selects").val([])
@@ -68,10 +69,18 @@ const data = await sendVarietals(selects)
 
 // })
 
-async function sendVarietals(selects) {
-  const res = await axios.get(`/show_combined_question/${selects}`)
+
+
+async function sendVarietals(varietal) {
+  const res = await axios.get(`/show_combined_question/${varietal}`)
  
 }
+
+
+// async function sendVarietals(selects) {
+//   const res = await axios.get(`/show_combined_question/${selects}`)
+ 
+// }
 
 
 

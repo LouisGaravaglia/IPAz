@@ -657,7 +657,7 @@ def get_varietal_choices(new_varietal):
         varietals = session['varietals']
     else:
         varietals = []
-    
+   
     varietals.append(new_varietal)
     
     session['varietals'] = varietals
@@ -674,7 +674,8 @@ def show_combined_question():
     # if 'varietals' in session:
     #     varietals = session['varietals']
     # else:
-    varietals = ['pie', 'cookies']
+    varietals = session['varietals']
+    session['varietals'] = ""
     
 
     
