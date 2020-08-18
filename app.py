@@ -3,6 +3,7 @@ from random import choice, randint
 from unittest import TestCase
 import requests
 import re
+from sqlalchemy import desc
 from flask_cors import CORS
 from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
@@ -410,7 +411,7 @@ def show_all_wine_results():
     varietals = session['varietals']
     
     if varietals == "" or varietals is None:
-        all_wine = Wine.query.all()
+        all_wine = Wine.query.order_by(desc(Wine.rating)).all()
 
     return render_template("wine_results.html", wines=all_wine)
 
