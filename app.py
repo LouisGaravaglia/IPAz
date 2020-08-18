@@ -72,6 +72,7 @@ def signup():
             user = User.signup(
                 username=form.username.data,
                 password=form.password.data,
+                bio=form.bio.data,
                 email=form.email.data,
                 image_url=form.image_url.data or User.image_url.default.arg,
             )
@@ -151,294 +152,6 @@ def show_wine_types():
     
     return render_template("wine_types.html")
 
-
-# ===================================    USER PAGE / USERS    =====================================
-
-
-@app.route('/users')
-def list_users():
-    """Page with listing of users.
-
-    Can take a 'q' param in querystring to search by that username.
-    """
-
-    search = request.args.get('q')
-
-    if not search:
-        users = User.query.all()
-    else:
-        users = User.query.filter(User.username.like(f"%{search}%")).all()
-
-    return render_template('users/index.html', users=users)
-
-
-@app.route('/users/<int:user_id>')
-def users_show(user_id):
-    """Show user profile."""
-
-    user = User.query.get_or_404(user_id)
-
-    messages = (Message
-                .query
-                .filter(Message.user_id == user_id)
-                .order_by(Message.timestamp.desc())
-                .limit(100)
-                .all())
-    return render_template('users/show.html', user=user, messages=messages)
-
-
-@app.route('/users/likes')
-def show_likes():
-    """Show user profile."""
-
-    likes = g.user.likes
-
-  
-    return render_template('users/likes.html', likes=likes)
-
-
-@app.route('/users/<int:user_id>/following')
-def show_following(user_id):
-    """Show list of people this user is following."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    user = User.query.get_or_404(user_id)
-    return render_template('users/following.html', user=user)
-
-
-@app.route('/users/<int:user_id>/followers')
-def users_followers(user_id):
-    """Show list of followers of this user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    user = User.query.get_or_404(user_id)
-    return render_template('users/followers.html', user=user)
-
-
-@app.route('/users/follow/<int:follow_id>', methods=['POST'])
-def add_follow(follow_id):
-    """Add a follow for the currently-logged-in user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    followed_user = User.query.get_or_404(follow_id)
-    g.user.following.append(followed_user)
-    db.session.commit()
-
-    return redirect(f"/users/{g.user.id}/following")
-
-
-@app.route('/users/stop-following/<int:follow_id>', methods=['POST'])
-def stop_following(follow_id):
-    """Have currently-logged-in-user stop following this user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    followed_user = User.query.get_or_404(follow_id)
-    g.user.following.remove(followed_user)
-    db.session.commit()
-
-    return redirect(f"/users/{g.user.id}/following")
-
-
-@app.route("/users/add_like/<int:message_id>", methods=['POST'])
-def add_like(message_id):
-    """Add the liked message user id to a list."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    liked_message = Message.query.get_or_404(message_id)
-    if liked_message.user_id == g.user.id:
-        flash("You can't like your own warbles.", "danger")
-        return redirect("/")
-    
-    user_likes = g.user.likes
-    
-    if liked_message in user_likes:
-        g.user.likes = [like for like in user_likes if like != liked_message]
-    else:
-        g.user.likes.append(liked_message)
-        
-    db.session.commit()
-
-    return redirect("/")
-
-
-# ===================================    EDIT/DELETE USER    =====================================
-
-
-@app.route('/users/profile', methods=["GET", "POST"])
-def profile():
-    """Update profile for current user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    user = g.user
-    form = UserEditForm(obj=user)
-
-    if form.validate_on_submit():
-        if User.authenticate(user.username, form.password.data):
-            user.username = form.username.data
-            user.email = form.email.data
-            user.image_url = form.image_url.data or "/static/images/default-pic.png"
-            user.header_image_url = form.header_image_url.data or "/static/images/warbler-hero.jpg"
-            user.bio = form.bio.data
-
-            db.session.commit()
-            return redirect(f"/users/{user.id}")
-
-        flash("Wrong password, please try again.", 'danger')
-
-    return render_template('users/edit.html', form=form, user_id=user.id)
-
-
-@app.route('/users/delete', methods=["POST"])
-def delete_user():
-    """Delete user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    do_logout()
-
-    db.session.delete(g.user)
-    db.session.commit()
-
-    return redirect("/signup")
-
-
-# ===================================    ADD POSTS    =====================================
-
-
-@app.route('/<int:user_id>/add_post')
-def add_post_page(user_id):
-    """shows the form to add a post"""  
-    
-    user = User.query.get_or_404(user_id)
-    tags = Tag.query.all()
-
-    return render_template("add_post.html", user=user, tags=tags)
-
-@app.route('/<int:user_id>/add_post', methods=["POST"])
-def create_post(user_id):
-    """use a form to create a user"""  
-    
-    user = User.query.get_or_404(user_id)
-    tag_ids = [int(num) for num in request.form.getlist("tags")]
-    tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
-
-    new_post = Post(title=request.form['title'],
-                    content=request.form['content'],
-                    user=user,
-                    tags=tags)
-
-    db.session.add(new_post)
-    db.session.commit()
-
-    return redirect(f"/{user.id}")
-
-@app.route('/posts/<int:post_id>')
-def show_post(post_id):
-    """Show the post when user clicks on the post title"""  
-      
-    post = Post.query.get_or_404(post_id)
-
-    return render_template("show_post.html", post=post)
-
-
-# ===================================    EDIT/DELETE POSTS    =====================================
-
-
-@app.route('/posts/<int:post_id>/edit_post')
-def show_edit_post_page(post_id):
-    """shows the form to edit an existing post"""  
-    
-    post = Post.query.get_or_404(post_id)
-    tags = Tag.query.all()
-
-    return render_template("edit_post.html", post=post, tags=tags)
-
-@app.route('/posts/<int:post_id>/edit_post', methods=["POST"])
-def edit_user_post(post_id):
-    """use a form to update and edit a post""" 
-
-    post = Post.query.get_or_404(post_id)
-
-    if request.form["title"] != "" and request.form["title"] !=  None:
-        post.title = request.form["title"]
-    
-    if request.form["content"] != "" and request.form["content"] != None:
-        post.content = request.form["content"]
-   
-    tag_ids = [int(num) for num in request.form.getlist("tags")]
-    post.tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
-    
-    db.session.add(post)
-    db.session.commit()
-
-    return redirect(f"/posts/{post_id}")
-
-
-@app.route('/posts/<int:post_id>/delete_post')
-def delete_user_post(post_id):
-    """delete a post from the database"""  
-
-    post = Post.query.get_or_404(post_id)
-
-    db.session.delete(post)
-    db.session.commit()
-
-    return redirect("/")
-
-# ===================================    CREATE TAGS    =====================================
-
-@app.route('/create_tag')
-def show_create_tag_page():
-    """shows the form to create a tag to then add to posts."""  
-    
-    tags = Tag.query.all()
-
-    return render_template("create_tag.html", tags=tags)
-
-@app.route('/create_tag', methods=["POST"])
-def create_tag_post():
-    """use a form to create a tag and update the tag db."""  
-    
-    tag_name = request.form['tag_name']
-    
-    new_tag = Tag(name=tag_name)
-
-    db.session.add(new_tag)
-    db.session.commit()
-   
-    return redirect("/create_tag")
-
-# ===================================    SHOW POSTS BY TAG    =====================================
-
-@app.route('/tags/<int:tag_id>')
-def show_posts_by_tag_id(tag_id):
-    """shows all posts related to a particular tag"""  
-    
-    tag = Tag.query.get_or_404(tag_id)
- 
-    return render_template("tag_specific_posts.html", tag=tag)
-
-
 # ===================================    API CALLS    =====================================
 
 @app.route('/api/get_red_wines')
@@ -452,8 +165,6 @@ def get_red_wines():
     data = result.json()
     wine_array = data["items"]
     
-    # import pdb
-    # pdb.set_trace()
     if result.status_code != 200:
        return jsonify(message="There was an issue making an request for red wines to the API.") 
    
@@ -488,8 +199,6 @@ def get_white_wines():
     data = result.json()
     wine_array = data["items"]
     
-    # import pdb
-    # pdb.set_trace()
     if result.status_code != 200:
        return jsonify(message="There was an issue making an request for white wines to the API.") 
 
@@ -657,84 +366,43 @@ def show_rose_varietals():
         
     return render_template("varietal_options.html", varietal_set=varietal_set)
 
-
-# @app.route('/show_all_varietals')
-# def show_all_varietals():
-    
-#     all_list = []
-#     varietal_set = set()
-    
-#     all_options = [wine.varietal.split(",") for wine in Wine.query.all()]
-    
-#     for options in all_options:
-#         all_list = all_list + options
-    
-#     for item in all_list:
-#         if item != "":
-#             varietal_set.add(item.strip())
-        
-#     import pdb
-#     pdb.set_trace()    
-        
-#     return render_template("varietal_options.html", varietal_set=varietal_set)
-
-    
-
 # ===================================    WINE RESULTS   =====================================
 
 @app.route('/show_combined_question/<new_varietal>')
 def get_varietal_choices(new_varietal):
-    
-    # if session.get('varietals') == True:
-    #     varietals = session['varietals']
-    # else:
-    #     varietals = []
-   
-    # varietals.append(new_varietal)
-    
-    # session['varietals'] = varietals
-    # import pdb
-    # pdb.set_trace()   
-    
+
     if session['varietals']:
         varietals = session['varietals']
     else:
         varietals = []
-   
-    # all_varietals = []
+
     if new_varietal in varietals:
-        # import pdb
-        # pdb.set_trace() 
+
         index = varietals.index(new_varietal)
         varietals.pop(index)
     else:
         varietals.append(new_varietal)
-    
-    # all_varietals.append(new_varietal)
-    
-    session['varietals'] = [wine for wine in varietals]
-    # import pdb
-    # pdb.set_trace() 
 
-    
+    session['varietals'] = [wine for wine in varietals]
+
     return render_template("combined_only.html", varietals=varietals)
   
 
 @app.route('/show_combined_question')
 def show_combined_question():
-    # import pdb
-    # pdb.set_trace()   
-    # if 'varietals' in session:
-    #     varietals = session['varietals']
-    # else:
+
     varietals = session['varietals']
     
     if varietals == "" or varietals is None:
         return redirect("/show_all_wine")
-        
-
     
-    return render_template("combined_only.html", varietals=varietals)
+    if len(varietals) == 1:
+        multiple_varietals = False
+        return render_template("combined_only.html", multiple_varietals=multiple_varietals)
+    else:
+        multiple_varietals = True   
+  
+    return render_template("combined_only.html", multiple_varietals=multiple_varietals)
 
 @app.route('/show_all_wine')
 def show_all_wine_results():
@@ -766,11 +434,6 @@ def show_exact_wine_results():
         if has_all_varietals:
             exact_matches.append(wine)
                 
-             
-    
-    
-    # import pdb
-    # pdb.set_trace()   
     return render_template("wine_results.html", wines=exact_matches)
 
 
@@ -783,13 +446,8 @@ def show_wine_results():
     
     for varietal in varietals:
         results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == wine_type))).all()
-        # import pdb
-        # pdb.set_trace()   
+  
         for result in results:
             all_wine.append(result)
     
-    
-    
-    # import pdb
-    # pdb.set_trace()   
     return render_template("wine_results.html", wines=all_wine)
