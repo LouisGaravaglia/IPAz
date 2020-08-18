@@ -429,20 +429,14 @@ def show_exact_wine_results():
             varietal_description = wine.varietal
             if re.search(r"^" + varietal + r"$", varietal_description):
                 exact_matches.append(wine)
-            
+                
     else:
         wines = Wine.query.filter_by(type=wine_type).all()
         for wine in wines:
-            has_all_varietals = True
-            for index, item in enumerate(varietals):
-                varietal = varietals[index]
-                no_varietal = varietal not in wine.varietal
-            
-                if no_varietal:
-                    has_all_varietals = False
-                
-            if has_all_varietals:
+            if all(x in wine.varietal for x in varietals):
                 exact_matches.append(wine)
+        
+            
                 
     return render_template("wine_results.html", wines=exact_matches)
 
