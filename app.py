@@ -420,19 +420,28 @@ def show_exact_wine_results():
     varietals = session['varietals']
     wine_type = session['type']
     exact_matches = []
-    wines = Wine.query.filter_by(type=wine_type).all()
     
-    for wine in wines:
-        has_all_varietals = True
-        for index, item in enumerate(varietals):
-            varietal = varietals[index]
-            no_varietal = varietal not in wine.varietal
+    if len(varietals) == 1:
+        varietal = varietals[0]
+        wines = Wine.query.filter_by(type=wine_type).all()
+        for wine in wines:
+            varietal_description = wine.varietal
+            if re.search(r"^" + varietal + r"$", varietal_description):
+                exact_matches.append(wine)
             
-            if no_varietal:
-                has_all_varietals = False
+    else:
+        wines = Wine.query.filter_by(type=wine_type).all()
+        for wine in wines:
+            has_all_varietals = True
+            for index, item in enumerate(varietals):
+                varietal = varietals[index]
+                no_varietal = varietal not in wine.varietal
+            
+                if no_varietal:
+                    has_all_varietals = False
                 
-        if has_all_varietals:
-            exact_matches.append(wine)
+            if has_all_varietals:
+                exact_matches.append(wine)
                 
     return render_template("wine_results.html", wines=exact_matches)
 
