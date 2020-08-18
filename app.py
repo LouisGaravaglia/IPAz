@@ -738,19 +738,27 @@ def show_all_wine_results():
 def show_exact_wine_results():
     
     varietals = session['varietals']
-    all_wine = []
+    exact_matches = []
+    wines = Wine.query.all()
     
-    for varietal in varietals:
-        results = Wine.query.filter(Wine.varietal.ilike(varietal)).all()
-        # import pdb
-        # pdb.set_trace()   
-        for result in results:
-            all_wine.append(result)  
+    for wine in wines:
+        has_all_varietals = True
+        for index, item in enumerate(varietals):
+            varietal = varietals[index]
+            no_varietal = varietal not in wine.varietal
+            
+            if no_varietal:
+                has_all_varietals = False
+                
+        if has_all_varietals:
+            exact_matches.append(wine)
+                
+             
     
     
     # import pdb
     # pdb.set_trace()   
-    return render_template("wine_results.html", wines=all_wine)
+    return render_template("wine_results.html", wines=exact_matches)
 
 
 @app.route('/show_close_to_results')
