@@ -589,7 +589,9 @@ def show_red_varietals():
     for item in red_list:
         has_number = re.search("\d", item)
         has_blend = re.search(" Blend", item)
-        if item != "" and not has_number and len(item) < 25 and not has_blend:
+        has_plus = re.search("\+", item)
+        has_slash = re.search("/", item)
+        if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash:
             title_case_item = item.title()
             varietal_set.add(title_case_item.strip())
         
@@ -611,7 +613,9 @@ def show_white_varietals():
     for item in white_list:
         has_number = re.search("\d", item)
         has_blend = re.search(" Blend", item)
-        if item != "" and not has_number and len(item) < 25 and not has_blend:
+        has_plus = re.search("\+", item)
+        has_slash = re.search("/", item)
+        if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash:
             title_case_item = item.title()
             varietal_set.add(title_case_item.strip())
         
@@ -633,7 +637,9 @@ def show_rose_varietals():
     for item in rose_list:
         has_number = re.search("\d", item)
         has_blend = re.search(" Blend", item)
-        if item != "" and not has_number and len(item) < 25 and not has_blend:
+        has_plus = re.search("\+", item)
+        has_slash = re.search("/", item)
+        if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash:
             title_case_item = item.title()
             varietal_set.add(title_case_item.strip())
         
