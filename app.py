@@ -736,8 +736,7 @@ def show_exact_wine_results():
         # import pdb
         # pdb.set_trace()   
         for result in results:
-            all_wine.append(result)
-    
+            all_wine.append(result)  
     
     
     # import pdb

@@ -5,9 +5,11 @@
 
 {% block content %}
 
-{% for wine in wines%}
   <h1 class="title is-1 has-text-centered mt-6">Here are your results.</h1>
+<div class="columns is-multiline my-3 mx-3">
+{% for wine in wines%}
 
+<div class="column is-one-quarter">
   <div class="has-text-centered">
   </div>
 
@@ -41,7 +43,8 @@
     <a href="#" class="card-footer-item">Delete</a>
   </footer>
 </div>
+</div>
 {% endfor %}
-
+</div>
 
 {% endblock %}
