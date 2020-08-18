@@ -578,6 +578,8 @@ def show_red_varietals():
     red_list = []
     varietal_set = set()
     session['varietals'] = ""
+    session['type'] = ""
+    session['type'] = "Red"
     
     all_options = [red.varietal.split(",") for red in Wine.query.filter_by(type='Red').all()]
     
@@ -606,6 +608,8 @@ def show_white_varietals():
     white_list = []
     varietal_set = set()
     session['varietals'] = ""
+    session['type'] = ""
+    session['type'] = "White"
     
     all_options = [white.varietal.split(",") for white in Wine.query.filter_by(type='White').all()]
     
@@ -632,6 +636,8 @@ def show_rose_varietals():
     rose_list = []
     varietal_set = set()
     session['varietals'] = ""
+    session['type'] = ""
+    session['type'] = "Rose"
     
     all_options = [rose.varietal.split(",") for rose in Wine.query.filter_by(type='Rose').all()]
     
@@ -744,8 +750,9 @@ def show_all_wine_results():
 def show_exact_wine_results():
     
     varietals = session['varietals']
+    wine_type = session['type']
     exact_matches = []
-    wines = Wine.query.all()
+    wines = Wine.query.filter_by(type=wine_type).all()
     
     for wine in wines:
         has_all_varietals = True
@@ -771,10 +778,11 @@ def show_exact_wine_results():
 def show_wine_results():
     
     varietals = session['varietals']
+    wine_type = session['type']
     all_wine = []
     
     for varietal in varietals:
-        results = Wine.query.filter(Wine.varietal.ilike(f'%{varietal}%')).all()
+        results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == wine_type))).all()
         # import pdb
         # pdb.set_trace()   
         for result in results:
