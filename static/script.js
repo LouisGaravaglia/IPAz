@@ -94,7 +94,7 @@ async function sendSortBy(sortBy) {
   const res = await axios.get(`/sort_by/${sortBy}`)
 }
 
-// =================================================  PICKING VARIETALS  ================================================
+// =================================================  LOADING VARIETALS  ================================================
 
 $("#varietals-button").on("click", async function() {
   varietalDiv = $("#varietals")
@@ -120,22 +120,24 @@ for (varietal of varietal_array) {
 }
 
 
-// =================================================  OLD VARIETALS  ================================================
+// =================================================  PICKING VARIETALS  ================================================
 
 
 $("#varietals").on("click", ".varietals", async function(e) {
   const selected_button = e.target;
   selected_button.classList.toggle("is-focused")
   varietal = selected_button.innerText
-  console.log("clickng");
   await sendVarietals(varietal)
 })
 
 
 
 async function sendVarietals(varietal) {
-  const res = await axios.get(`/show_combined_question/${varietal}`)
+  const res = await axios.get(`/log_varietal/${varietal}`)
 }
+
+
+// =================================================  CALLING API  ================================================
 
 async function makeAPIcall() {
   await axios.get("/api/get_red_wines")

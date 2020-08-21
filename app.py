@@ -500,12 +500,17 @@ def get_sort_by_choices(new_sort_by):
 
     return render_template("new_home.html")
 
+# ===================================    ADDING VARIETALS TO SESSION   =====================================
 
 @app.route('/get_varietals')
 def get_varietals():
 
     wine_list = []
     varietal_set = set()
+    if session['varietals']:
+        selected_varietals = session['varietals']
+    else:
+        selected_varietals = []
 
     try:
         wine_type = session['wine_type'][0]
@@ -539,5 +544,25 @@ def get_varietals():
     # session['varietals'] = varietal_set
     varietals = [varietal for varietal in varietal_set]
 
-    return jsonify(varietals=varietals)
+    return jsonify(varietals=varietals, selected_varietals=selected_varietals)
     # return render_template("new_home.html", varietal_set=varietal_set)
+    
+    
+@app.route('/log_varietals/<new_varietal>')
+def log_varietal_choice(new_varietal):
+
+    if session['varietals']:
+        varietals = session['varietals']
+    else:
+        varietals = []
+
+    if new_varietal in varietals:
+
+        index = varietals.index(new_varietal)
+        varietals.pop(index)
+    else:
+        varietals.append(new_varietal)
+
+    session['varietals'] = [wine for wine in varietals]
+
+    return render_template("combined_only.html", varietals=varietals)
