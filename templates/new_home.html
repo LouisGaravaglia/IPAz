@@ -1,0 +1,167 @@
+{% extends "base.html" %} {% block title %} HOME {% endblock %} {% block content
+%}
+
+<div class="container">
+  <div class="notification">
+
+
+    <div class="columns">
+      <div class="column">
+        
+
+
+
+<div class="dropdown is-hoverable">
+  <div class="dropdown-trigger">
+    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+      <span>Wine Type</span>
+      <span class="icon is-small">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+    </button>
+  </div>
+  <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+    <div class="dropdown-content">
+      <div class="dropdown-item">
+          <a href="" class="dropdown-item">
+        Red
+      </a>
+      <a href="" class="dropdown-item">
+        White
+      </a>
+      <a href="" class="dropdown-item">
+        Rose
+      </a>
+      <a href="" class="dropdown-item">
+        All of the above
+      </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+
+      <div class="column">
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button
+              class="button"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu4"
+            >
+              <span>Wine Style</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+            <div class="dropdown-content">
+              <div class="dropdown-item">
+                <a href="" class="dropdown-item">
+        Single Varietal
+      </a>
+                <a href="" class="dropdown-item">
+        Blends Only
+      </a>
+                <a href="" class="dropdown-item">
+        Both
+      </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button
+              class="button"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu4"
+            >
+              <span>Sort By</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+            <div class="dropdown-content">
+              <div class="dropdown-item">
+                  <a href="" class="dropdown-item">
+        Rating (Highest)
+      </a>
+      <a href="" class="dropdown-item">
+        Rating (Lowest)
+      </a>
+      <a href="" class="dropdown-item">
+        Vintage (Oldest)
+      </a>
+      <a href="" class="dropdown-item">
+        Vintage (Youngest)
+      </a>
+      <a href="" class="dropdown-item">
+        Winery (Alphabeticaly)
+      </a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <button class="button">Varietals</button>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Modal title</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- Content ... -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success">Save changes</button>
+      <button class="button">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<!-- <div class="dropdown is-hoverable">
+  <div class="dropdown-trigger">
+    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+      <span>Wine Type</span>
+      <span class="icon is-small">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+    </button>
+  </div>
+  <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+    <div class="dropdown-content">
+      <div class="dropdown-item">
+        <p>Red</p>
+        <p>White</p>
+        <p>Rose</p>
+        <p>All of the above</p>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- <h1 class="title is-1 has-text-centered mt-6">Would you like to find a new wine to try?</h1> -->
+
+<div class="has-text-centered">
+  <a href="/wine_types" class="button is-success is-large">Find Your Wines</a>
+</div>
+
+{% endblock %}

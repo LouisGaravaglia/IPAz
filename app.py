@@ -124,7 +124,7 @@ def logout():
 def homepage():
     """Show homepage"""
     
-    return render_template("home.html")
+    return render_template("new_home.html")
 
 
 ##############################################################################
