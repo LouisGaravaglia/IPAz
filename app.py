@@ -506,12 +506,17 @@ def get_varietals():
 
     wine_list = []
     varietal_set = set()
-    # session['varietals'] = ""
-    # session['type'] = ""
-    # session['type'] = "Red"
-    wine_type = session['wine_type'][0]
 
-    all_options = [wine.varietal.split(",") for wine in Wine.query.filter_by(type=wine_type).all()]
+    try:
+        wine_type = session['wine_type'][0]
+    except IndexError:
+        wine_type = "All of the above"
+
+    if wine_type == "All of the above":
+        all_options = [wine.varietal.split(",") for wine in Wine.query.all()]
+
+    else:    
+        all_options = [wine.varietal.split(",") for wine in Wine.query.filter_by(type=wine_type).all()]
     
     for options in all_options:
         wine_list = wine_list + options
