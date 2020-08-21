@@ -117,15 +117,7 @@ def logout():
     return redirect('/login')
 
 
-# ===================================    HOME    =====================================
 
-
-@app.route('/')
-def homepage():
-    """Show homepage"""
-    session['wine_type'] = ""
-    
-    return render_template("new_home.html")
 
 
 ##############################################################################
@@ -456,6 +448,18 @@ def show_wine_results():
             all_wine.append(result)
     
     return render_template("wine_results.html", wines=all_wine)
+
+# ===================================    HOME    =====================================
+
+
+@app.route('/')
+def homepage():
+    """Show homepage"""
+    session['wine_type'] = ""
+    session['varietals'] = []
+    
+    return render_template("new_home.html")
+
 
 # ===================================    ADDING PARAMETERS TO SESSION   =====================================
 
