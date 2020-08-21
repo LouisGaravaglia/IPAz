@@ -511,8 +511,7 @@ def get_varietals():
     # session['type'] = "Red"
     wine_type = session['wine_type'][0]
 
-    
-    all_options = [tipo.varietal.split(",") for tipo in Wine.query.filter_by(type=wine_type).all()]
+    all_options = [wine.varietal.split(",") for wine in Wine.query.filter_by(type=wine_type).all()]
     
     for options in all_options:
         wine_list = wine_list + options
