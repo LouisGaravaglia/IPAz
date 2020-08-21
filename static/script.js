@@ -11,6 +11,57 @@ window.addEventListener( "pageshow", function ( event ) {
 });
 
 
+$("#wine-type-dropdown").on("click", ".wine-type", async function(e) {
+  const selected_button = e.target;
+  selected_button.classList.add("is-active")
+  wine_type = selected_button.innerText
+
+  if (wine_type == 'Red') {
+    white = e.target.nextElementSibling;
+    rose = white.nextElementSibling;
+    allAbove = rose.nextElementSibling;
+
+    white.classList.remove("is-active")
+    rose.classList.remove("is-active")
+    allAbove.classList.remove("is-active")
+  } else if (wine_type == "White") {
+    red = e.target.previousElementSibling;
+    rose = e.target.nextElementSibling;
+    allAbove = rose.nextElementSibling;
+
+    red.classList.remove("is-active")
+    rose.classList.remove("is-active")
+    allAbove.classList.remove("is-active")
+
+  } else if (wine_type == "Rose") {
+    white = e.target.previousElementSibling;
+    red = white.previousElementSibling;
+    allAbove = e.target.nextElementSibling;
+
+    white.classList.remove("is-active")
+    red.classList.remove("is-active")
+    allAbove.classList.remove("is-active")
+
+  } else {
+    red = white.previousElementSibling;
+    rose = e.target.previousElementSibling;
+    white = rose.previousElementSibling;
+
+    red.classList.remove("is-active")
+    rose.classList.remove("is-active")
+    white.classList.remove("is-active")
+  }
+
+
+  await sendWineType(wine_type)
+  
+})
+
+async function sendWineType(wine_type) {
+  const res = await axios.get(`/wine_type/${wine_type}`)
+}
+
+
 
 $("#varietals").on("click", ".varietals", async function(e) {
   const selected_button = e.target;
@@ -21,9 +72,9 @@ $("#varietals").on("click", ".varietals", async function(e) {
 })
 
 
+
 async function sendVarietals(varietal) {
   const res = await axios.get(`/show_combined_question/${varietal}`)
- 
 }
 
 async function makeAPIcall() {

@@ -123,6 +123,7 @@ def logout():
 @app.route('/')
 def homepage():
     """Show homepage"""
+    session['wine_type'] = ""
     
     return render_template("new_home.html")
 
@@ -455,3 +456,19 @@ def show_wine_results():
             all_wine.append(result)
     
     return render_template("wine_results.html", wines=all_wine)
+
+# ===================================    ADDING PARAMETERS TO SESSION   =====================================
+
+@app.route('/wine_type/<new_wine_type>')
+def get_wine_type_choices(new_wine_type):
+
+    wine_type = []
+
+    wine_type.append(new_wine_type)
+
+    session['wine_type'] = wine_type
+    
+    import pdb
+    pdb.set_trace()
+
+    return render_template("new_home.html")
