@@ -512,6 +512,9 @@ def get_varietals():
     else:
         selected_varietals = []
 
+    # import pdb
+    # pdb.set_trace()
+    
     try:
         wine_type = session['wine_type'][0]
     except IndexError:
@@ -556,6 +559,9 @@ def log_varietal_choice(new_varietal):
     else:
         varietals = []
 
+    # import pdb
+    # pdb.set_trace()
+    
     if new_varietal in varietals:
 
         index = varietals.index(new_varietal)
@@ -564,5 +570,7 @@ def log_varietal_choice(new_varietal):
         varietals.append(new_varietal)
 
     session['varietals'] = [wine for wine in varietals]
+    
+   
 
     return render_template("combined_only.html", varietals=varietals)

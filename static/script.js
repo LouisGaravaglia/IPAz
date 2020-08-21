@@ -100,7 +100,9 @@ $("#varietals-button").on("click", async function() {
   varietalDiv = $("#varietals")
   varietalDiv.html("")
   const items = await axios.get('/get_varietals')
-  makeModal(items.data.varietals)
+  varietal_array = items.data.varietals;
+  selected_varietals = items.data.selected_varietals;
+  makeModal(varietal_array, selected_varietals)
   modal = $(".modal");
   modal.toggleClass("is-active")
 })
@@ -111,11 +113,17 @@ $(".modal").on("click", ".delete", function() {
   modal.toggleClass("is-active")
 })
 
-function makeModal(varietal_array) {
+function makeModal(varietal_array, selected_varietals) {
 
 for (varietal of varietal_array) {
-  html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">${varietal}</button>`
-  varietalDiv.append(html);
+  if (selected_varietals.includes(varietal)) {
+    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals is-focused">${varietal}</button>`
+    varietalDiv.append(html);
+  } else {
+    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">${varietal}</button>`
+    varietalDiv.append(html);
+  }
+
 }
 }
 
@@ -133,7 +141,7 @@ $("#varietals").on("click", ".varietals", async function(e) {
 
 
 async function sendVarietals(varietal) {
-  const res = await axios.get(`/log_varietal/${varietal}`)
+  const res = await axios.get(`/log_varietals/${varietal}`)
 }
 
 
