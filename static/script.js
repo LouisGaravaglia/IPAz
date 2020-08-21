@@ -94,6 +94,17 @@ async function sendSortBy(sortBy) {
   const res = await axios.get(`/sort_by/${sortBy}`)
 }
 
+// =================================================  PICKING VARIETALS  ================================================
+
+$("#varietals-button").on("click", function() {
+  modal = $(".modal");
+  modal.toggleClass("is-active")
+})
+
+$(".modal").on("click", ".delete", function() {
+  modal = $(".modal");
+  modal.toggleClass("is-active")
+})
 
 $("#varietals").on("click", ".varietals", async function(e) {
   const selected_button = e.target;
