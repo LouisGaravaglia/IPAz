@@ -96,15 +96,32 @@ async function sendSortBy(sortBy) {
 
 // =================================================  PICKING VARIETALS  ================================================
 
-$("#varietals-button").on("click", function() {
+$("#varietals-button").on("click", async function() {
+  const items = await axios.get('/get_varietals')
+  console.log(items.data.varietals);
+  makeModal(items.data.varietals)
   modal = $(".modal");
   modal.toggleClass("is-active")
 })
+
 
 $(".modal").on("click", ".delete", function() {
   modal = $(".modal");
   modal.toggleClass("is-active")
 })
+
+function makeModal(varietal_array) {
+  varietalDiv = $("#varietals")
+
+for (varietal of varietal_array) {
+  html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">${varietal}</button>`
+  varietalDiv.append(html);
+}
+}
+
+
+// =================================================  OLD VARIETALS  ================================================
+
 
 $("#varietals").on("click", ".varietals", async function(e) {
   const selected_button = e.target;

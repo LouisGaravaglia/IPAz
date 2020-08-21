@@ -495,7 +495,45 @@ def get_sort_by_choices(new_sort_by):
 
     session['sort_by'] = sort_by
     
-    import pdb
-    pdb.set_trace()
+    # import pdb
+    # pdb.set_trace()
 
     return render_template("new_home.html")
+
+
+@app.route('/get_varietals')
+def get_varietals():
+
+    wine_list = []
+    varietal_set = set()
+    # session['varietals'] = ""
+    # session['type'] = ""
+    # session['type'] = "Red"
+    wine_type = session['wine_type'][0]
+
+    
+    all_options = [tipo.varietal.split(",") for tipo in Wine.query.filter_by(type=wine_type).all()]
+    
+    for options in all_options:
+        wine_list = wine_list + options
+    
+    
+    
+    for item in wine_list:
+        has_number = re.search("\d", item)
+        has_blend = re.search(" Blend", item)
+        has_plus = re.search("\+", item)
+        has_slash = re.search("/", item)
+        has_period = re.search("\.", item)
+        has_ampersand = re.search("&", item)
+        if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash and not has_period and not has_ampersand:
+            title_case_item = item.title()
+            varietal_set.add(title_case_item.strip())
+            
+    # import pdb
+    # pdb.set_trace()
+    # session['varietals'] = varietal_set
+    varietals = [varietal for varietal in varietal_set]
+
+    return jsonify(varietals=varietals)
+    # return render_template("new_home.html", varietal_set=varietal_set)
