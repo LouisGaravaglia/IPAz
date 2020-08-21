@@ -468,6 +468,33 @@ def get_wine_type_choices(new_wine_type):
 
     session['wine_type'] = wine_type
     
+
+    return render_template("new_home.html")
+
+@app.route('/wine_style/<new_wine_style>')
+def get_wine_style_choices(new_wine_style):
+
+    wine_style = []
+
+    wine_style.append(new_wine_style)
+
+    session['wine_style'] = wine_style
+    
+    # import pdb
+    # pdb.set_trace()
+
+    return render_template("new_home.html")
+
+
+@app.route('/sort_by/<new_sort_by>')
+def get_sort_by_choices(new_sort_by):
+
+    sort_by = []
+
+    sort_by.append(new_sort_by)
+
+    session['sort_by'] = sort_by
+    
     import pdb
     pdb.set_trace()
 

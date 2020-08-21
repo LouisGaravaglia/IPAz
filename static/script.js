@@ -10,6 +10,7 @@ window.addEventListener( "pageshow", function ( event ) {
   }
 });
 
+// =================================================  WINE TYPE  ================================================
 
 $("#wine-type-dropdown").on("click", ".wine-type", async function(e) {
   const selected_button = e.target;
@@ -61,6 +62,37 @@ async function sendWineType(wine_type) {
   const res = await axios.get(`/wine_type/${wine_type}`)
 }
 
+// =================================================  WINE STYLE  ================================================
+
+$("#wine-style-dropdown").on("click", ".wine-style", async function(e) {
+  const selected_button = e.target;
+  selected_button.classList.toggle("is-active")
+  wineStyle = selected_button.innerText
+
+
+  await sendWineStyle(wineStyle)
+  
+})
+
+async function sendWineStyle(wineStyle) {
+  const res = await axios.get(`/wine_style/${wineStyle}`)
+}
+
+// =================================================  SORT BY  ================================================
+
+$("#sort-by-dropdown").on("click", ".sort-by", async function(e) {
+  const selected_button = e.target;
+  selected_button.classList.toggle("is-active")
+  sortBy = selected_button.innerText
+
+
+  await sendSortBy(sortBy)
+  
+})
+
+async function sendSortBy(sortBy) {
+  const res = await axios.get(`/sort_by/${sortBy}`)
+}
 
 
 $("#varietals").on("click", ".varietals", async function(e) {
