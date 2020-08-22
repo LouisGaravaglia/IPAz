@@ -46,6 +46,41 @@ class AllAbove():
                         
         return wine_results
     
+    
+    
+    def blends(self, sort_by, varietals):
+        """Sign up user.
+
+        Hashes password and adds user to system.
+        """
+          
+    
+        wine_results = []
+        
+        if sort_by == 'Rating (Highest)':
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(desc(Wine.rating)).all()
+        
+        elif sort_by == 'Rating (Lowest)':
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.rating).all()
+         
+        elif sort_by == 'Vintage (Oldest)':
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.vintage).all()
+       
+        elif sort_by == 'Vintage (Youngest)':
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(desc(Wine.vintage)).all()
+                
+        elif sort_by == 'Winery (Alphabetically)':
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.winery).all()
+     
+        for result in results:
+                    wine_results.append(result)
+                    
+        return wine_results
 
 # ===========================================================   POST   =========================================================== 
 

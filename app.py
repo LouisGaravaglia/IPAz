@@ -591,8 +591,7 @@ def show_results():
     wine_type = session['wine_type']
     wine_style = session['wine_style']
     sort_by = session['sort_by']
-    exact_matches = []
-    # all_wine = []
+
     
     # import pdb
     # pdb.set_trace()
@@ -600,73 +599,11 @@ def show_results():
     if wine_type == 'All of the above':
         if wine_style == 'Single Varietals Only':
             wine_results = all_above.single_varietal(sort_by, varietals)
+        else:
+            wine_results = all_above.blends(sort_by, varietals)
             
-    
-    # if wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Rating (Highest)':
-    #     wines = Wine.query.order_by(desc(Wine.rating)).all()
-    #     for wine in wines:
-    #         varietal_description = wine.varietal
-    #         for varietal in varietals:
-    #             if re.search(r"^" + varietal + r"$", varietal_description):
-    #                 exact_matches.append(wine)
-    # elif wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Rating (Lowest)':
-    #     wines = Wine.query.order_by(Wine.rating).all()
-    #     for wine in wines:
-    #         varietal_description = wine.varietal
-    #         for varietal in varietals:
-    #             if re.search(r"^" + varietal + r"$", varietal_description):
-    #                 exact_matches.append(wine)
-    # elif wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Vintage (Oldest)':
-    #     wines = Wine.query.order_by(Wine.vintage).all()
-    #     for wine in wines:
-    #         varietal_description = wine.varietal
-    #         for varietal in varietals:
-    #             if re.search(r"^" + varietal + r"$", varietal_description):
-    #                 exact_matches.append(wine)
-    # elif wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Vintage (Youngest)':
-    #     wines = Wine.query.order_by(desc(Wine.vintage)).all()
-    #     for wine in wines:
-    #         varietal_description = wine.varietal
-    #         for varietal in varietals:
-    #             if re.search(r"^" + varietal + r"$", varietal_description):
-    #                 exact_matches.append(wine)
-    # elif wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Winery (Alphabetically)':
-    #     wines = Wine.query.order_by(Wine.winery).all()
-    #     for wine in wines:
-    #         varietal_description = wine.varietal
-    #         for varietal in varietals:
-    #             if re.search(r"^" + varietal + r"$", varietal_description):
-    #                 exact_matches.append(wine)
-    elif wine_type == 'All of the above' and wine_style == 'Blends As Well' and sort_by == 'Rating (Highest)':
-        for varietal in varietals:
-            results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(desc(Wine.rating)).all()
-            for result in results:
-                exact_matches.append(result)
 
-        
-    elif wine_type == 'All of the above' and wine_style == 'Blends As Well' and sort_by == 'Rating (Lowest)':
-        for varietal in varietals:
-            results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.rating).all()
-            for result in results:
-                exact_matches.append(result)
-                
-    elif wine_type == 'All of the above' and wine_style == 'Blends As Well' and sort_by == 'Vintage (Oldest)':
-        for varietal in varietals:
-            results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.vintage).all()
-            for result in results:
-                exact_matches.append(result)
-                
-    elif wine_type == 'All of the above' and wine_style == 'Blends As Well' and sort_by == 'Vintage (Youngest)':
-        for varietal in varietals:
-            results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(desc(Wine.vintage)).all()
-            for result in results:
-                exact_matches.append(result)
-                
-    elif wine_type == 'All of the above' and wine_style == 'Blends As Well' and sort_by == 'Winery (Alphabetically)':
-        for varietal in varietals:
-            results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.winery).all()
-            for result in results:
-                exact_matches.append(result)
+
         
             
                 
