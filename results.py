@@ -11,15 +11,15 @@ from models import db, connect_db, User, Post, Wine, Favorite
     
 class AllAbove():
     
-    # def __init__(self, wine_style):
-    #         self.wine_style = wine_style
-    
     def single_varietal(self, sort_by, varietals):
-        """Sign up user.
+        """Returns wine results if the parameters include:
 
-        Hashes password and adds user to system.
-        """
-          
+        'All of the above' for wine type and 'Single Varietals Only' for wine style.
+        
+        Also, takes in the sort_by filter the user chose and will filter the results from a SQL Alchemy query 
+        
+        to then be returned based of the varietals chosen.
+        """     
     
         wine_results = []
         
@@ -49,12 +49,15 @@ class AllAbove():
     
     
     def blends(self, sort_by, varietals):
-        """Sign up user.
+        """Returns wine results if the parameters include:
 
-        Hashes password and adds user to system.
+        'All of the above' for wine type and 'Blends As Well' for wine style.
+        
+        Also, takes in the sort_by filter the user chose and will filter the results from a SQL Alchemy query 
+        
+        to then be returned based of the varietals chosen.
         """
           
-    
         wine_results = []
         
         if sort_by == 'Rating (Highest)':
@@ -87,15 +90,15 @@ class AllAbove():
 
 class RedWhiteRose():
     
-    # def __init__(self, wine_style):
-    #         self.wine_style = wine_style
-    
     def single_varietal(self, wine_type, sort_by, varietals):
-        """Sign up user.
+        """Returns wine results if the parameters include:
 
-        Hashes password and adds user to system.
-        """
-          
+        'Red', 'White', or 'Rose' for wine type and 'Single Varietals Only' for wine style.
+        
+        Also, takes in the sort_by filter the user chose and will filter the results from a SQL Alchemy query 
+        
+        to then be returned based of the varietals chosen.
+        """      
     
         wine_results = []
         
@@ -125,11 +128,14 @@ class RedWhiteRose():
     
     
     def blends(self, wine_type, sort_by, varietals):
-        """Sign up user.
+        """Returns wine results if the parameters include:
 
-        Hashes password and adds user to system.
-        """
-          
+        'Red', 'White', or 'Rose' for wine type and 'Blends As Well' for wine style.
+        
+        Also, takes in the sort_by filter the user chose and will filter the results from a SQL Alchemy query 
+        
+        to then be returned based of the varietals chosen.
+        """ 
     
         wine_results = []
         
