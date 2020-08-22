@@ -9,6 +9,8 @@ from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm
 from models import db, connect_db, User, Post, Wine, Favorite
+from results import AllAbove
+
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
@@ -516,12 +518,11 @@ def get_varietals():
     else:
         selected_varietals = []
 
-    # import pdb
-    # pdb.set_trace()
+
     
-    try:
+    if session['wine_type'] != "":
         wine_type = session['wine_type']
-    except IndexError:
+    else:
         wine_type = "All of the above"
 
     if wine_type == "All of the above":
