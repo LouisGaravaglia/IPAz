@@ -148,6 +148,13 @@ async function sendVarietals(varietal) {
 
 $("#checkboxes").on("click", ".panel-block", function(e) {
   const target = e.target;
+  
+  if (target.tagName == "LABEL") {
+    
+  } else if (target.tagName == "INPUT") {
+    console.log(target);
+    console.log(target.nextSibling.data);
+  }
 })
 
 // =================================================  CALLING API  ================================================
