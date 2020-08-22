@@ -6,10 +6,58 @@
 {% block content %}
 
   <h1 class="title is-1 has-text-centered mt-6">Here are your results.</h1>
-<div class="columns is-multiline my-3 mx-3">
-{% for wine in wines%}
+<div class="tabs is-centered">
+  <ul>
+    <li class="is-active"><a>Single Varietal</a></li>
+    <li><a>Blends</a></li>
+  </ul>
+</div>
+
+<div class="columns my-3 mx-3">
 
 <div class="column is-one-quarter">
+<aside class="menu sticky">
+  <p class="menu-label">
+    General
+  </p>
+  <ul class="menu-list">
+    <li><a>Dashboard</a></li>
+    <li><a>Customers</a></li>
+  </ul>
+  <p class="menu-label">
+    Administration
+  </p>
+  <ul class="menu-list">
+    <li><a>Team Settings</a></li>
+    <li>
+      <a class="is-active">Manage Your Team</a>
+      <ul>
+        <li><a>Members</a></li>
+        <li><a>Plugins</a></li>
+        <li><a>Add a member</a></li>
+      </ul>
+    </li>
+    <li><a>Invitations</a></li>
+    <li><a>Cloud Storage Environment Settings</a></li>
+    <li><a>Authentication</a></li>
+  </ul>
+  <p class="menu-label">
+    Transactions
+  </p>
+  <ul class="menu-list">
+    <li><a>Payments</a></li>
+    <li><a>Transfers</a></li>
+    <li><a>Balance</a></li>
+  </ul>
+</aside>
+</div>
+
+<div class="column is-three-quarters">
+<div class="columns my-3 mx-3 is-multiline">
+{% for wine in wines%}
+
+
+<div class="column is-half">
   <div class="has-text-centered">
   </div>
 
@@ -43,7 +91,11 @@
   </footer>
 </div>
 </div>
+
+
 {% endfor %}
+</div>
+</div>
 </div>
 
 {% endblock %}

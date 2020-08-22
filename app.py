@@ -556,7 +556,7 @@ def get_varietals():
     varietals = [varietal for varietal in varietal_set]
 
     return jsonify(varietals=varietals, selected_varietals=selected_varietals)
-    # return render_template("new_home.html", varietal_set=varietal_set)
+
     
     
 @app.route('/log_varietals/<new_varietal>')
