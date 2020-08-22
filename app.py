@@ -466,11 +466,11 @@ def homepage():
 @app.route('/wine_type/<new_wine_type>')
 def get_wine_type_choices(new_wine_type):
 
-    wine_type = []
+    # wine_type = []
 
-    wine_type.append(new_wine_type)
+    # wine_type.append(new_wine_type)
 
-    session['wine_type'] = wine_type
+    session['wine_type'] = new_wine_type
     
 
     return render_template("new_home.html")
@@ -478,11 +478,11 @@ def get_wine_type_choices(new_wine_type):
 @app.route('/wine_style/<new_wine_style>')
 def get_wine_style_choices(new_wine_style):
 
-    wine_style = []
+    # wine_style = []
 
-    wine_style.append(new_wine_style)
+    # wine_style.append(new_wine_style)
 
-    session['wine_style'] = wine_style
+    session['wine_style'] = new_wine_style
     
     # import pdb
     # pdb.set_trace()
@@ -493,11 +493,11 @@ def get_wine_style_choices(new_wine_style):
 @app.route('/sort_by/<new_sort_by>')
 def get_sort_by_choices(new_sort_by):
 
-    sort_by = []
+    # sort_by = []
 
-    sort_by.append(new_sort_by)
+    # sort_by.append(new_sort_by)
 
-    session['sort_by'] = sort_by
+    session['sort_by'] = new_sort_by
     
     # import pdb
     # pdb.set_trace()
@@ -520,7 +520,7 @@ def get_varietals():
     # pdb.set_trace()
     
     try:
-        wine_type = session['wine_type'][0]
+        wine_type = session['wine_type']
     except IndexError:
         wine_type = "All of the above"
 
@@ -578,3 +578,75 @@ def log_varietal_choice(new_varietal):
    
 
     return render_template("combined_only.html", varietals=varietals)
+
+# ===================================    SHOWING RESULTS   =====================================
+
+@app.route('/show_results')
+def show_results():
+    
+    varietals = session['varietals']
+    wine_type = session['wine_type']
+    wine_style = session['wine_style']
+    sort_by = session['sort_by']
+    exact_matches = []
+    # all_wine = []
+    
+    # import pdb
+    # pdb.set_trace()
+    
+    if wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Rating (Highest)':
+        all_wine = Wine.query.order_by(desc(Wine.rating)).all()
+        for wine in wines:
+            varietal_description = wine.varietal
+            for varietal in varietals:
+                if re.search(r"^" + varietal + r"$", varietal_description):
+                    exact_matches.append(wine)
+    elif wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Rating (Lowest)':
+        all_wine = Wine.query.order_by(Wine.rating).all()
+        for wine in wines:
+            varietal_description = wine.varietal
+            for varietal in varietals:
+                if re.search(r"^" + varietal + r"$", varietal_description):
+                    exact_matches.append(wine)
+    elif wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Vintage (Oldest)':
+        all_wine = Wine.query.order_by(Wine.vintage).all()
+        for wine in wines:
+            varietal_description = wine.varietal
+            for varietal in varietals:
+                if re.search(r"^" + varietal + r"$", varietal_description):
+                    exact_matches.append(wine)
+    elif wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Vintage (Newest))':
+        all_wine = Wine.query.order_by(desc(Wine.vintage)).all()
+        for wine in wines:
+            varietal_description = wine.varietal
+            for varietal in varietals:
+                if re.search(r"^" + varietal + r"$", varietal_description):
+                    exact_matches.append(wine)
+    elif wine_type == 'All of the above' and wine_style == 'Single Varietals Only' and sort_by == 'Winery (Alphabetically)':
+        all_wine = Wine.query.order_by(desc(Wine.winery)).all()
+        for wine in wines:
+            varietal_description = wine.varietal
+            for varietal in varietals:
+                if re.search(r"^" + varietal + r"$", varietal_description):
+                    exact_matches.append(wine)
+    elif wine_type == 'All of the above' and wine_style == 'Blends Only' and sort_by == 'Rating (Highest)':
+        for varietal in varietals:
+            results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(desc(Wine.rating)).all()
+            for result in results:
+                exact_matches.append(result)
+   
+            
+        # import pdb
+        # pdb.set_trace()
+        
+    elif wine_type == 'All of the above' and wine_style == 'Blends Only' and sort_by == 'Rating (Lowest)':
+        for varietal in varietals:
+            results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.rating).all()
+            for result in results:
+                exact_matches.append(result)
+    
+
+        
+            
+                
+    return render_template("wine_results.html", wines=exact_matches)

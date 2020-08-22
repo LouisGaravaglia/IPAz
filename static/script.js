@@ -1,14 +1,14 @@
 
 
 // This function is here so that the varietal selects do not get added upon each other when user hits the back GamepadButton.
-window.addEventListener( "pageshow", function ( event ) {
-  var historyTraversal = event.persisted || 
-                         ( typeof window.performance != "undefined" && 
-                              window.performance.navigation.type === 2 );
-  if ( historyTraversal ) {
-    window.location.reload();
-  }
-});
+// window.addEventListener( "pageshow", function ( event ) {
+//   var historyTraversal = event.persisted || 
+//                          ( typeof window.performance != "undefined" && 
+//                               window.performance.navigation.type === 2 );
+//   if ( historyTraversal ) {
+//     window.location.reload();
+//   }
+// });
 
 // =================================================  WINE TYPE  ================================================
 
@@ -44,16 +44,16 @@ $("#wine-type-dropdown").on("click", ".wine-type", async function(e) {
     allAbove.classList.remove("is-active")
 
   } else {
-    red = white.previousElementSibling;
     rose = e.target.previousElementSibling;
     white = rose.previousElementSibling;
+    red = white.previousElementSibling;
 
     red.classList.remove("is-active")
     rose.classList.remove("is-active")
     white.classList.remove("is-active")
   }
 
-
+  console.log(wine_type);
   await sendWineType(wine_type)
   
 })
