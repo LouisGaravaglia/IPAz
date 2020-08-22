@@ -1,30 +1,151 @@
 
 
 // This function is here so that the varietal selects do not get added upon each other when user hits the back GamepadButton.
-window.addEventListener( "pageshow", function ( event ) {
-  var historyTraversal = event.persisted || 
-                         ( typeof window.performance != "undefined" && 
-                              window.performance.navigation.type === 2 );
-  if ( historyTraversal ) {
-    window.location.reload();
-  }
-});
+// window.addEventListener( "pageshow", function ( event ) {
+//   var historyTraversal = event.persisted || 
+//                          ( typeof window.performance != "undefined" && 
+//                               window.performance.navigation.type === 2 );
+//   if ( historyTraversal ) {
+//     window.location.reload();
+//   }
+// });
 
+// =================================================  WINE TYPE  ================================================
+
+$("#wine-type-dropdown").on("click", ".wine-type", async function(e) {
+  const selected_button = e.target;
+  selected_button.classList.add("is-active")
+  wine_type = selected_button.innerText
+
+  if (wine_type == 'Red') {
+    white = e.target.nextElementSibling;
+    rose = white.nextElementSibling;
+    allAbove = rose.nextElementSibling;
+
+    white.classList.remove("is-active")
+    rose.classList.remove("is-active")
+    allAbove.classList.remove("is-active")
+  } else if (wine_type == "White") {
+    red = e.target.previousElementSibling;
+    rose = e.target.nextElementSibling;
+    allAbove = rose.nextElementSibling;
+
+    red.classList.remove("is-active")
+    rose.classList.remove("is-active")
+    allAbove.classList.remove("is-active")
+
+  } else if (wine_type == "Rose") {
+    white = e.target.previousElementSibling;
+    red = white.previousElementSibling;
+    allAbove = e.target.nextElementSibling;
+
+    white.classList.remove("is-active")
+    red.classList.remove("is-active")
+    allAbove.classList.remove("is-active")
+
+  } else {
+    rose = e.target.previousElementSibling;
+    white = rose.previousElementSibling;
+    red = white.previousElementSibling;
+
+    red.classList.remove("is-active")
+    rose.classList.remove("is-active")
+    white.classList.remove("is-active")
+  }
+
+  console.log(wine_type);
+  await sendWineType(wine_type)
+  
+})
+
+async function sendWineType(wine_type) {
+  const res = await axios.get(`/wine_type/${wine_type}`)
+}
+
+// =================================================  WINE STYLE  ================================================
+
+$("#wine-style-dropdown").on("click", ".wine-style", async function(e) {
+  const selected_button = e.target;
+  selected_button.classList.toggle("is-active")
+  wineStyle = selected_button.innerText
+
+
+  await sendWineStyle(wineStyle)
+  
+})
+
+async function sendWineStyle(wineStyle) {
+  const res = await axios.get(`/wine_style/${wineStyle}`)
+}
+
+// =================================================  SORT BY  ================================================
+
+$("#sort-by-dropdown").on("click", ".sort-by", async function(e) {
+  const selected_button = e.target;
+  selected_button.classList.toggle("is-active")
+  sortBy = selected_button.innerText
+
+
+  await sendSortBy(sortBy)
+  
+})
+
+async function sendSortBy(sortBy) {
+  const res = await axios.get(`/sort_by/${sortBy}`)
+}
+
+// =================================================  LOADING VARIETALS  ================================================
+
+$("#varietals-button").on("click", async function() {
+  varietalDiv = $("#varietals")
+  varietalDiv.html("")
+  const items = await axios.get('/get_varietals')
+  varietal_array = items.data.varietals;
+  selected_varietals = items.data.selected_varietals;
+  makeModal(varietal_array, selected_varietals)
+  modal = $(".modal");
+  modal.toggleClass("is-active")
+})
+
+
+$(".modal").on("click", ".delete", function() {
+  modal = $(".modal");
+  modal.toggleClass("is-active")
+})
+
+function makeModal(varietal_array, selected_varietals) {
+
+for (varietal of varietal_array) {
+  if (selected_varietals.includes(varietal)) {
+    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals is-focused">${varietal}</button>`
+    varietalDiv.append(html);
+  } else {
+    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">${varietal}</button>`
+    varietalDiv.append(html);
+  }
+
+}
+}
+
+
+// =================================================  PICKING VARIETALS  ================================================
 
 
 $("#varietals").on("click", ".varietals", async function(e) {
   const selected_button = e.target;
   selected_button.classList.toggle("is-focused")
   varietal = selected_button.innerText
-  console.log("clickng");
   await sendVarietals(varietal)
 })
 
 
+
 async function sendVarietals(varietal) {
-  const res = await axios.get(`/show_combined_question/${varietal}`)
- 
+  const res = await axios.get(`/log_varietals/${varietal}`)
 }
+
+
+// =================================================  CALLING API  ================================================
 
 async function makeAPIcall() {
   await axios.get("/api/get_red_wines")

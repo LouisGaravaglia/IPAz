@@ -9,6 +9,8 @@ from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm
 from models import db, connect_db, User, Post, Wine, Favorite
+from results import AllAbove, RedWhiteRose
+
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
@@ -23,6 +25,9 @@ app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 connect_db(app)
 
 debug = DebugToolbarExtension(app)
+
+all_above = AllAbove()
+red_white_rose = RedWhiteRose()
 
 
 ##############################################################################
@@ -117,14 +122,7 @@ def logout():
     return redirect('/login')
 
 
-# ===================================    HOME    =====================================
 
-
-@app.route('/')
-def homepage():
-    """Show homepage"""
-    
-    return render_template("home.html")
 
 
 ##############################################################################
@@ -455,3 +453,166 @@ def show_wine_results():
             all_wine.append(result)
     
     return render_template("wine_results.html", wines=all_wine)
+
+# ===================================    HOME    =====================================
+
+
+@app.route('/')
+def homepage():
+    """Show homepage"""
+    session['wine_type'] = ""
+    session['varietals'] = []
+    
+    return render_template("new_home.html")
+
+
+# ===================================    ADDING PARAMETERS TO SESSION   =====================================
+
+@app.route('/wine_type/<new_wine_type>')
+def get_wine_type_choices(new_wine_type):
+
+    # wine_type = []
+
+    # wine_type.append(new_wine_type)
+
+    session['wine_type'] = new_wine_type
+    
+
+    return render_template("new_home.html")
+
+@app.route('/wine_style/<new_wine_style>')
+def get_wine_style_choices(new_wine_style):
+
+    # wine_style = []
+
+    # wine_style.append(new_wine_style)
+
+    session['wine_style'] = new_wine_style
+    
+    # import pdb
+    # pdb.set_trace()
+
+    return render_template("new_home.html")
+
+
+@app.route('/sort_by/<new_sort_by>')
+def get_sort_by_choices(new_sort_by):
+
+    # sort_by = []
+
+    # sort_by.append(new_sort_by)
+
+    session['sort_by'] = new_sort_by
+    
+    # import pdb
+    # pdb.set_trace()
+
+    return render_template("new_home.html")
+
+# ===================================    ADDING VARIETALS TO SESSION   =====================================
+
+@app.route('/get_varietals')
+def get_varietals():
+
+    wine_list = []
+    varietal_set = set()
+    if session['varietals']:
+        selected_varietals = session['varietals']
+    else:
+        selected_varietals = []
+
+
+    
+    if session['wine_type'] != "":
+        wine_type = session['wine_type']
+    else:
+        wine_type = "All of the above"
+
+    if wine_type == "All of the above":
+        all_options = [wine.varietal.split(",") for wine in Wine.query.all()]
+
+    else:    
+        all_options = [wine.varietal.split(",") for wine in Wine.query.filter_by(type=wine_type).all()]
+    
+    for options in all_options:
+        wine_list = wine_list + options
+    
+    
+    
+    for item in wine_list:
+        has_number = re.search("\d", item)
+        has_blend = re.search(" Blend", item)
+        has_plus = re.search("\+", item)
+        has_slash = re.search("/", item)
+        has_period = re.search("\.", item)
+        has_ampersand = re.search("&", item)
+        if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash and not has_period and not has_ampersand:
+            title_case_item = item.title()
+            varietal_set.add(title_case_item.strip())
+            
+    # import pdb
+    # pdb.set_trace()
+    # session['varietals'] = varietal_set
+    varietals = [varietal for varietal in varietal_set]
+
+    return jsonify(varietals=varietals, selected_varietals=selected_varietals)
+
+    
+    
+@app.route('/log_varietals/<new_varietal>')
+def log_varietal_choice(new_varietal):
+
+    if session['varietals']:
+        varietals = session['varietals']
+    else:
+        varietals = []
+
+    # import pdb
+    # pdb.set_trace()
+    
+    if new_varietal in varietals:
+
+        index = varietals.index(new_varietal)
+        varietals.pop(index)
+    else:
+        varietals.append(new_varietal)
+
+    session['varietals'] = [wine for wine in varietals]
+    
+   
+
+    return render_template("combined_only.html", varietals=varietals)
+
+# ===================================    SHOWING RESULTS   =====================================
+
+@app.route('/show_results')
+def show_results():
+    
+    varietals = session['varietals']
+    wine_type = session['wine_type']
+    wine_style = session['wine_style']
+    sort_by = session['sort_by']
+
+    
+    # import pdb
+    # pdb.set_trace()
+    
+    if wine_type == 'All of the above':
+        if wine_style == 'Single Varietals Only':
+            wine_results = all_above.single_varietal(sort_by, varietals)
+        else:
+            wine_results = all_above.blends(sort_by, varietals)
+    else:
+        if wine_style == 'Single Varietals Only': 
+            wine_results = red_white_rose.single_varietal(wine_type, sort_by, varietals)
+        else:
+            wine_results = red_white_rose.blends(wine_type, sort_by, varietals)
+        
+
+            
+
+
+        
+            
+                
+    return render_template("wine_results.html", wines=wine_results)

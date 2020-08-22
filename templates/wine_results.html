@@ -6,10 +6,53 @@
 {% block content %}
 
   <h1 class="title is-1 has-text-centered mt-6">Here are your results.</h1>
-<div class="columns is-multiline my-3 mx-3">
-{% for wine in wines%}
+<div class="tabs is-centered">
+  <ul>
+    <li class="is-active"><a>Single Varietal</a></li>
+    <li><a>Blends</a></li>
+  </ul>
+</div>
+
+<div class="columns my-3 mx-3">
 
 <div class="column is-one-quarter">
+<aside class="menu sticky">
+  <p class="menu-label">
+    Wine Style
+  </p>
+  <ul class="menu-list">
+    <li>
+      <a class="">Filter By</a>
+      <ul>
+        <li><label class="panel-block"><input type="checkbox">Red</label></li>
+        <li><label class="panel-block"><input type="checkbox">White</label></li>
+        <li><label class="panel-block"><input type="checkbox">Rose</label></li>
+        <li><label class="panel-block"><input type="checkbox">All of the above</label></li>
+        <li><label class="panel-block"><input type="checkbox">Rating (Highest)</label></li>
+        <li><label class="panel-block"><input type="checkbox">Rating (Lowest)</label></li>
+        <li><label class="panel-block"><input type="checkbox">Vintage (Oldest)</label></li>
+        <li><label class="panel-block"><input type="checkbox">Vintage (Youngest)</label></li>
+        <li><label class="panel-block"><input type="checkbox">Winery (Alphabetically)</label></li>
+        
+      </ul>
+    </li>
+    
+  </ul>
+  <p class="menu-label">
+    Varietals
+  </p>
+  <ul class="menu-list">
+    <li><a class="">Choose Varietals</a></li>
+    
+</aside>
+</div>
+
+<div class="column is-three-quarters">
+<div class="columns my-3 mx-3 is-multiline">
+{% for wine in wines%}
+
+
+<div class="column is-half">
   <div class="has-text-centered">
   </div>
 
@@ -43,7 +86,11 @@
   </footer>
 </div>
 </div>
+
+
 {% endfor %}
+</div>
+</div>
 </div>
 
 {% endblock %}
