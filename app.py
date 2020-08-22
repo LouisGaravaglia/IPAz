@@ -9,7 +9,7 @@ from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm
 from models import db, connect_db, User, Post, Wine, Favorite
-from results import AllAbove
+from results import AllAbove, RedWhiteRose
 
 CURR_USER_KEY = "curr_user"
 
@@ -27,6 +27,7 @@ connect_db(app)
 debug = DebugToolbarExtension(app)
 
 all_above = AllAbove()
+red_white_rose = RedWhiteRose()
 
 
 ##############################################################################
@@ -601,6 +602,13 @@ def show_results():
             wine_results = all_above.single_varietal(sort_by, varietals)
         else:
             wine_results = all_above.blends(sort_by, varietals)
+    else:
+        if wine_style == 'Single Varietals Only': 
+            wine_results = red_white_rose.single_varietal(wine_type, sort_by, varietals)
+        else:
+            wine_results = red_white_rose.blends(wine_type, sort_by, varietals)
+        
+
             
 
 
