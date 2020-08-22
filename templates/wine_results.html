@@ -18,22 +18,28 @@
 <div class="column is-one-quarter">
 <aside class="menu sticky">
   <p class="menu-label">
-    Wine Style
+    Wine Type
   </p>
   <ul class="menu-list">
     <li>
       <a class="">Filter By</a>
-      <ul>
-        <li><label class="panel-block"><input type="checkbox">Red</label></li>
-        <li><label class="panel-block"><input type="checkbox">White</label></li>
+      <ul id="checkboxes">
+        {% for filter in session['filters'] %}
+          {% if filter == session['wine_type'] or filter == session['sort_by'] %}
+            <li><label class="panel-block"><input type="checkbox" checked="checked">{{filter}}</label></li>
+          {% else %}
+            <li><label class="panel-block"><input type="checkbox">{{filter}}</label></li>
+
+        <!-- <li><label class="panel-block"><input type="checkbox">White</label></li>
         <li><label class="panel-block"><input type="checkbox">Rose</label></li>
         <li><label class="panel-block"><input type="checkbox">All of the above</label></li>
         <li><label class="panel-block"><input type="checkbox">Rating (Highest)</label></li>
         <li><label class="panel-block"><input type="checkbox">Rating (Lowest)</label></li>
         <li><label class="panel-block"><input type="checkbox">Vintage (Oldest)</label></li>
         <li><label class="panel-block"><input type="checkbox">Vintage (Youngest)</label></li>
-        <li><label class="panel-block"><input type="checkbox">Winery (Alphabetically)</label></li>
-        
+        <li><label class="panel-block"><input type="checkbox">Winery (Alphabetically)</label></li> -->
+          {% endif %}
+        {% endfor %}
       </ul>
     </li>
     

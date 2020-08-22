@@ -144,6 +144,11 @@ async function sendVarietals(varietal) {
   const res = await axios.get(`/log_varietals/${varietal}`)
 }
 
+// =================================================  SIDE BAR FILTER FOR RESULTS PAGE  ================================================
+
+$("#checkboxes").on("click", ".panel-block", function(e) {
+  const target = e.target;
+})
 
 // =================================================  CALLING API  ================================================
 

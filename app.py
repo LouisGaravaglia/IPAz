@@ -462,6 +462,9 @@ def homepage():
     """Show homepage"""
     session['wine_type'] = ""
     session['varietals'] = []
+    session['filters'] = ['Red', 'White', 'Rose', 'All of the above', 'Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
+    
+    
     
     return render_template("new_home.html")
 
