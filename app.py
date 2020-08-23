@@ -596,10 +596,6 @@ def show_results():
     wine_style = session['wine_style']
     sort_by = session['sort_by']
 
-    
-    # import pdb
-    # pdb.set_trace()
-    
     if wine_type == 'All of the above':
         if wine_style == 'Single Varietals Only':
             wine_results = all_above.single_varietal(sort_by, varietals)
@@ -610,12 +606,33 @@ def show_results():
             wine_results = red_white_rose.single_varietal(wine_type, sort_by, varietals)
         else:
             wine_results = red_white_rose.blends(wine_type, sort_by, varietals)
-        
-
-            
-
-
-        
-            
                 
     return render_template("wine_results.html", wines=wine_results)
+
+
+# ===================================    ADDING RESULTS PAGE FILTERS TO SESION   =====================================
+
+
+@app.route('/log_filters/<new_filter>')
+def log_varietal_choice(new_varietal):
+
+    if session['varietals']:
+        varietals = session['varietals']
+    else:
+        varietals = []
+
+    # import pdb
+    # pdb.set_trace()
+    
+    if new_varietal in varietals:
+
+        index = varietals.index(new_varietal)
+        varietals.pop(index)
+    else:
+        varietals.append(new_varietal)
+
+    session['varietals'] = [wine for wine in varietals]
+    
+   
+
+    return render_template("combined_only.html", varietals=varietals)
