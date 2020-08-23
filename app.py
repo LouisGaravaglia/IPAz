@@ -460,9 +460,9 @@ def show_wine_results():
 @app.route('/')
 def homepage():
     """Show homepage"""
-    session['wine_type'] = ""
     session['varietals'] = []
     session['filters'] = ['Red', 'White', 'Rose', 'All of the above', 'Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
+    session['filter_by'] = {'Red':False, 'White':False, 'Rose':False, 'All of the above':False, 'Rating (Highest)':False, 'Rating (Lowest)':False, 'Vintage (Oldest)':False, 'Vintage (Youngest)':False, 'Winery (Alphabetically)':False}
     
     
     
@@ -474,13 +474,32 @@ def homepage():
 @app.route('/wine_type/<new_wine_type>')
 def get_wine_type_choices(new_wine_type):
 
-    # wine_type = []
+    # filter_list = session['filter_list']
 
-    # wine_type.append(new_wine_type)
+    # if new_wine_type in filter_list:
 
-    session['wine_type'] = new_wine_type
+    #     index = filter_list.index(new_wine_type)
+    #     filter_list.pop(index)
+    # else:
+    #     filter_list.append(new_wine_type)
+        
+    # import pdb
+    # pdb.set_trace()
+
+    # session['filter_list'] = filter_list
     
+    
+    filter_dict = session['filter_by']
+    if filter_dict[new_wine_type]:
+        filter_dict[new_wine_type] = False
+    else:    
+        filter_dict[new_wine_type] = True
+        
+    session['filter_by'] = filter_dict
 
+    # import pdb
+    # pdb.set_trace()
+    
     return render_template("new_home.html")
 
 @app.route('/wine_style/<new_wine_style>')
@@ -504,8 +523,15 @@ def get_sort_by_choices(new_sort_by):
     # sort_by = []
 
     # sort_by.append(new_sort_by)
-
-    session['sort_by'] = new_sort_by
+    filter_dict = session['filter_by']
+    if filter_dict[new_sort_by]:
+        filter_dict[new_sort_by] = False
+    else:    
+        filter_dict[new_sort_by] = True
+        
+    session['filter_by'] = filter_dict
+    
+    # session['sort_by'] = new_sort_by
     
     # import pdb
     # pdb.set_trace()
@@ -518,27 +544,39 @@ def get_sort_by_choices(new_sort_by):
 def get_varietals():
 
     wine_list = []
+    varietal_list = []
+    red_varietals = []
+    white_varietals = []
+    rose_varietals = []
+    all_varietals = []
     varietal_set = set()
+    
     if session['varietals']:
         selected_varietals = session['varietals']
     else:
         selected_varietals = []
 
 
+    filter_dict = session['filter_by']
     
-    if session['wine_type'] != "":
-        wine_type = session['wine_type']
-    else:
-        wine_type = "All of the above"
+    if filter_dict['Red']:
+        red_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Red").all()]
+        
+    if filter_dict['White']:
+        white_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="White").all()]
+        
+    if filter_dict['Rose']:
+        rose_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Rose").all()]
 
-    if wine_type == "All of the above":
-        all_options = [wine.varietal.split(",") for wine in Wine.query.all()]
-
-    else:    
-        all_options = [wine.varietal.split(",") for wine in Wine.query.filter_by(type=wine_type).all()]
+        
+    if not filter_dict['Red'] and not filter_dict['White'] and not filter_dict['Rose'] or filter_dict['All of the above']:
+        all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
+        
     
-    for options in all_options:
-        wine_list = wine_list + options
+    merged_varietals = red_varietals + white_varietals + rose_varietals + all_varietals
+    
+    for varietals in merged_varietals:
+        wine_list = wine_list + varietals
     
     
     
@@ -557,6 +595,39 @@ def get_varietals():
     # pdb.set_trace()
     # session['varietals'] = varietal_set
     varietals = [varietal for varietal in varietal_set]
+    
+    # if session['wine_type'] != "":
+    #     wine_type = session['wine_type']
+    # else:
+    #     wine_type = "All of the above"
+    
+
+    # if wine_type == "All of the above":
+    #     all_options = [wine.varietal.split(",") for wine in Wine.query.all()]
+
+    # else:    
+    #     all_options = [wine.varietal.split(",") for wine in Wine.query.filter_by(type=wine_type).all()]
+    
+    # for options in all_options:
+    #     wine_list = wine_list + options
+    
+    
+    
+    # for item in wine_list:
+    #     has_number = re.search("\d", item)
+    #     has_blend = re.search(" Blend", item)
+    #     has_plus = re.search("\+", item)
+    #     has_slash = re.search("/", item)
+    #     has_period = re.search("\.", item)
+    #     has_ampersand = re.search("&", item)
+    #     if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash and not has_period and not has_ampersand:
+    #         title_case_item = item.title()
+    #         varietal_set.add(title_case_item.strip())
+            
+    # # import pdb
+    # # pdb.set_trace()
+    # # session['varietals'] = varietal_set
+    # varietals = [varietal for varietal in varietal_set]
 
     return jsonify(varietals=varietals, selected_varietals=selected_varietals)
 
@@ -595,17 +666,31 @@ def show_results():
     wine_type = session['wine_type']
     wine_style = session['wine_style']
     sort_by = session['sort_by']
+    filter_dict = session['filter_by']
 
-    if wine_type == 'All of the above':
-        if wine_style == 'Single Varietals Only':
-            wine_results = all_above.single_varietal(sort_by, varietals)
-        else:
-            wine_results = all_above.blends(sort_by, varietals)
+    # import pdb
+    # pdb.set_trace()
+    
+    if filter_dict['All of the above']:
+        wine_results = all_above.all_wines(filter_dict, varietals)
+
     else:
         if wine_style == 'Single Varietals Only': 
             wine_results = red_white_rose.single_varietal(wine_type, sort_by, varietals)
         else:
             wine_results = red_white_rose.blends(wine_type, sort_by, varietals)
+            
+            
+    # if wine_type == 'All of the above':
+    #     if wine_style == 'Single Varietals Only':
+    #         wine_results = all_above.single_varietal(sort_by, varietals)
+    #     else:
+    #         wine_results = all_above.blends(sort_by, varietals)
+    # else:
+    #     if wine_style == 'Single Varietals Only': 
+    #         wine_results = red_white_rose.single_varietal(wine_type, sort_by, varietals)
+    #     else:
+    #         wine_results = red_white_rose.blends(wine_type, sort_by, varietals)
                 
     return render_template("wine_results.html", wines=wine_results)
 
@@ -614,7 +699,7 @@ def show_results():
 
 
 @app.route('/log_filters/<new_filter>')
-def log_varietal_choice(new_varietal):
+def log_filter_choices(new_varietal):
 
     if session['varietals']:
         varietals = session['varietals']
