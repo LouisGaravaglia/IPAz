@@ -12,54 +12,87 @@
 
 // =================================================  WINE TYPE  ================================================
 
-$("#wine-type-dropdown").on("click", ".wine-type", async function(e) {
+$("#wine-type").on("click", ".wine-type", async function(e) {
   const selected_button = e.target;
-  selected_button.classList.add("is-active")
+  selected_button.classList.toggle("is-focused")
   wine_type = selected_button.innerText
 
-  if (wine_type == 'Red') {
-    white = e.target.nextElementSibling;
-    rose = white.nextElementSibling;
-    allAbove = rose.nextElementSibling;
+    if (wine_type == 'Red') {
+      allAbove = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
+      if (allAbove.classList.contains("is-focused")) {
+          allAbove.classList.remove("is-focused")
+          await sendWineType('All of the above')
+      }
+    } else if (wine_type == 'White') {
+        allAbove = e.target.nextElementSibling.nextElementSibling;
+        if (allAbove.classList.contains("is-focused")) {
+           allAbove.classList.remove("is-focused")
+           await sendWineType('All of the above')
+        }
+    } else if (wine_type == 'Rose') {
+        allAbove = e.target.nextElementSibling;
+        if (allAbove.classList.contains("is-focused")) {
+           allAbove.classList.remove("is-focused")
+           await sendWineType('All of the above')
+        }
+    } else {
+        rose = e.target.previousElementSibling;
+        white = rose.previousElementSibling;
+        red = white.previousElementSibling;
 
-    white.classList.remove("is-active")
-    rose.classList.remove("is-active")
-    allAbove.classList.remove("is-active")
-  } else if (wine_type == "White") {
-    red = e.target.previousElementSibling;
-    rose = e.target.nextElementSibling;
-    allAbove = rose.nextElementSibling;
+        if (rose.classList.contains("is-focused")) {
+           rose.classList.remove("is-focused")
+           await sendWineType('Rose')
+        }
 
-    red.classList.remove("is-active")
-    rose.classList.remove("is-active")
-    allAbove.classList.remove("is-active")
+        if (white.classList.contains("is-focused")) {
+           white.classList.remove("is-focused")
+           await sendWineType('White')
+        }
 
-  } else if (wine_type == "Rose") {
-    white = e.target.previousElementSibling;
-    red = white.previousElementSibling;
-    allAbove = e.target.nextElementSibling;
+        if (red.classList.contains("is-focused")) {
+           red.classList.remove("is-focused")
+           await sendWineType('Red')
+        }
+    }
 
-    white.classList.remove("is-active")
-    red.classList.remove("is-active")
-    allAbove.classList.remove("is-active")
-
-  } else {
-    rose = e.target.previousElementSibling;
-    white = rose.previousElementSibling;
-    red = white.previousElementSibling;
-
-    red.classList.remove("is-active")
-    rose.classList.remove("is-active")
-    white.classList.remove("is-active")
-  }
-
-  console.log(wine_type);
   await sendWineType(wine_type)
   
 })
 
 async function sendWineType(wine_type) {
   const res = await axios.get(`/wine_type/${wine_type}`)
+}
+
+$("#wine-type").on("click", ".wine-type", async function() {
+  varietalDiv = $("#varietals")
+  varietalDiv.html("")
+  const items = await axios.get('/get_varietals')
+  varietal_array = items.data.varietals;
+  selected_varietals = items.data.selected_varietals;
+  makeModal(varietal_array, selected_varietals)
+  modal = $(".modal");
+  modal.toggleClass("is-active")
+})
+
+
+$(".modal").on("click", ".delete", function() {
+  modal = $(".modal");
+  modal.toggleClass("is-active")
+})
+
+function makeModal(varietal_array, selected_varietals) {
+
+for (varietal of varietal_array) {
+  if (selected_varietals.includes(varietal)) {
+    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals is-focused">${varietal}</button>`
+    varietalDiv.append(html);
+  } else {
+    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">${varietal}</button>`
+    varietalDiv.append(html);
+  }
+
+}
 }
 
 // =================================================  WINE STYLE  ================================================
