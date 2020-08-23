@@ -16,6 +16,8 @@ $("#wine-type").on("click", ".wine-type", async function(e) {
   const selected_button = e.target;
   selected_button.classList.toggle("is-focused")
   wine_type = selected_button.innerText
+  varietalDiv = $("#varietals")
+  varietalDiv.html("")
 
     if (wine_type == 'Red') {
       allAbove = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
@@ -57,6 +59,12 @@ $("#wine-type").on("click", ".wine-type", async function(e) {
     }
 
   await sendWineType(wine_type)
+
+  const items = await axios.get('/get_varietals')
+  varietal_array = items.data.varietals;
+  selected_varietals = items.data.selected_varietals;
+
+  populateVarietals(varietal_array, selected_varietals)
   
 })
 
@@ -64,24 +72,24 @@ async function sendWineType(wine_type) {
   const res = await axios.get(`/wine_type/${wine_type}`)
 }
 
-$("#wine-type").on("click", ".wine-type", async function() {
-  varietalDiv = $("#varietals")
-  varietalDiv.html("")
-  const items = await axios.get('/get_varietals')
-  varietal_array = items.data.varietals;
-  selected_varietals = items.data.selected_varietals;
-  makeModal(varietal_array, selected_varietals)
-  modal = $(".modal");
-  modal.toggleClass("is-active")
-})
+// $("#wine-type").on("click", ".wine-type", async function() {
+//   varietalDiv = $("#varietals")
+//   varietalDiv.html("")
+//   const items = await axios.get('/get_varietals')
+//   varietal_array = items.data.varietals;
+//   selected_varietals = items.data.selected_varietals;
+//   populateVarietals(varietal_array, selected_varietals)
+//   // modal = $(".modal");
+//   // modal.toggleClass("is-active")
+// })
 
 
-$(".modal").on("click", ".delete", function() {
-  modal = $(".modal");
-  modal.toggleClass("is-active")
-})
+// $(".modal").on("click", ".delete", function() {
+//   modal = $(".modal");
+//   modal.toggleClass("is-active")
+// })
 
-function makeModal(varietal_array, selected_varietals) {
+function populateVarietals(varietal_array, selected_varietals) {
 
 for (varietal of varietal_array) {
   if (selected_varietals.includes(varietal)) {

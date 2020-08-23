@@ -625,8 +625,8 @@ def get_varietals():
     #         title_case_item = item.title()
     #         varietal_set.add(title_case_item.strip())
             
-    # # import pdb
-    # # pdb.set_trace()
+    # import pdb
+    # pdb.set_trace()
     # # session['varietals'] = varietal_set
     # varietals = [varietal for varietal in varietal_set]
 
