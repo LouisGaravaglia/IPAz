@@ -10,6 +10,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm
 from models import db, connect_db, User, Post, Wine, Favorite
 from results import AllAbove, RedWhiteRose
+from get_varietals import Varietals
 
 CURR_USER_KEY = "curr_user"
 
@@ -28,6 +29,7 @@ debug = DebugToolbarExtension(app)
 
 all_above = AllAbove()
 red_white_rose = RedWhiteRose()
+varietal_cls = Varietals()
 
 
 ##############################################################################
@@ -464,9 +466,13 @@ def homepage():
     session['filters'] = ['Red', 'White', 'Rose', 'All of the above', 'Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
     session['filter_by'] = {'Red':False, 'White':False, 'Rose':False, 'All of the above':False, 'Rating (Highest)':False, 'Rating (Lowest)':False, 'Vintage (Oldest)':False, 'Vintage (Youngest)':False, 'Winery (Alphabetically)':False}
     
+    all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
+
+    varietals = varietal_cls.get_all_varietals(all_varietals)
+    # import pdb
+    # pdb.set_trace()
     
-    
-    return render_template("new_home.html")
+    return render_template("new_home.html", varietals=varietals)
 
 
 # ===================================    ADDING PARAMETERS TO SESSION   =====================================
@@ -572,24 +578,24 @@ def get_varietals():
         
     merged_varietals = red_varietals + white_varietals + rose_varietals + all_varietals
     
-    for varietals in merged_varietals:
-        varietal_list = varietal_list + varietals
+    # for varietals in merged_varietals:
+    #     varietal_list = varietal_list + varietals
     
-    for item in varietal_list:
-        has_number = re.search("\d", item)
-        has_blend = re.search(" Blend", item)
-        has_plus = re.search("\+", item)
-        has_slash = re.search("/", item)
-        has_period = re.search("\.", item)
-        has_ampersand = re.search("&", item)
+    # for item in varietal_list:
+    #     has_number = re.search("\d", item)
+    #     has_blend = re.search(" Blend", item)
+    #     has_plus = re.search("\+", item)
+    #     has_slash = re.search("/", item)
+    #     has_period = re.search("\.", item)
+    #     has_ampersand = re.search("&", item)
         
-        conditions = [has_number, has_blend, has_plus, has_slash, has_period, has_ampersand]
+    #     conditions = [has_number, has_blend, has_plus, has_slash, has_period, has_ampersand]
         
-        if item != "" and len(item) < 25 and not any(conditions):
-            title_case_item = item.title()
-            varietal_set.add(title_case_item.strip())
+    #     if item != "" and len(item) < 25 and not any(conditions):
+    #         title_case_item = item.title()
+    #         varietal_set.add(title_case_item.strip())
    
-    varietals = [varietal for varietal in varietal_set]
+    varietals = varietal_cls.get_all_varietals(merged_varietals)
     
     # if session['wine_type'] != "":
     #     wine_type = session['wine_type']

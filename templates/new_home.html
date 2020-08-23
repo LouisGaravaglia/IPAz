@@ -2,45 +2,15 @@
 %}
 
 <div class="container">
-  <div class="notification">
 
-    <div class="columns">
-
-      <div class="column">
-        <div class="dropdown is-hoverable">
-          <div class="dropdown-trigger">
-            <button
-              class="button"
-              aria-haspopup="true"
-              aria-controls="dropdown-menu4"
-            >
-              <span>Wine Type</span>
-              <span class="icon is-small">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-            <div class="dropdown-content">
-              <div class="dropdown-item" id="wine-type-dropdown">
-                <a class="dropdown-item wine-type">
-                  Red
-                </a>
-                <a class="dropdown-item wine-type">
-                  White
-                </a>
-                <a class="dropdown-item wine-type">
-                  Rose
-                </a>
-                <a class="dropdown-item wine-type">
-                  All of the above
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+<div class="wine-type-container has-text-centered">
+  <h3 class="title is-3 mt-6">Choose your wine type</h3>
+  <button class="button is-primary is-outlined is-rounded mt-3 mx-2 varietals">Red</button>
+  <button class="button is-primary is-outlined is-rounded mt-3 mx-2 varietals">White</button>
+  <button class="button is-primary is-outlined is-rounded mt-3 mx-2 varietals">Rose</button>
+  <button class="button is-primary is-outlined is-rounded mt-3 mx-2 varietals">All of the above</button>
+</div>
+<!-- 
       <div class="column">
         <div class="dropdown is-hoverable">
           <div class="dropdown-trigger">
@@ -68,95 +38,31 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="column">
-        <div class="dropdown is-hoverable">
-          <div class="dropdown-trigger">
-            <button
-              class="button"
-              aria-haspopup="true"
-              aria-controls="dropdown-menu4"
-            >
-              <span>Sort By</span>
-              <span class="icon is-small">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-            <div class="dropdown-content">
-              <div class="dropdown-item" id="sort-by-dropdown">
-                <a class="dropdown-item sort-by">
-                  Rating (Highest)
-                </a>
-                <a class="dropdown-item sort-by">
-                  Rating (Lowest)
-                </a>
-                <a class="dropdown-item sort-by">
-                  Vintage (Oldest)
-                </a>
-                <a class="dropdown-item sort-by">
-                  Vintage (Youngest)
-                </a>
-                <a class="dropdown-item sort-by">
-                  Winery (Alphabetically)
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <button class="button" id="varietals-button">Varietals</button>
-      </div>
+      </div> -->
 
-    </div>
 
-  </div>
+      <div class="filter-by-container has-text-centered">
+  <h3 class="title is-3 mt-6">Sort your results by</h3>
+  <button class="button is-primary is-outlined is-rounded mt-3 mx-2 varietals">Rating (Highest)</button>
+  <button class="button is-primary is-outlined is-rounded mt-3 mx-2 varietals">Rating (Lowest)</button>
+  <button class="button is-primary is-outlined is-rounded mt-3 mx-2 varietals">Vintage (Oldest)</button>
+  <button class="button is-primary is-outlined is-rounded mt-3 mx-2 varietals">Vintage (Youngest)</button>
+  <button class="button is-primary is-outlined is-rounded mt-3 mx-2 varietals">Winery (Alphabetically)</button>
 </div>
 
-<div class="modal">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Modal title</p>
-      <button class="delete" aria-label="close"></button>
-    </header>
-    <section class="modal-card-body">
+      
+
+      <div class="varietal-container has-text-centered">
+  <h3 class="title is-3 mt-6">Choose your varietals</h3>
         <div class="has-text-centered" id="varietals">
-    
-            
+          {% for varietal in varietals %}
+              <button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">{{varietal}}</button>
+           {% endfor %} 
         </div>
-    </section>
-    <footer class="modal-card-foot">
-      <button class="button is-success">Save changes</button>
-      <button class="button">Cancel</button>
-    </footer>
   </div>
-</div>
 
-<!-- <div class="dropdown is-hoverable">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-      <span>Wine Type</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-    <div class="dropdown-content">
-      <div class="dropdown-item">
-        <p>Red</p>
-        <p>White</p>
-        <p>Rose</p>
-        <p>All of the above</p>
-      </div>
-    </div>
-  </div>
-</div> -->
 
-<!-- <h1 class="title is-1 has-text-centered mt-6">Would you like to find a new wine to try?</h1> -->
+  
 
 <div class="has-text-centered">
   <a href="/show_results" class="button is-success is-large">Find Your Wines</a>
