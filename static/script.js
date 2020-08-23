@@ -72,23 +72,6 @@ async function sendWineType(wine_type) {
   const res = await axios.get(`/wine_type/${wine_type}`)
 }
 
-// $("#wine-type").on("click", ".wine-type", async function() {
-//   varietalDiv = $("#varietals")
-//   varietalDiv.html("")
-//   const items = await axios.get('/get_varietals')
-//   varietal_array = items.data.varietals;
-//   selected_varietals = items.data.selected_varietals;
-//   populateVarietals(varietal_array, selected_varietals)
-//   // modal = $(".modal");
-//   // modal.toggleClass("is-active")
-// })
-
-
-// $(".modal").on("click", ".delete", function() {
-//   modal = $(".modal");
-//   modal.toggleClass("is-active")
-// })
-
 function populateVarietals(varietal_array, selected_varietals) {
 
 for (varietal of varietal_array) {
@@ -121,10 +104,39 @@ async function sendWineStyle(wineStyle) {
 
 // =================================================  SORT BY  ================================================
 
-$("#sort-by-dropdown").on("click", ".sort-by", async function(e) {
+$("#filter-by").on("click", ".filter-by", async function(e) {
   const selected_button = e.target;
-  selected_button.classList.toggle("is-active")
-  sortBy = selected_button.innerText
+  selected_button.classList.toggle("is-focused")
+  filterBy = selected_button.innerText
+  console.log(e.target);
+
+
+  if (filterBy == 'Rating (Highest)') {
+      ratingLowest = e.target.nextElementSibling;
+      if (ratingLowest.classList.contains("is-focused")) {
+          ratingLowest.classList.remove("is-focused")
+          await sendSortBy('Rating (Lowest)')
+      }
+    } else if (filterBy == 'Rating (Lowest)') {
+        ratingHighest = e.target.previousElementSibling;
+        if (ratingHighest.classList.contains("is-focused")) {
+           ratingHighest.classList.remove("is-focused")
+           await sendWineType('Rating (Highest)')
+        }
+    } else if (filterBy == 'Vintage (Oldest)') {
+        vintageYoungest = e.target.nextElementSibling;
+        if (vintageYoungest.classList.contains("is-focused")) {
+           vintageYoungest.classList.remove("is-focused")
+           await sendWineType('Vintage (Youngest)')
+        }
+    } else if (filterBy == 'Vintage (Youngest)') {
+        vintageOldest = e.target.previousElementSibling;
+        if (vintageOldest.classList.contains("is-focused")) {
+           vintageOldest.classList.remove("is-focused")
+           await sendWineType('Vintage (Oldest)')
+        }
+    } 
+
 
 
   await sendSortBy(sortBy)
