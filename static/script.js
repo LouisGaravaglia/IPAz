@@ -124,9 +124,58 @@ $("#wine-style").on("click", ".wine-style", async function(e) {
 
 
   const wine_results = await axios.get(`/wine_style/${wineStyle}`)
-  console.log(wine_results.data.wine_results);
+ 
+  populateWineResults(wine_results.data.wine_results)
   
 })
+
+function populateWineResults(wine_results) {
+  wineHtml = $("#wine-results")
+  wineHtml.html("")
+
+
+for (wine of wine_results) {
+
+  
+  const html = `<div class="column is-half">
+  <div class="has-text-centered">
+  </div>
+
+  <div class="card">
+  <header class="card-header">
+    <p class="card-header-title">
+      Wine
+    </p>
+    <a href="#" class="card-header-icon" aria-label="more options">
+      <span class="icon">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+    </a>
+  </header>
+  <div class="card-content">
+    <div class="content">
+    <p>NAME: ${wine['Name']}</p>
+    <p>WINERY: ${wine['Winery']}</p>
+    <p>COUNTRY: ${wine['Country']}</p>
+    <p>AREA: ${wine['Area']}</p>
+    <p>VINTAGE: ${wine['Vintage']}</p>
+    <p>VARIETAL: ${wine['Varietal']}</p>
+    <p>TYPE: ${wine['Type']}</p>
+    <p>RATING: ${wine['Rating']}</p>
+      
+    </div>
+  </div>
+  <footer class="card-footer">
+    <a href="#" class="card-footer-item">Favorite</a>
+    <a href="#" class="card-footer-item">Review</a>
+  </footer>
+</div>
+</div>`
+
+wineHtml.append(html)
+
+}
+}
 
 
 
