@@ -83,18 +83,20 @@ class AllAbove():
                     
         if 'Rose' in filter_list:
             for varietal in varietals:
-                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'White'))).all()
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
                 for result in results:
                     wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                     wine_results.append(wine) 
         
+        # import pdb
+        # pdb.set_trace() 
+            
         # Using frozenset() to convert the wine dictionaries into immutable ojbects, and then adding that to a set() to get rid of duplicates.
         wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
         
         for key in filter_list:
             
-            # import pdb
-            # pdb.set_trace() 
+            
                         
             if key == 'Rating (Highest)':                   
                 def filter(e):
@@ -123,6 +125,8 @@ class AllAbove():
         
         # import pdb
         # pdb.set_trace() 
+        
+        session['wine_results'] = wine_results
                   
         return wine_results
 

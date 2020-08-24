@@ -88,13 +88,41 @@ for (varietal of varietal_array) {
 
 // =================================================  WINE STYLE  ================================================
 
-$("#wine-style-dropdown").on("click", ".wine-style", async function(e) {
-  const selected_button = e.target;
+$("#wine-style").on("click", ".wine-style", async function(e) {
+  const selected_button = e.target.parentElement;
+  console.log(selected_button.innerText);
+
+  // if (selected_button.innerText == )
+
+  if (selected_button.classList.contains("is-active")) {
+    return
+  } else {
+    if (selected_button.innerText == 'All') {
+      const blends = selected_button.nextElementSibling;
+      const single = blends.nextElementSibling;
+
+      blends.classList.remove("is-active");
+      single.classList.remove("is-active");
+    } else if (selected_button.innerText == 'Blends Only') {
+      const all = selected_button.previousElementSibling;
+      const single = selected_button.nextElementSibling;
+
+      all.classList.remove("is-active");
+      single.classList.remove("is-active");
+    } else {
+      const blends = selected_button.previousElementSibling;
+      const all = blends.previousElementSibling;
+
+      blends.classList.remove("is-active");
+      all.classList.remove("is-active");
+    }
+  }
+
   selected_button.classList.toggle("is-active")
-  wineStyle = selected_button.innerText
+  // wineStyle = selected_button.innerText
 
 
-  await sendWineStyle(wineStyle)
+  // await sendWineStyle(wineStyle)
   
 })
 

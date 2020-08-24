@@ -670,46 +670,11 @@ def log_varietal_choice(new_varietal):
 def show_results():
     
     varietals = session['varietals']
-    wine_type = session['wine_type']
-    wine_style = session['wine_style']
-    sort_by = session['sort_by']
     filter_list = session['filter_by']
 
-    # import pdb
-    # pdb.set_trace()
-    
-    # if not filter_list['Red'] and not filter_list['White'] and not filter_list['Rose'] or filter_list['All of the above']:
-    #     wine_results = all_above.all_wines(filter_list, varietals)
-        
-    # if filter_list['Red'] and filter_list['White'] and filter_list['Rose']:
-    #     wine_results = all_above.all_wines(filter_list, varietals)
-        
-    # if filter_list['Red'] and filter_list['White']:
-    #     wine_results = all_above.all_wines(filter_list, varietals)
-        
-    
-    
-    if 'All of the above' in filter_list:
-        wine_results = all_above.all_wines(filter_list, varietals)
+   
+    wine_results = all_above.all_wines(filter_list, varietals)
 
-    # else:
-    #     if wine_style == 'Single Varietals Only': 
-    #         wine_results = red_white_rose.single_varietal(wine_type, sort_by, varietals)
-    #     else:
-    #         wine_results = red_white_rose.blends(wine_type, sort_by, varietals)
-            
-            
-    # if wine_type == 'All of the above':
-    #     if wine_style == 'Single Varietals Only':
-    #         wine_results = all_above.single_varietal(sort_by, varietals)
-    #     else:
-    #         wine_results = all_above.blends(sort_by, varietals)
-    # else:
-    #     if wine_style == 'Single Varietals Only': 
-    #         wine_results = red_white_rose.single_varietal(wine_type, sort_by, varietals)
-    #     else:
-    #         wine_results = red_white_rose.blends(wine_type, sort_by, varietals)
-                
     return render_template("wine_results.html", wines=wine_results)
 
 
