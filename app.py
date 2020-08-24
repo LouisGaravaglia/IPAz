@@ -513,22 +513,15 @@ def get_wine_type_choices(new_wine_type):
 @app.route('/wine_style/<new_wine_style>')
 def get_wine_style_choices(new_wine_style):
 
-    # wine_style = []
-
-    # wine_style.append(new_wine_style)
-
-    # session['wine_style'] = new_wine_style
     varietals = session['varietals']
     filter_list = session['filter_by']
     
     if new_wine_style == 'All':
         wine_results = all_above.all_wines(filter_list, varietals)
     elif new_wine_style == 'Blends Only':
-        wine_results = all_above.all_wines(filter_list, varietals)
+        wine_results = all_above.blends_only(filter_list, varietals)
     else:
         wine_results = all_above.single_varietal(filter_list, varietals)
-    
-    
     
     # import pdb
     # pdb.set_trace()

@@ -55,31 +55,7 @@ class AllAbove():
                     if re.search(r"^" + varietal + r"$", result.varietal):
                         wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
-    
-        # wine_results = session['wine_results']
-        
-        
-        # if filter_list['Rating (Highest)']:
-        #     wines = Wine.query.order_by(desc(Wine.rating)).all()
-            
-        # elif filter_list['Rating (Lowest)']:
-        #     wines = Wine.query.order_by(Wine.rating).all()
-            
-        # elif filter_list['Vintage (Oldest)']:
-        #     wines = Wine.query.order_by(Wine.vintage).all()
-            
-        # elif filter_list['Vintage (Youngest)']:
-        #     wines = Wine.query.order_by(desc(Wine.vintage)).all()
-            
-        # elif filter_list['Winery (Alphabetically)']:
-        #     wines = Wine.query.order_by(Wine.winery).all()
-            
-        # for wine in wines:
-        #         varietal_description = wine.varietal
-        #         for varietal in varietals:
-        #             if re.search(r"^" + varietal + r"$", varietal_description):
-        #                 wine_results.append(wine)
-        
+         
         wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
         
         for key in filter_list:
@@ -156,16 +132,11 @@ class AllAbove():
                     wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                     wine_results.append(wine) 
         
-        # import pdb
-        # pdb.set_trace() 
-            
         # Using frozenset() to convert the wine dictionaries into immutable ojbects, and then adding that to a set() to get rid of duplicates.
         wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
         
         for key in filter_list:
-            
-            
-                        
+                            
             if key == 'Rating (Highest)':                   
                 def filter(e):
                     return e['Rating']
@@ -193,9 +164,87 @@ class AllAbove():
         
         # import pdb
         # pdb.set_trace() 
-        
-        # session['wine_results'] = wine_results
                   
+        return wine_results
+    
+    
+    def blends_only(self, filter_list, varietals):
+        """Returns wine results if the parameters include:
+
+        'All of the above' for wine type and 'Single Varietals Only' for wine style.
+        
+        Also, takes in the sort_by filter the user chose and will filter the results from a SQL Alchemy query 
+        
+        to then be returned based of the varietals chosen.
+        """     
+        
+        wine_results = []
+        
+        if not 'Red' in filter_list and not 'White' in filter_list and not 'Rose' in filter_list or 'All of the above' in filter_list:
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).all()
+                
+                for result in results:
+                    if not re.search(r"^" + varietal + r"$", result.varietal):
+                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine_results.append(wine)
+        
+        if 'Red' in filter_list:
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Red'))).all()
+                for result in results:
+                    if not re.search(r"^" + varietal + r"$", result.varietal):
+                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine_results.append(wine)
+                    
+        if 'White' in filter_list:
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'White'))).all()
+                for result in results:
+                    if not re.search(r"^" + varietal + r"$", result.varietal):
+                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine_results.append(wine)
+                    
+        if 'Rose' in filter_list:
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
+                for result in results:
+                    if not re.search(r"^" + varietal + r"$", result.varietal):
+                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine_results.append(wine)
+         
+        wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
+        
+        for key in filter_list:
+                         
+            if key == 'Rating (Highest)':                   
+                def filter(e):
+                    return e['Rating']
+                wine_results.sort(key=filter, reverse=True)
+            
+            if key == 'Rating (Lowest)':
+                def filter(e):
+                    return e['Rating']
+                wine_results.sort(key=filter)
+                    
+            if key == 'Vintage (Oldest)':
+                def filter(e):
+                    return e['Vintage']
+                wine_results.sort(key=filter)
+                    
+            if key == 'Vintage (Youngest)':
+                def filter(e):
+                    return e['Vintage']
+                wine_results.sort(key=filter, reverse=True)
+                              
+            if key == 'Winery (Alphabetically)':
+                def filter(e):
+                    return e['Winery']
+                wine_results.sort(key=filter)
+                
+        # import pdb
+        # pdb.set_trace() 
+                      
         return wine_results
 
 # ===========================================================   RED WHITE ROSE RESULTS  =========================================================== 
