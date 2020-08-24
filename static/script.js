@@ -352,33 +352,58 @@ $("#checkboxes").on("click", ".panel-block", async function(e) {
     } else if (filterName == 'Rating (Highest)') {
           ratingLowest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
           // await sendVarietals(filterName)
-          if (ratingLowest.checked) {
-            ratingLowest.removeAttribute("checked");
+          if (ratingLowest.classList.contains("is-focused")) {
+            ratingLowest.classList.remove("is-focused")
             // await sendVarietals('Rating (Lowest)')
-          }    
+          }
+          if (targetInput.classList.contains("is-focused")) {
+          targetInput.classList.remove("is-focused")
+        } else {
+          targetInput.classList.add("is-focused")
+        }    
     } else if (filterName == 'Rating (Lowest)') {
           ratingHighest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
           // await sendVarietals(filterName)
-          if (ratingHighest.checked) {
-            ratingHighest.removeAttribute("checked");
+          if (ratingHighest.classList.contains("is-focused")) {
+            ratingHighest.classList.remove("is-focused");
             // await sendVarietals('Rating (Highest)')
-          }    
+          } 
+          if (targetInput.classList.contains("is-focused")) {
+          targetInput.classList.remove("is-focused")
+        } else {
+          targetInput.classList.add("is-focused")
+        }   
     } else if (filterName == 'Vintage (Oldest)') {
           vintageYoungest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
           // await sendVarietals(filterName)
-          if (vintageYoungest.checked) {
-            vintageYoungest.removeAttribute("checked");
+          if (vintageYoungest.classList.contains("is-focused")) {
+            vintageYoungest.classList.remove("is-focused");
             // await sendVarietals('Vintage (Youngest)')
-          }    
-    } else if (filterName == 'Vintage (Youngest))') {
+          } 
+          if (targetInput.classList.contains("is-focused")) {
+          targetInput.classList.remove("is-focused")
+        } else {
+          targetInput.classList.add("is-focused")
+        }   
+    } else if (filterName == 'Vintage (Youngest)') {
           vintageOldest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
           // await sendVarietals(filterName)
-          if (vintageOldest.checked) {
-            vintageOldest.removeAttribute("checked");
+          if (vintageOldest.classList.contains("is-focused")) {
+            vintageOldest.classList.remove("is-focused");
             // await sendVarietals('Vintage (Oldest)')
-          }    
+          }   
+          if (targetInput.classList.contains("is-focused")) {
+          targetInput.classList.remove("is-focused")
+        } else {
+          targetInput.classList.add("is-focused")
+        } 
     } else if (filterName == 'Winery (Alphabetically)') {
           // await sendVarietals(filterName)  
+          if (targetInput.classList.contains("is-focused")) {
+          targetInput.classList.remove("is-focused")
+        } else {
+          targetInput.classList.add("is-focused")
+        }
     }  
   }
 
