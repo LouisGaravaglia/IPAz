@@ -10,7 +10,7 @@
 //   }
 // });
 
-// =================================================  WINE TYPE  ================================================
+// =================================================  WINE TYPE / HOME PAGE  ================================================
 
 $("#wine-type").on("click", ".wine-type", async function(e) {
   const selected_button = e.target;
@@ -86,7 +86,7 @@ for (varietal of varietal_array) {
 }
 }
 
-// =================================================  WINE STYLE  ================================================
+// =================================================  WINE STYLE / RESULTS PAGE  ================================================
 
 $("#wine-style").on("click", ".wine-style", async function(e) {
   const selected_button = e.target.parentElement;
@@ -179,7 +179,7 @@ wineHtml.append(html)
 
 
 
-// =================================================  SORT BY  ================================================
+// =================================================  FILTER BY / HOME PAGE ================================================
 
 $("#filter-by").on("click", ".filter-by", async function(e) {
   const selected_button = e.target;
@@ -224,7 +224,7 @@ async function sendSortBy(filterBy) {
   const res = await axios.get(`/sort_by/${filterBy}`)
 }
 
-// =================================================  LOADING VARIETALS  ================================================
+// =================================================  LOADING VARIETALS / HOME PAGE ================================================
 
 $("#varietals-button").on("click", async function() {
   varietalDiv = $("#varietals")
@@ -258,7 +258,7 @@ for (varietal of varietal_array) {
 }
 
 
-// =================================================  PICKING VARIETALS  ================================================
+// =================================================  PICKING VARIETALS / HOME PAGE  ================================================
 
 
 $("#varietals").on("click", ".varietals", async function(e) {
@@ -274,9 +274,10 @@ async function sendVarietals(varietal) {
   const res = await axios.get(`/log_varietals/${varietal}`)
 }
 
-// =================================================  SIDE BAR FILTER FOR RESULTS PAGE  ================================================
+// =================================================  PICKING FILTERS / RESULTS PAGE  ================================================
 
-$("#checkboxes").on("click", ".panel-block", function(e) {
+
+$("#checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
   
   if (target.tagName == "LABEL") {
@@ -286,6 +287,17 @@ $("#checkboxes").on("click", ".panel-block", function(e) {
     console.log(target.nextSibling.data);
   }
 })
+
+
+// =================================================  PICKING VARIETALS / RESULTS PAGE  ================================================
+
+
+$("#results-varietals").on("click", async function(e) {
+  const target = e.target;
+  
+
+})
+
 
 // =================================================  CALLING API  ================================================
 
