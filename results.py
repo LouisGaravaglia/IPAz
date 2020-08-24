@@ -78,6 +78,35 @@ class AllAbove():
         #             if re.search(r"^" + varietal + r"$", varietal_description):
         #                 wine_results.append(wine)
         
+        wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
+        
+        for key in filter_list:
+                         
+            if key == 'Rating (Highest)':                   
+                def filter(e):
+                    return e['Rating']
+                wine_results.sort(key=filter, reverse=True)
+            
+            if key == 'Rating (Lowest)':
+                def filter(e):
+                    return e['Rating']
+                wine_results.sort(key=filter)
+                    
+            if key == 'Vintage (Oldest)':
+                def filter(e):
+                    return e['Vintage']
+                wine_results.sort(key=filter)
+                    
+            if key == 'Vintage (Youngest)':
+                def filter(e):
+                    return e['Vintage']
+                wine_results.sort(key=filter, reverse=True)
+                              
+            if key == 'Winery (Alphabetically)':
+                def filter(e):
+                    return e['Winery']
+                wine_results.sort(key=filter)
+                
         # import pdb
         # pdb.set_trace() 
                       
