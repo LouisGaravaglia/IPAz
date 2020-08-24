@@ -60,28 +60,54 @@ class AllAbove():
           
         wine_results = []
         
+        # import pdb
+        # pdb.set_trace()
+        
+        # if filter_dict['Red']:
+        #     red_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Red").all()]
+        
+        # if filter_dict['White']:
+        #     white_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="White").all()]
+        
+        # if filter_dict['Rose']:
+        #     rose_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Rose").all()]
+        
+        # if not filter_dict['Red'] and not filter_dict['White'] and not filter_dict['Rose'] or filter_dict['All of the above']:
+        #     all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
+        
+        # merged_varietals = red_varietals + white_varietals + rose_varietals + all_varietals
+    
+        
         if filter_dict['Rating (Highest)']:
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(desc(Wine.rating)).all()
-        
+                for result in results:
+                    wine_results.append(result)
+                    
         elif filter_dict['Rating (Lowest)']:
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.rating).all()
-         
+                for result in results:
+                    wine_results.append(result)
+                    
         elif filter_dict['Vintage (Oldest)']:
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.vintage).all()
-       
+                for result in results:
+                    wine_results.append(result)
+                    
         elif filter_dict['Vintage (Youngest)']:
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(desc(Wine.vintage)).all()
-                
+                for result in results:
+                    wine_results.append(result)
+                              
         elif filter_dict['Winery (Alphabetically)']:
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(Wine.winery).all()
-     
-        for result in results:
+                for result in results:
                     wine_results.append(result)
+        
                     
         return wine_results
 

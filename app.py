@@ -654,9 +654,10 @@ def log_varietal_choice(new_varietal):
 
     session['varietals'] = [wine for wine in varietals]
     
-   
-
     return render_template("combined_only.html", varietals=varietals)
+
+
+
 
 # ===================================    SHOWING RESULTS   =====================================
 
@@ -672,14 +673,25 @@ def show_results():
     # import pdb
     # pdb.set_trace()
     
+    # if not filter_dict['Red'] and not filter_dict['White'] and not filter_dict['Rose'] or filter_dict['All of the above']:
+    #     wine_results = all_above.all_wines(filter_dict, varietals)
+        
+    # if filter_dict['Red'] and filter_dict['White'] and filter_dict['Rose']:
+    #     wine_results = all_above.all_wines(filter_dict, varietals)
+        
+    # if filter_dict['Red'] and filter_dict['White']:
+    #     wine_results = all_above.all_wines(filter_dict, varietals)
+        
+    
+    
     if filter_dict['All of the above']:
         wine_results = all_above.all_wines(filter_dict, varietals)
 
-    else:
-        if wine_style == 'Single Varietals Only': 
-            wine_results = red_white_rose.single_varietal(wine_type, sort_by, varietals)
-        else:
-            wine_results = red_white_rose.blends(wine_type, sort_by, varietals)
+    # else:
+    #     if wine_style == 'Single Varietals Only': 
+    #         wine_results = red_white_rose.single_varietal(wine_type, sort_by, varietals)
+    #     else:
+    #         wine_results = red_white_rose.blends(wine_type, sort_by, varietals)
             
             
     # if wine_type == 'All of the above':
