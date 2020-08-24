@@ -464,7 +464,7 @@ def homepage():
     """Show homepage"""
     session['varietals'] = []
     session['filters'] = ['Red', 'White', 'Rose', 'All of the above', 'Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
-    session['filter_by'] = {}
+    session['filter_by'] = []
     
     all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
 
@@ -495,14 +495,14 @@ def get_wine_type_choices(new_wine_type):
     # session['filter_list'] = filter_list
     
     
-    filter_dict = session['filter_by']
+    filter_list = session['filter_by']
     
-    if new_wine_type in filter_dict:
-        filter_dict.pop(new_wine_type, None)
+    if new_wine_type in filter_list:
+        filter_list.remove(new_wine_type)
     else:    
-        filter_dict[new_wine_type] = True
+        filter_list.append(new_wine_type)
         
-    session['filter_by'] = filter_dict
+    session['filter_by'] = filter_list
 
     # import pdb
     # pdb.set_trace()
@@ -530,14 +530,14 @@ def get_sort_by_choices(new_sort_by):
     # sort_by = []
 
     # sort_by.append(new_sort_by)
-    filter_dict = session['filter_by']
+    filter_list = session['filter_by']
     
-    if new_sort_by in filter_dict:
-        filter_dict.pop(new_sort_by, None)
+    if new_sort_by in filter_list:
+        filter_list.remove(new_sort_by)
     else:    
-        filter_dict[new_sort_by] = True
+        filter_list.append(new_sort_by)
         
-    session['filter_by'] = filter_dict
+    session['filter_by'] = filter_list
     
     # session['sort_by'] = new_sort_by
     
@@ -564,21 +564,21 @@ def get_varietals():
         selected_varietals = []
 
 
-    filter_dict = session['filter_by']
+    filter_list = session['filter_by']
     
-    import pdb
-    pdb.set_trace()
+    # import pdb
+    # pdb.set_trace()
     
-    if 'Red' in filter_dict:
+    if 'Red' in filter_list:
         red_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Red").all()]
         
-    if 'White' in filter_dict:
+    if 'White' in filter_list:
         white_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="White").all()]
         
-    if 'Rose' in filter_dict:
+    if 'Rose' in filter_list:
         rose_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Rose").all()]
         
-    if not 'Red' in filter_dict and not 'White' in filter_dict and not 'Rose' in filter_dict or 'All of the above' in filter_dict:
+    if not 'Red' in filter_list and not 'White' in filter_list and not 'Rose' in filter_list or 'All of the above' in filter_list:
         all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
         
     merged_varietals = red_varietals + white_varietals + rose_varietals + all_varietals
@@ -673,24 +673,24 @@ def show_results():
     wine_type = session['wine_type']
     wine_style = session['wine_style']
     sort_by = session['sort_by']
-    filter_dict = session['filter_by']
+    filter_list = session['filter_by']
 
     # import pdb
     # pdb.set_trace()
     
-    # if not filter_dict['Red'] and not filter_dict['White'] and not filter_dict['Rose'] or filter_dict['All of the above']:
-    #     wine_results = all_above.all_wines(filter_dict, varietals)
+    # if not filter_list['Red'] and not filter_list['White'] and not filter_list['Rose'] or filter_list['All of the above']:
+    #     wine_results = all_above.all_wines(filter_list, varietals)
         
-    # if filter_dict['Red'] and filter_dict['White'] and filter_dict['Rose']:
-    #     wine_results = all_above.all_wines(filter_dict, varietals)
+    # if filter_list['Red'] and filter_list['White'] and filter_list['Rose']:
+    #     wine_results = all_above.all_wines(filter_list, varietals)
         
-    # if filter_dict['Red'] and filter_dict['White']:
-    #     wine_results = all_above.all_wines(filter_dict, varietals)
+    # if filter_list['Red'] and filter_list['White']:
+    #     wine_results = all_above.all_wines(filter_list, varietals)
         
     
     
-    if filter_dict['All of the above']:
-        wine_results = all_above.all_wines(filter_dict, varietals)
+    if 'All of the above' in filter_list:
+        wine_results = all_above.all_wines(filter_list, varietals)
 
     # else:
     #     if wine_style == 'Single Varietals Only': 
