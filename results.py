@@ -77,12 +77,39 @@ class AllAbove():
         
         # merged_varietals = red_varietals + white_varietals + rose_varietals + all_varietals
     
+    #    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    # wine_id = db.Column(db.String(200), nullable=False)
+    # winery = db.Column(db.String(200), nullable=False)
+    # country = db.Column(db.String(200))
+    # area = db.Column(db.String(200))
+    # vintage = db.Column(db.String(200))
+    # varietal = db.Column(db.String(200))
+    # type = db.Column(db.String(30), nullable=False)
+    # name = db.Column(db.String(200), nullable=False)
+    # description = db.Column(db.String(500))
+    # rating = db.Column(db.Float)
+    
+    # Lists to represent keys and values 
+# keys = ['a','b','c','d','e'] 
+# values = [1,2,3,4,5]   
+  
+# # but this line shows dict comprehension here   
+# myDict = { k:v for (k,v) in zip(keys, values)}   
+
         
         if filter_dict['Rating (Highest)']:
             for varietal in varietals:
-                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).order_by(desc(Wine.rating)).all()
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).all()
                 for result in results:
-                    wine_results.append(result)
+                    wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                    wine_results.append(wine)
+                            
+            def myFunc(e):
+                return e['Rating']
+            wine_results.sort(key=myFunc, reverse=True)
+            
+        
+                
                     
         elif filter_dict['Rating (Lowest)']:
             for varietal in varietals:
@@ -108,7 +135,9 @@ class AllAbove():
                 for result in results:
                     wine_results.append(result)
         
-                    
+        # import pdb
+        # pdb.set_trace() 
+                  
         return wine_results
 
 # ===========================================================   RED WHITE ROSE RESULTS  =========================================================== 
