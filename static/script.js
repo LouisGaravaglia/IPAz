@@ -279,14 +279,87 @@ async function sendVarietals(varietal) {
 
 $("#checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
+  
+  
   console.log(target.tagName);
-  console.log(target.nextSibling.data);
-  if (target.tagName == "LABEL") {
+  // console.log(target.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild);
+  // if (target.tagName == "LABEL") {
     
-  } else if (target.tagName == "INPUT") {
-    // console.log(target);
-    // console.log(target.nextSibling.data);
+  // } else 
+
+  if (target.tagName == "INPUT") {
+    filterName = target.nextSibling.data;
+      if (filterName == 'Red') {
+        allAbove = target.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
+        // await sendWineType(filterName)
+        if (allAbove.checked) {
+          allAbove.removeAttribute("checked");
+          // await sendWineType('All of the above')
+        }
+      } else if (filterName == 'White') {
+          allAbove = target.parentElement.parentElement.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
+          // await sendWineType(filterName)
+          if (allAbove.checked) {
+            allAbove.removeAttribute("checked");
+          //  await sendWineType('All of the above')
+          }
+      } else if (filterName == 'Rose') {
+          allAbove = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+          // await sendWineType(filterName)
+          if (allAbove.checked) {
+            allAbove.removeAttribute("checked");
+            // await sendWineType('All of the above')
+          }
+    } else if (filterName == 'All of the above') {
+          rose = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
+          white = target.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.firstElementChild;
+          red = target.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.firstElementChild.firstElementChild;
+          // await sendWineType(filterName)
+          if (red.checked) {
+            red.removeAttribute("checked");
+            // await sendWineType('Red')
+          }
+          if (white.checked) {
+            white.removeAttribute("checked");
+            // await sendWineType('White')
+          }
+          if (rose.checked) {
+            rose.removeAttribute("checked");
+            // await sendWineType('Rose')
+          }
+    } else if (filterName == 'Rating (Highest)') {
+          ratingLowest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+          // await sendVarietals(filterName)
+          if (ratingLowest.checked) {
+            ratingLowest.removeAttribute("checked");
+            // await sendVarietals('Rating (Lowest)')
+          }    
+    } else if (filterName == 'Rating (Lowest)') {
+          ratingHighest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
+          // await sendVarietals(filterName)
+          if (ratingHighest.checked) {
+            ratingHighest.removeAttribute("checked");
+            // await sendVarietals('Rating (Highest)')
+          }    
+    } else if (filterName == 'Vintage (Oldest)') {
+          vintageYoungest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+          // await sendVarietals(filterName)
+          if (vintageYoungest.checked) {
+            vintageYoungest.removeAttribute("checked");
+            // await sendVarietals('Vintage (Youngest)')
+          }    
+    } else if (filterName == 'Vintage (Youngest))') {
+          vintageOldest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
+          // await sendVarietals(filterName)
+          if (vintageOldest.checked) {
+            vintageOldest.removeAttribute("checked");
+            // await sendVarietals('Vintage (Oldest)')
+          }    
+    } else if (filterName == 'Winery (Alphabetically)') {
+          // await sendVarietals(filterName)  
+    }  
   }
+
 })
 
 
@@ -307,21 +380,6 @@ $("#choose-varietals").on("click", async function() {
 })
 
 
-
-
-function makeModal(varietal_array, selected_varietals) {
-
-for (varietal of varietal_array) {
-  if (selected_varietals.includes(varietal)) {
-    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals is-focused">${varietal}</button>`
-    varietalDiv.append(html);
-  } else {
-    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">${varietal}</button>`
-    varietalDiv.append(html);
-  }
-
-}
-}
 
 $("#varietals-modal").on("click", ".varietals", async function(e) {
   const target = e.target;
