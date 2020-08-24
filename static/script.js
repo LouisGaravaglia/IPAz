@@ -92,7 +92,7 @@ $("#wine-style").on("click", ".wine-style", async function(e) {
   const selected_button = e.target.parentElement;
   console.log(selected_button.innerText);
 
-  // if (selected_button.innerText == )
+
 
   if (selected_button.classList.contains("is-active")) {
     return
@@ -119,16 +119,16 @@ $("#wine-style").on("click", ".wine-style", async function(e) {
   }
 
   selected_button.classList.toggle("is-active")
-  // wineStyle = selected_button.innerText
+
+  wineStyle = selected_button.innerText
 
 
-  // await sendWineStyle(wineStyle)
+  const wine_results = await axios.get(`/wine_style/${wineStyle}`)
+  console.log(wine_results.data.wine_results);
   
 })
 
-async function sendWineStyle(wineStyle) {
-  const res = await axios.get(`/wine_style/${wineStyle}`)
-}
+
 
 // =================================================  SORT BY  ================================================
 

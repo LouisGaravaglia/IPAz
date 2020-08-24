@@ -465,6 +465,7 @@ def homepage():
     session['varietals'] = []
     session['filters'] = ['Red', 'White', 'Rose', 'All of the above', 'Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
     session['filter_by'] = []
+    session['wine_style'] = ""
     
     all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
 
@@ -516,12 +517,24 @@ def get_wine_style_choices(new_wine_style):
 
     # wine_style.append(new_wine_style)
 
-    session['wine_style'] = new_wine_style
+    # session['wine_style'] = new_wine_style
+    varietals = session['varietals']
+    filter_list = session['filter_by']
+    
+    if new_wine_style == 'All':
+        wine_results = all_above.all_wines(filter_list, varietals)
+    elif new_wine_style == 'Blends Only':
+        wine_results = all_above.all_wines(filter_list, varietals)
+    else:
+        wine_results = all_above.single_varietal(filter_list, varietals)
+    
+    
     
     # import pdb
     # pdb.set_trace()
 
-    return render_template("new_home.html")
+    return jsonify(wine_results=wine_results)
+
 
 
 @app.route('/sort_by/<new_sort_by>')

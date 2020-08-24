@@ -20,30 +20,67 @@ class AllAbove():
         
         to then be returned based of the varietals chosen.
         """     
-    
+        
         wine_results = []
         
-        if filter_list['Rating (Highest)']:
-            wines = Wine.query.order_by(desc(Wine.rating)).all()
-            
-        elif filter_list['Rating (Lowest)']:
-            wines = Wine.query.order_by(Wine.rating).all()
-            
-        elif filter_list['Vintage (Oldest)']:
-            wines = Wine.query.order_by(Wine.vintage).all()
-            
-        elif filter_list['Vintage (Youngest)']:
-            wines = Wine.query.order_by(desc(Wine.vintage)).all()
-            
-        elif filter_list['Winery (Alphabetically)']:
-            wines = Wine.query.order_by(Wine.winery).all()
-            
-        for wine in wines:
-                varietal_description = wine.varietal
-                for varietal in varietals:
-                    if re.search(r"^" + varietal + r"$", varietal_description):
+        if not 'Red' in filter_list and not 'White' in filter_list and not 'Rose' in filter_list or 'All of the above' in filter_list:
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).all()
+                
+                for result in results:
+                    # varietal_description = result.varietal
+                    if re.search(r"^" + varietal + r"$", result.varietal):
+                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
-                        
+        
+        if 'Red' in filter_list:
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Red'))).all()
+                for result in results:
+                    wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                    wine_results.append(wine)
+                    
+        if 'White' in filter_list:
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'White'))).all()
+                for result in results:
+                    wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                    wine_results.append(wine)
+                    
+        if 'Rose' in filter_list:
+            for varietal in varietals:
+                results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
+                for result in results:
+                    wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                    wine_results.append(wine) 
+    
+        # wine_results = session['wine_results']
+        
+        
+        # if filter_list['Rating (Highest)']:
+        #     wines = Wine.query.order_by(desc(Wine.rating)).all()
+            
+        # elif filter_list['Rating (Lowest)']:
+        #     wines = Wine.query.order_by(Wine.rating).all()
+            
+        # elif filter_list['Vintage (Oldest)']:
+        #     wines = Wine.query.order_by(Wine.vintage).all()
+            
+        # elif filter_list['Vintage (Youngest)']:
+        #     wines = Wine.query.order_by(desc(Wine.vintage)).all()
+            
+        # elif filter_list['Winery (Alphabetically)']:
+        #     wines = Wine.query.order_by(Wine.winery).all()
+            
+        # for wine in wines:
+        #         varietal_description = wine.varietal
+        #         for varietal in varietals:
+        #             if re.search(r"^" + varietal + r"$", varietal_description):
+        #                 wine_results.append(wine)
+        
+        # import pdb
+        # pdb.set_trace() 
+                      
         return wine_results
     
     
@@ -126,7 +163,7 @@ class AllAbove():
         # import pdb
         # pdb.set_trace() 
         
-        session['wine_results'] = wine_results
+        # session['wine_results'] = wine_results
                   
         return wine_results
 
