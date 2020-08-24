@@ -139,12 +139,12 @@ $("#filter-by").on("click", ".filter-by", async function(e) {
 
 
 
-  await sendSortBy(sortBy)
+  await sendSortBy(filterBy)
   
 })
 
-async function sendSortBy(sortBy) {
-  const res = await axios.get(`/sort_by/${sortBy}`)
+async function sendSortBy(filterBy) {
+  const res = await axios.get(`/sort_by/${filterBy}`)
 }
 
 // =================================================  LOADING VARIETALS  ================================================
