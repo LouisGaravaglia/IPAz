@@ -19,27 +19,22 @@
 
 <div class="column is-one-quarter">
 <aside class="menu sticky">
-  <p class="menu-label">
-    Wine Type
-  </p>
   <ul class="menu-list">
     <li>
       <a class="">Filter By</a>
       <ul id="checkboxes">
         {% for filter in session['filters'] %}
           {% if filter in session['filter_by'] %}
-            <li><label class="panel-block"><input type="checkbox" checked="checked">{{filter}}</label></li>
+            <li><label class="panel-block"><input type="button" class="button is-primary is-outlined is-rounded is-small mx-2" checked="checked">{{filter}}</label></li>
           {% else %}
-            <li><label class="panel-block"><input type="checkbox">{{filter}}</label></li>
+            <li><label class="panel-block"><input type="button" class="button is-primary is-outlined is-rounded is-small mx-2">{{filter}}</label></li>
           {% endif %}
         {% endfor %}
       </ul>
     </li>
     
   </ul>
-  <p class="menu-label">
-    Varietals
-  </p>
+
   <ul class="menu-list">
     <li><a id="choose-varietals" class="">Choose Varietals</a></li>
     
