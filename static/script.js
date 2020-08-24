@@ -279,52 +279,57 @@ async function sendVarietals(varietal) {
 
 $("#checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
+  // console.log(target.parentElement.firstElementChild);
   
-  
-  console.log(target.tagName);
   // console.log(target.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild);
   // if (target.tagName == "LABEL") {
     
   // } else 
 
   if (target.tagName == "INPUT") {
-    filterName = target.nextSibling.data;
+    const filterName = target.nextSibling.data;
+    const targetInput = target.parentElement.firstElementChild;
+
       if (filterName == 'Red') {
         allAbove = target.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
+        targetInput.classList.add("is-focused")
         // await sendWineType(filterName)
-        if (allAbove.checked) {
-          allAbove.removeAttribute("checked");
+        if (allAbove.classList.contains("is-focused")) {
+          allAbove.classList.remove("is-focused");
           // await sendWineType('All of the above')
         }
       } else if (filterName == 'White') {
           allAbove = target.parentElement.parentElement.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
+          targetInput.classList.add("is-focused")
           // await sendWineType(filterName)
-          if (allAbove.checked) {
-            allAbove.removeAttribute("checked");
+          if (allAbove.classList.contains("is-focused")) {
+            allAbove.classList.remove("is-focused");
           //  await sendWineType('All of the above')
           }
       } else if (filterName == 'Rose') {
           allAbove = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+          targetInput.classList.add("is-focused")
           // await sendWineType(filterName)
-          if (allAbove.checked) {
-            allAbove.removeAttribute("checked");
+          if (allAbove.classList.contains("is-focused")) {
+            allAbove.classList.remove("is-focused");
             // await sendWineType('All of the above')
           }
     } else if (filterName == 'All of the above') {
           rose = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
           white = target.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.firstElementChild;
           red = target.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.firstElementChild.firstElementChild;
+          targetInput.classList.add("is-focused")
           // await sendWineType(filterName)
-          if (red.checked) {
-            red.removeAttribute("checked");
+          if (red.classList.contains("is-focused")) {
+            red.classList.remove("is-focused");
             // await sendWineType('Red')
           }
-          if (white.checked) {
-            white.removeAttribute("checked");
+          if (white.classList.contains("is-focused")) {
+            white.classList.remove("is-focused");
             // await sendWineType('White')
           }
-          if (rose.checked) {
-            rose.removeAttribute("checked");
+          if (rose.classList.contains("is-focused")) {
+            rose.classList.remove("is-focused");
             // await sendWineType('Rose')
           }
     } else if (filterName == 'Rating (Highest)') {
