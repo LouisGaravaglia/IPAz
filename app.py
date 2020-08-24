@@ -9,7 +9,7 @@ from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm
 from models import db, connect_db, User, Post, Wine, Favorite
-from results import AllAbove, RedWhiteRose
+from results import WineResults
 from get_varietals import Varietals
 
 CURR_USER_KEY = "curr_user"
@@ -27,8 +27,7 @@ connect_db(app)
 
 debug = DebugToolbarExtension(app)
 
-all_above = AllAbove()
-red_white_rose = RedWhiteRose()
+filter_results = WineResults()
 varietal_cls = Varietals()
 
 
@@ -517,11 +516,11 @@ def get_wine_style_choices(new_wine_style):
     filter_list = session['filter_by']
     
     if new_wine_style == 'All':
-        wine_results = all_above.all_wines(filter_list, varietals)
+        wine_results = filter_results.all_wines(filter_list, varietals)
     elif new_wine_style == 'Blends Only':
-        wine_results = all_above.blends_only(filter_list, varietals)
+        wine_results = filter_results.blends_only(filter_list, varietals)
     else:
-        wine_results = all_above.single_varietal(filter_list, varietals)
+        wine_results = filter_results.single_varietal(filter_list, varietals)
     
     # import pdb
     # pdb.set_trace()
@@ -679,7 +678,7 @@ def show_results():
     filter_list = session['filter_by']
 
    
-    wine_results = all_above.all_wines(filter_list, varietals)
+    wine_results = filter_results.all_wines(filter_list, varietals)
 
     return render_template("wine_results.html", wines=wine_results)
 
