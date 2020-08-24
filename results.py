@@ -23,7 +23,7 @@ class WineResults():
         
         wine_results = []
         
-        if not 'Red' in filter_list and not 'White' in filter_list and not 'Rose' in filter_list or 'All of the above' in filter_list:
+        if (not 'Red' in filter_list and not 'White' in filter_list and not 'Rose' in filter_list) or 'All of the above' in filter_list:
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).all()
                 

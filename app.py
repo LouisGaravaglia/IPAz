@@ -497,7 +497,7 @@ def get_wine_type_choices(new_wine_type):
     
     filter_list = session['filter_by']
     
-    if new_wine_type == 'Red' or new_wine_type == 'White' or new_wine_type == 'Rose' and 'All of the above' in filter_list:
+    if (new_wine_type == 'Red' or new_wine_type == 'White' or new_wine_type == 'Rose') and 'All of the above' in filter_list:
         filter_list.remove('All of the above')
     
     if new_wine_type in filter_list:
