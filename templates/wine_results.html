@@ -37,11 +37,11 @@
     </li>
     
   </ul>
-  <p id="results-varietals" class="menu-label">
+  <p class="menu-label">
     Varietals
   </p>
   <ul class="menu-list">
-    <li><a class="">Choose Varietals</a></li>
+    <li><a id="choose-varietals" class="">Choose Varietals</a></li>
     
 </aside>
 </div>
@@ -90,6 +90,25 @@
 {% endfor %}
 </div>
 </div>
+</div>
+
+
+
+<div id="modal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Varietals</p>
+      <!-- <button class="delete toggle-off" aria-label="close"></button> -->
+    </header>
+    <section id="varietals-modal" class="modal-card-body">
+      <!-- Content ... -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success toggle-off">Save changes</button>
+      <!-- <button class="button toggle-off">Cancel</button> -->
+    </footer>
+  </div>
 </div>
 
 {% endblock %}

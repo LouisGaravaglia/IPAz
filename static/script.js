@@ -279,12 +279,13 @@ async function sendVarietals(varietal) {
 
 $("#checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
-  
+  console.log(target.tagName);
+  console.log(target.nextSibling.data);
   if (target.tagName == "LABEL") {
     
   } else if (target.tagName == "INPUT") {
-    console.log(target);
-    console.log(target.nextSibling.data);
+    // console.log(target);
+    // console.log(target.nextSibling.data);
   }
 })
 
@@ -297,6 +298,37 @@ $("#results-varietals").on("click", async function(e) {
   
 
 })
+
+$("#choose-varietals").on("click", async function() {
+  varietalDiv = $("#varietals-modal")
+  varietalDiv.html("")
+  const items = await axios.get('/get_varietals')
+  varietal_array = items.data.varietals;
+  selected_varietals = items.data.selected_varietals;
+  makeModal(varietal_array, selected_varietals)
+  modal = $(".modal");
+  modal.toggleClass("is-active")
+})
+
+
+$("#modal").on("click", ".toggle-off", function() {
+  modal = $(".modal");
+  modal.toggleClass("is-active")
+})
+
+function makeModal(varietal_array, selected_varietals) {
+
+for (varietal of varietal_array) {
+  if (selected_varietals.includes(varietal)) {
+    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals is-focused">${varietal}</button>`
+    varietalDiv.append(html);
+  } else {
+    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">${varietal}</button>`
+    varietalDiv.append(html);
+  }
+
+}
+}
 
 
 // =================================================  CALLING API  ================================================
