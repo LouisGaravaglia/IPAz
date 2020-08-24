@@ -27,7 +27,7 @@
       <a class="">Filter By</a>
       <ul id="checkboxes">
         {% for filter in session['filters'] %}
-          {% if filter == session['wine_type'] or filter == session['sort_by'] %}
+          {% if filter in session['filter_by'] %}
             <li><label class="panel-block"><input type="checkbox" checked="checked">{{filter}}</label></li>
           {% else %}
             <li><label class="panel-block"><input type="checkbox">{{filter}}</label></li>
