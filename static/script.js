@@ -293,11 +293,7 @@ $("#checkboxes").on("click", ".panel-block", async function(e) {
 // =================================================  PICKING VARIETALS / RESULTS PAGE  ================================================
 
 
-$("#results-varietals").on("click", async function(e) {
-  const target = e.target;
-  
 
-})
 
 $("#choose-varietals").on("click", async function() {
   varietalDiv = $("#varietals-modal")
@@ -311,10 +307,7 @@ $("#choose-varietals").on("click", async function() {
 })
 
 
-$("#modal").on("click", ".toggle-off", function() {
-  modal = $(".modal");
-  modal.toggleClass("is-active")
-})
+
 
 function makeModal(varietal_array, selected_varietals) {
 
@@ -329,6 +322,26 @@ for (varietal of varietal_array) {
 
 }
 }
+
+$("#varietals-modal").on("click", ".varietals", async function(e) {
+  const target = e.target;
+  const targetName = target.innerText;
+
+  target.classList.toggle("is-focused")
+  
+  await sendVarietals(targetName)
+})
+
+
+$("#modal").on("click", ".toggle-off", async function() {
+  modal = $(".modal");
+  modal.toggleClass("is-active")
+
+  const wine_results = await axios.get(`/wine_style/""`)
+ 
+  populateWineResults(wine_results.data.wine_results)
+
+})
 
 
 // =================================================  CALLING API  ================================================

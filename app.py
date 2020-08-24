@@ -464,7 +464,7 @@ def homepage():
     session['varietals'] = []
     session['filters'] = ['Red', 'White', 'Rose', 'All of the above', 'Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
     session['filter_by'] = []
-    session['wine_style'] = ""
+    session['wine_style'] = "All"
     
     all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
 
@@ -515,15 +515,23 @@ def get_wine_style_choices(new_wine_style):
     varietals = session['varietals']
     filter_list = session['filter_by']
     
+    # import pdb
+    # pdb.set_trace()
+    
+    if new_wine_style != '""':
+        session['wine_style'] = new_wine_style
+    else:
+        new_wine_style = session['wine_style']
+    
     if new_wine_style == 'All':
         wine_results = filter_results.all_wines(filter_list, varietals)
     elif new_wine_style == 'Blends Only':
         wine_results = filter_results.blends_only(filter_list, varietals)
-    else:
+    else: 
         wine_results = filter_results.single_varietal(filter_list, varietals)
+ 
     
-    # import pdb
-    # pdb.set_trace()
+    
 
     return jsonify(wine_results=wine_results)
 
