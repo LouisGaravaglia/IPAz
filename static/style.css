@@ -2,3 +2,11 @@
   position: sticky;
   top: 30px;
 }
+
+.messages .success {
+    background-color: rgba(165, 255, 152, 0.5);
+}
+
+.messages .error {
+    background-color: rgba(254, 85, 85, 0.5);
+}

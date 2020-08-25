@@ -127,7 +127,7 @@ def login():
 
         flash("Invalid credentials.", 'danger')
 
-    return render_template('users/login.html', form=form)
+    return render_template('login.html', form=form)
 
 # ===================================    LOGOUT    =====================================
 
@@ -155,6 +155,32 @@ def profile_page():
 
 # ===================================    FAVORITES ROUTE    =====================================
 
+@app.route("/user/add_like/<int:wine_id>", methods=['POST'])
+def add_like(wine_id):
+    """Add the liked message user id to a list."""
+    
+    import pdb
+    pdb.set_trace()
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/show_results")
+
+    faved_wine = Wine.query.get_or_404(wine_id)
+    # if faved_wine.user_id in g.user.fav_wines:
+    #     flash("You've already liked that.", "danger")
+    #     return redirect("/")
+    
+    user_favorites = g.user.fav_wines
+    
+    if faved_wine in user_favorites:
+        g.user.fav_wines = [wine for wine in user_favorites if wine != faved_wine]
+    else:
+        g.user.fav_wines.append(faved_wine)
+        
+    db.session.commit()
+
+    return redirect("/show_results")
 
 # ===================================    REVIEWS ROUTE    =====================================
 
@@ -460,8 +486,13 @@ def show_results():
    
     wine_results = filter_results.all_wines(filter_list, varietals)
     
+    if g.user:
+        user_favorites = g.user.fav_wines
+    else:
+        user_favorites = []
+    
     if wine_results == []:
         wine_results = ['No Results']
 
-    return render_template("wine_results.html", wines=wine_results)
+    return render_template("wine_results.html", wines=wine_results, user_favorites=user_favorites)
 

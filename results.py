@@ -29,7 +29,7 @@ class WineResults():
                 
                 for result in results:
                     if re.search(r"^" + varietal + r"$", result.varietal):
-                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
         
         if 'Red' in filter_list:
@@ -37,7 +37,7 @@ class WineResults():
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Red'))).all()
                 for result in results:
                     if re.search(r"^" + varietal + r"$", result.varietal):
-                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
                     
         if 'White' in filter_list:
@@ -45,7 +45,7 @@ class WineResults():
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'White'))).all()
                 for result in results:
                     if re.search(r"^" + varietal + r"$", result.varietal):
-                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
                     
         if 'Rose' in filter_list:
@@ -53,7 +53,7 @@ class WineResults():
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
                 for result in results:
                     if re.search(r"^" + varietal + r"$", result.varietal):
-                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
          
         wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
@@ -108,28 +108,28 @@ class WineResults():
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).all()
                 for result in results:
-                    wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                    wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                     wine_results.append(wine)
         
         if 'Red' in filter_list:
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Red'))).all()
                 for result in results:
-                    wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                    wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                     wine_results.append(wine)
                     
         if 'White' in filter_list:
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'White'))).all()
                 for result in results:
-                    wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                    wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                     wine_results.append(wine)
                     
         if 'Rose' in filter_list:
             for varietal in varietals:
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
                 for result in results:
-                    wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                    wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                     wine_results.append(wine) 
         
         # Using frozenset() to convert the wine dictionaries into immutable ojbects, and then adding that to a set() to get rid of duplicates.
@@ -186,7 +186,7 @@ class WineResults():
                 
                 for result in results:
                     if not re.search(r"^" + varietal + r"$", result.varietal):
-                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
         
         if 'Red' in filter_list:
@@ -194,7 +194,7 @@ class WineResults():
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Red'))).all()
                 for result in results:
                     if not re.search(r"^" + varietal + r"$", result.varietal):
-                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
                     
         if 'White' in filter_list:
@@ -202,7 +202,7 @@ class WineResults():
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'White'))).all()
                 for result in results:
                     if not re.search(r"^" + varietal + r"$", result.varietal):
-                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
                     
         if 'Rose' in filter_list:
@@ -210,7 +210,7 @@ class WineResults():
                 results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
                 for result in results:
                     if not re.search(r"^" + varietal + r"$", result.varietal):
-                        wine = {'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                        wine = {'ID':result.id, 'Rating':result.rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                         wine_results.append(wine)
          
         wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
