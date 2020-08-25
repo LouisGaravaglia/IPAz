@@ -32,8 +32,8 @@ filter_results = WineResults()
 varietal_cls = Varietals()
 
 
-##############################################################################
-# User signup/login/logout
+# ===================================    USER VALIDATING FUNCTIONS    =====================================
+
 
 
 @app.before_request
@@ -47,7 +47,6 @@ def add_user_to_g():
         g.user = None
         
 
-
 def do_login(user):
     """Log in user."""
 
@@ -59,6 +58,8 @@ def do_logout():
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
+
+# ===================================    SIGN UP    =====================================
 
 
 @app.route('/signup', methods=["GET", "POST"])
@@ -75,14 +76,14 @@ def signup():
 
     form = UserAddForm()
     
-    if form.is_submitted():
-        print("submitted")
+    # if form.is_submitted():
+    #     print("submitted")
     
 
-    if form.validate():
-        print("valid")
+    # if form.validate():
+    #     print("valid")
         
-    print(form.errors)
+    # print(form.errors)
 
     if form.validate_on_submit():
         
@@ -107,6 +108,7 @@ def signup():
     else:
         return render_template('signup.html', form=form)
 
+# ===================================    LOGIN    =====================================
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -127,13 +129,34 @@ def login():
 
     return render_template('users/login.html', form=form)
 
+# ===================================    LOGOUT    =====================================
+
 
 @app.route('/logout')
 def logout():
     do_logout()
     return redirect('/login')
 
+# ===================================    PROFILE ROUTE   =====================================
 
+@app.route('/user')
+def profile_page():
+    """Show profile page"""
+
+    # import pdb
+    # pdb.set_trace()
+    
+    user_id = session[CURR_USER_KEY]
+    
+    user = User.query.get_or_404(user_id)
+    
+    return render_template("profile.html", user=user)
+
+
+# ===================================    FAVORITES ROUTE    =====================================
+
+
+# ===================================    REVIEWS ROUTE    =====================================
 
 
 
