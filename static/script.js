@@ -276,6 +276,21 @@ async function sendVarietals(varietal) {
 
 // =================================================  PICKING FILTERS / RESULTS PAGE  ================================================
 
+async function toggleFilters(sibling, siblingName, targetInput, filterName ) {
+          await sendSortBy(filterName)
+          const wine_results = await axios.get(`/wine_style/""`)
+          populateWineResults(wine_results.data.wine_results)
+
+          if (sibling.classList.contains("is-focused")) {
+            sibling.classList.remove("is-focused");
+            await sendSortBy(siblingName)
+          } 
+          if (targetInput.classList.contains("is-focused")) {
+          targetInput.classList.remove("is-focused")
+        } else {
+          targetInput.classList.add("is-focused")
+        }   
+}
 
 $("#checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
@@ -371,68 +386,24 @@ $("#checkboxes").on("click", ".panel-block", async function(e) {
 
     } else if (filterName == 'Rating (Highest)') {
           ratingLowest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
-          await sendSortBy(filterName)
-          const wine_results = await axios.get(`/wine_style/""`)
-          populateWineResults(wine_results.data.wine_results)
-
-          if (ratingLowest.classList.contains("is-focused")) {
-            ratingLowest.classList.remove("is-focused")
-            await sendSortBy('Rating (Lowest)')
-          }
-          if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        }    
+          siblingName = 'Rating (Lowest)'
+          toggleFilters(ratingLowest, siblingName, targetInput, filterName ) 
 
     } else if (filterName == 'Rating (Lowest)') {
           ratingHighest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
-          await sendSortBy(filterName)
-          const wine_results = await axios.get(`/wine_style/""`)
-          populateWineResults(wine_results.data.wine_results)
-
-          if (ratingHighest.classList.contains("is-focused")) {
-            ratingHighest.classList.remove("is-focused");
-            await sendSortBy('Rating (Highest)')
-          } 
-          if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        }   
+          siblingName = 'Rating (Highest)'
+          toggleFilters(ratingHighest, siblingName, targetInput, filterName )
 
     } else if (filterName == 'Vintage (Oldest)') {
           vintageYoungest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
-          await sendSortBy(filterName)
-          const wine_results = await axios.get(`/wine_style/""`)
-          populateWineResults(wine_results.data.wine_results)
-
-          if (vintageYoungest.classList.contains("is-focused")) {
-            vintageYoungest.classList.remove("is-focused");
-            await sendSortBy('Vintage (Youngest)')
-          } 
-          if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        }   
+          siblingName = 'Vintage (Youngest)'
+          toggleFilters(vintageYoungest, siblingName, targetInput, filterName )
 
     } else if (filterName == 'Vintage (Youngest)') {
           vintageOldest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
-          await sendSortBy(filterName)
-          const wine_results = await axios.get(`/wine_style/""`)
-          populateWineResults(wine_results.data.wine_results)
+          siblingName = 'Vintage (Oldest)'
+          toggleFilters(vintageOldest, siblingName, targetInput, filterName )
 
-          if (vintageOldest.classList.contains("is-focused")) {
-            vintageOldest.classList.remove("is-focused");
-            await sendSortBy('Vintage (Oldest)')
-          }   
-          if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        } 
-        
     } else if (filterName == 'Winery (Alphabetically)') {
           await sendSortBy(filterName)
           const wine_results = await axios.get(`/wine_style/""`)
