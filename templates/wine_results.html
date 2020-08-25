@@ -72,11 +72,13 @@
   <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0">
     <form method="POST" action="/user/add_like/{{wine['ID']}}" id="favorite-form">
-      {% if wine['ID'] in user_favorites %}
-      <button class="button is-info" type="submit">
+      {% for user_fav in user_favorites%}
+      {% if wine['ID'] == user_fav.id %}
+      <button class="button is-dark" type="submit">
       {% else %}
       <button class="button is-text" type="submit">
       {% endif %}
+      {% endfor %}
         <span class="icon is-small">
         <i class="fas fa-thumbtack"></i>
         </span>
