@@ -313,12 +313,6 @@ async function toggleWineTypeFilter(target, filterName, targetInput) {
 
 $("#checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
-  // console.log(target.parentElement.firstElementChild);
-  
-  // console.log(target.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild);
-  // if (target.tagName == "LABEL") {
-    
-  // } else 
 
   if (target.tagName == "INPUT") {
     const filterName = target.nextSibling.data;

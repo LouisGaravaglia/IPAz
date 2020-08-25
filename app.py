@@ -256,204 +256,6 @@ def get_rose_wines():
  
     return jsonify(message="Successful request. All rose wines imported into database.")
 
-# ===================================    RETURN JSON  =====================================
-
-@app.route('/show_all_wines_json')
-def return_all_wines_json():
-    all_reds = [red.serialize() for red in Wine.query.all()]
-    return jsonify(red_wines=all_reds)
-
-@app.route('/show_all_white_json')
-def return_white_wine_json():
-    all_white = [white.serialize() for white in Wine.query.filter_by(type='White').all()]
-    return jsonify(white_wines=all_white)
-
-@app.route('/show_all_red_json')
-def return_red_wine_json():
-    all_red = [red.serialize() for red in Wine.query.filter_by(type='Red').all()]
-    return jsonify(red_wines=all_red)
-
-@app.route('/show_all_rose_json')
-def return_all_rose_wine_json():
-    all_rose = [rose.serialize() for rose in Wine.query.filter_by(type='Rose').all()]
-    return jsonify(rose_wines=all_rose)
-
-# ===================================    SHOW VARIETALS   =====================================
-
-
-@app.route('/show_red_varietals')
-def show_red_varietals():
-    
-    red_list = []
-    varietal_set = set()
-    session['varietals'] = ""
-    session['type'] = ""
-    session['type'] = "Red"
-    
-    all_options = [red.varietal.split(",") for red in Wine.query.filter_by(type='Red').all()]
-    
-    for options in all_options:
-        red_list = red_list + options
-    
-    
-    
-    for item in red_list:
-        has_number = re.search("\d", item)
-        has_blend = re.search(" Blend", item)
-        has_plus = re.search("\+", item)
-        has_slash = re.search("/", item)
-        has_period = re.search("\.", item)
-        has_ampersand = re.search("&", item)
-        if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash and not has_period and not has_ampersand:
-            title_case_item = item.title()
-            varietal_set.add(title_case_item.strip())
-        
-    return render_template("varietal_options.html", varietal_set=varietal_set)
-
-
-@app.route('/show_white_varietals')
-def show_white_varietals():
-    
-    white_list = []
-    varietal_set = set()
-    session['varietals'] = ""
-    session['type'] = ""
-    session['type'] = "White"
-    
-    all_options = [white.varietal.split(",") for white in Wine.query.filter_by(type='White').all()]
-    
-    for options in all_options:
-        white_list = white_list + options
-    
-    for item in white_list:
-        has_number = re.search("\d", item)
-        has_blend = re.search(" Blend", item)
-        has_plus = re.search("\+", item)
-        has_slash = re.search("/", item)
-        has_period = re.search("\.", item)
-        has_ampersand = re.search("&", item)
-        if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash and not has_period and not has_ampersand:
-            title_case_item = item.title()
-            varietal_set.add(title_case_item.strip())
-        
-    return render_template("varietal_options.html", varietal_set=varietal_set)
-
-
-@app.route('/show_rose_varietals')
-def show_rose_varietals():
-    
-    rose_list = []
-    varietal_set = set()
-    session['varietals'] = ""
-    session['type'] = ""
-    session['type'] = "Rose"
-    
-    all_options = [rose.varietal.split(",") for rose in Wine.query.filter_by(type='Rose').all()]
-    
-    for options in all_options:
-        rose_list = rose_list + options
-    
-    for item in rose_list:
-        has_number = re.search("\d", item)
-        has_blend = re.search(" Blend", item)
-        has_plus = re.search("\+", item)
-        has_slash = re.search("/", item)
-        has_period = re.search("\.", item)
-        has_ampersand = re.search("&", item)
-        if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash and not has_period and not has_ampersand:
-            title_case_item = item.title()
-            varietal_set.add(title_case_item.strip())
-        
-    return render_template("varietal_options.html", varietal_set=varietal_set)
-
-# ===================================    WINE RESULTS   =====================================
-
-@app.route('/show_combined_question/<new_varietal>')
-def get_varietal_choices(new_varietal):
-
-    if session['varietals']:
-        varietals = session['varietals']
-    else:
-        varietals = []
-
-    if new_varietal in varietals:
-
-        index = varietals.index(new_varietal)
-        varietals.pop(index)
-    else:
-        varietals.append(new_varietal)
-
-    session['varietals'] = [wine for wine in varietals]
-
-    return render_template("combined_only.html", varietals=varietals)
-  
-
-@app.route('/show_combined_question')
-def show_combined_question():
-
-    varietals = session['varietals']
-    
-    if varietals == "" or varietals is None:
-        return redirect("/show_all_wine")
-    
-    if len(varietals) == 1:
-        multiple_varietals = False
-        return render_template("combined_only.html", multiple_varietals=multiple_varietals)
-    else:
-        multiple_varietals = True   
-  
-    return render_template("combined_only.html", multiple_varietals=multiple_varietals)
-
-@app.route('/show_all_wine')
-def show_all_wine_results():
-    
-    varietals = session['varietals']
-    
-    if varietals == "" or varietals is None:
-        all_wine = Wine.query.order_by(desc(Wine.rating)).all()
-
-    return render_template("wine_results.html", wines=all_wine)
-
-@app.route('/show_exact_results')
-def show_exact_wine_results():
-    
-    varietals = session['varietals']
-    wine_type = session['type']
-    exact_matches = []
-    
-    if len(varietals) == 1:
-        varietal = varietals[0]
-        wines = Wine.query.filter_by(type=wine_type).all()
-        for wine in wines:
-            varietal_description = wine.varietal
-            if re.search(r"^" + varietal + r"$", varietal_description):
-                exact_matches.append(wine)
-                
-    else:
-        wines = Wine.query.filter_by(type=wine_type).all()
-        for wine in wines:
-            if all(x in wine.varietal for x in varietals):
-                exact_matches.append(wine)
-        
-            
-                
-    return render_template("wine_results.html", wines=exact_matches)
-
-
-@app.route('/show_close_to_results')
-def show_wine_results():
-    
-    varietals = session['varietals']
-    wine_type = session['type']
-    all_wine = []
-    
-    for varietal in varietals:
-        results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == wine_type))).all()
-  
-        for result in results:
-            all_wine.append(result)
-    
-    return render_template("wine_results.html", wines=all_wine)
 
 # ===================================    HOME    =====================================
 
@@ -479,21 +281,6 @@ def homepage():
 
 @app.route('/wine_type/<new_wine_type>')
 def get_wine_type_choices(new_wine_type):
-
-    # filter_list = session['filter_list']
-
-    # if new_wine_type in filter_list:
-
-    #     index = filter_list.index(new_wine_type)
-    #     filter_list.pop(index)
-    # else:
-    #     filter_list.append(new_wine_type)
-        
-    # import pdb
-    # pdb.set_trace()
-
-    # session['filter_list'] = filter_list
-    
     
     filter_list = session['filter_by']
     
@@ -532,9 +319,6 @@ def get_wine_style_choices(new_wine_style):
         wine_results = filter_results.blends_only(filter_list, varietals)
     else: 
         wine_results = filter_results.single_varietal(filter_list, varietals)
- 
-    
-    
 
     return jsonify(wine_results=wine_results)
 
@@ -543,9 +327,6 @@ def get_wine_style_choices(new_wine_style):
 @app.route('/sort_by/<new_sort_by>')
 def get_sort_by_choices(new_sort_by):
 
-    # sort_by = []
-
-    # sort_by.append(new_sort_by)
     filter_list = session['filter_by']
     
     if new_sort_by in filter_list:
@@ -554,8 +335,7 @@ def get_sort_by_choices(new_sort_by):
         filter_list.append(new_sort_by)
         
     session['filter_by'] = filter_list
-    
-    # session['sort_by'] = new_sort_by
+
     
     # import pdb
     # pdb.set_trace()
@@ -599,57 +379,8 @@ def get_varietals():
         
     merged_varietals = red_varietals + white_varietals + rose_varietals + all_varietals
     
-    # for varietals in merged_varietals:
-    #     varietal_list = varietal_list + varietals
-    
-    # for item in varietal_list:
-    #     has_number = re.search("\d", item)
-    #     has_blend = re.search(" Blend", item)
-    #     has_plus = re.search("\+", item)
-    #     has_slash = re.search("/", item)
-    #     has_period = re.search("\.", item)
-    #     has_ampersand = re.search("&", item)
-        
-    #     conditions = [has_number, has_blend, has_plus, has_slash, has_period, has_ampersand]
-        
-    #     if item != "" and len(item) < 25 and not any(conditions):
-    #         title_case_item = item.title()
-    #         varietal_set.add(title_case_item.strip())
-   
     varietals = varietal_cls.get_all_varietals(merged_varietals)
     
-    # if session['wine_type'] != "":
-    #     wine_type = session['wine_type']
-    # else:
-    #     wine_type = "All of the above"
-    
-
-    # if wine_type == "All of the above":
-    #     all_options = [wine.varietal.split(",") for wine in Wine.query.all()]
-
-    # else:    
-    #     all_options = [wine.varietal.split(",") for wine in Wine.query.filter_by(type=wine_type).all()]
-    
-    # for options in all_options:
-    #     wine_list = wine_list + options
-    
-    
-    
-    # for item in wine_list:
-    #     has_number = re.search("\d", item)
-    #     has_blend = re.search(" Blend", item)
-    #     has_plus = re.search("\+", item)
-    #     has_slash = re.search("/", item)
-    #     has_period = re.search("\.", item)
-    #     has_ampersand = re.search("&", item)
-    #     if item != "" and not has_number and len(item) < 25 and not has_blend and not has_plus and not has_slash and not has_period and not has_ampersand:
-    #         title_case_item = item.title()
-    #         varietal_set.add(title_case_item.strip())
-            
-    # import pdb
-    # pdb.set_trace()
-    # # session['varietals'] = varietal_set
-    # varietals = [varietal for varietal in varietal_set]
 
     return jsonify(varietals=varietals, selected_varietals=selected_varietals)
 
@@ -678,30 +409,6 @@ def log_varietal_choice(new_varietal):
     return jsonify(varietals=varietals)
 
 
-# @app.route('/log_varietals/<new_varietal>')
-# def log_varietal_choice(new_varietal):
-
-#     if session['varietals']:
-#         varietals = session['varietals']
-#     else:
-#         varietals = []
-
-#     # import pdb
-#     # pdb.set_trace()
-    
-#     if new_varietal in varietals:
-
-#         index = varietals.index(new_varietal)
-#         varietals.pop(index)
-#     else:
-#         varietals.append(new_varietal)
-
-#     session['varietals'] = [wine for wine in varietals]
-    
-#     return render_template("combined_only.html", varietals=varietals)
-
-
-
 
 # ===================================    SHOWING RESULTS   =====================================
 
@@ -716,30 +423,3 @@ def show_results():
 
     return render_template("wine_results.html", wines=wine_results)
 
-
-# ===================================    ADDING RESULTS PAGE FILTERS TO SESION   =====================================
-
-
-@app.route('/log_filters/<new_filter>')
-def log_filter_choices(new_varietal):
-
-    if session['varietals']:
-        varietals = session['varietals']
-    else:
-        varietals = []
-
-    # import pdb
-    # pdb.set_trace()
-    
-    if new_varietal in varietals:
-
-        index = varietals.index(new_varietal)
-        varietals.pop(index)
-    else:
-        varietals.append(new_varietal)
-
-    session['varietals'] = [wine for wine in varietals]
-    
-   
-
-    return render_template("combined_only.html", varietals=varietals)
