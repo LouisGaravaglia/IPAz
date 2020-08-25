@@ -47,8 +47,49 @@
   {% if wine == 'No Results' %}
   <h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>
 {% else %}
-  
+
 <div class="column is-half">
+  <div class="has-text-centered">
+  </div>
+  
+<article class="message is-dark">
+  
+  <div class="message-header">
+    <p>{{wine['Name']}}</p>
+  </div>
+
+  <div class="message-body">
+    <p><strong>NAME:</strong>  {{wine['Name']}}</p>
+    <p><strong>WINERY:</strong>  {{wine['Winery']}}</p>
+    <p><strong>COUNTRY:</strong>  {{wine['Country']}}</p>
+    <p><strong>AREA:</strong>  {{wine['Area']}}</p>
+    <p><strong>VINTAGE:</strong>  {{wine['Vintage']}}</p>
+    <p><strong>VARIETAL:</strong>  {{wine['Varietal']}}</p>
+    <p><strong>TYPE:</strong>  {{wine['Type']}}</p>
+    <p><strong>RATING:</strong>  {{wine['Rating']}}</p>
+  </div>
+
+  <div class="columns">
+    <div class="column is-half has-text-centered mx-0 my-0">
+      <button class="button is-text">
+<span class="icon is-small">
+      <i class="fas fa-thumbs-up"></i>
+    </span>
+</button>
+    </div>
+     <div class="column is-half has-text-centered mx-0 my-0">
+       <button class="button is-text">
+ <span class="icon is-small is-right">
+      <i class="fas fa-pen"></i>
+    </span>
+      </button>
+    </div>
+  </div>
+</article>
+
+
+  
+<!-- <div class="column is-half">
   <div class="has-text-centered">
   </div>
 
@@ -80,7 +121,7 @@
     <a href="#" class="card-footer-item">Favorite</a>
     <a href="#" class="card-footer-item">Review</a>
   </footer>
-</div>
+</div> -->
 </div>
   
   {% endif %}
