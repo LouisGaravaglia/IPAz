@@ -21,19 +21,17 @@ class User(db.Model):
 
     def __repr__(self):
         u=self
-        return f"<User id={u.id} name={u.name} username={u.username} bio={u.bio} img_url={u.img_url}>"
+        return f"<User id={u.id} name={u.name} username={u.username}>"
     
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    bio = db.Column(db.String(2000), nullable=False)
-    img_url = db.Column(db.String(100), default="/static/images/default-pic")
     posts = db.relationship("Post", backref="user", cascade="all, delete-orphan")
     
     
     @classmethod
-    def signup(cls, name, username, password, bio, image_url):
+    def signup(cls, name, username, password):
         """Sign up user.
 
         Hashes password and adds user to system.
@@ -44,9 +42,7 @@ class User(db.Model):
         user = User(
             name=name,
             username=username,
-            password=hashed_pwd,
-            bio=bio,
-            image_url=image_url,
+            password=hashed_pwd
         )
 
         db.session.add(user)

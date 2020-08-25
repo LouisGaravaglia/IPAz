@@ -74,15 +74,25 @@ def signup():
     """
 
     form = UserAddForm()
+    
+    if form.is_submitted():
+        print("submitted")
+    
+
+    if form.validate():
+        print("valid")
+        
+    print(form.errors)
 
     if form.validate_on_submit():
+        
         try:
             user = User.signup(
                 name=form.name.data,
                 username=form.username.data,
-                password=form.password.data,
-                bio=form.bio.data,
-                image_url=form.image_url.data or User.image_url.default.arg,
+                password=form.password.data
+                # bio=form.bio.data,
+                # image_url=form.image_url.data or User.image_url.default.arg,
             )
             db.session.commit()
 

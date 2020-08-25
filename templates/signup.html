@@ -11,11 +11,13 @@
 
 
 <div class="columns">
-  <div class="column is-one-quarter">
+  <div class="column is-one-third">
     
   </div>
-  <div class="column is-half">
-    
+
+  <div class="column is-one-third mx-6">
+<form method="POST" id="user_form">
+  {{ form.hidden_tag() }} 
 <div class="field">
 {{form.name.label(class_="label")}}
   <!-- <label class="label">Name</label> -->
@@ -69,15 +71,17 @@
 
 <div class="field is-grouped">
   <div class="control">
-    <button class="button is-link">Submit</button>
+    <button class="button is-link" type="submit">Submit</button>
   </div>
   <div class="control">
     <button class="button is-link is-light">Cancel</button>
   </div>
 </div>
-
+</form>
   </div>
-  <div class="column is-one-quarter">
+  
+
+  <div class="column is-one-third">
     
   </div>
 
