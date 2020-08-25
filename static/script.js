@@ -147,35 +147,41 @@ function populateWineResults(wine_results) {
   <div class="has-text-centered">
   </div>
 
-  <div class="card">
-  <header class="card-header">
-    <p class="card-header-title">
-      Wine
-    </p>
-    <a href="#" class="card-header-icon" aria-label="more options">
-      <span class="icon">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </a>
-  </header>
-  <div class="card-content">
-    <div class="content">
-    <p>NAME: ${wine['Name']}</p>
-    <p>WINERY: ${wine['Winery']}</p>
-    <p>COUNTRY: ${wine['Country']}</p>
-    <p>AREA: ${wine['Area']}</p>
-    <p>VINTAGE: ${wine['Vintage']}</p>
-    <p>VARIETAL: ${wine['Varietal']}</p>
-    <p>TYPE: ${wine['Type']}</p>
-    <p>RATING: ${wine['Rating']}</p>
-      
+<article class="message is-dark">
+  
+  <div class="message-header">
+    <p>${wine['Name']}</p>
+  </div>
+
+  <div class="message-body">
+    <p><strong>NAME: </strong>${wine['Name']}</p>
+    <p><strong>WINERY: </strong>${wine['Winery']}</p>
+    <p><strong>COUNTRY: </strong>${wine['Country']}</p>
+    <p><strong>AREA: </strong>${wine['Area']}</p>
+    <p><strong>VINTAGE: </strong>${wine['Vintage']}</p>
+    <p><strong>VARIETAL: </strong>${wine['Varietal']}</p>
+    <p><strong>TYPE: </strong>${wine['Type']}</p>
+    <p><strong>RATING: </strong>${wine['Rating']}</p>
+  </div>
+
+  <div class="columns">
+    <div class="column is-half has-text-centered mx-0 my-0">
+      <button class="button is-text">
+        <span class="icon is-small">
+        <i class="fas fa-thumbtack"></i>
+        </span>
+      </button>
+    </div>
+    <div class="column is-half has-text-centered mx-0 my-0">
+      <button class="button is-text">
+        <span class="icon is-small is-right">
+        <i class="fas fa-pen"></i>
+        </span>
+      </button>
     </div>
   </div>
-  <footer class="card-footer">
-    <a href="#" class="card-footer-item">Favorite</a>
-    <a href="#" class="card-footer-item">Review</a>
-  </footer>
-  </div>
+</article>
+
   </div>`
 
     wineHtml.append(html)
