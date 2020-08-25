@@ -4,6 +4,7 @@ from unittest import TestCase
 import requests
 import re
 from sqlalchemy import desc
+from sqlalchemy.exc import IntegrityError
 from flask_cors import CORS
 from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
@@ -77,24 +78,24 @@ def signup():
     if form.validate_on_submit():
         try:
             user = User.signup(
+                name=form.name.data,
                 username=form.username.data,
                 password=form.password.data,
                 bio=form.bio.data,
-                email=form.email.data,
                 image_url=form.image_url.data or User.image_url.default.arg,
             )
             db.session.commit()
 
         except IntegrityError:
             flash("Username already taken", 'danger')
-            return render_template('users/signup.html', form=form)
+            return render_template('signup.html', form=form)
 
         do_login(user)
 
         return redirect("/")
 
     else:
-        return render_template('users/signup.html', form=form)
+        return render_template('signup.html', form=form)
 
 
 @app.route('/login', methods=["GET", "POST"])

@@ -4,7 +4,7 @@ from wtforms.validators import InputRequired, Optional, NumberRange, URL, AnyOf,
 
 
 class ReviewForm(FlaskForm):
-    """Form for adding/editing messages."""
+    """Form for adding/editing reviews."""
 
     text = TextAreaField('text', validators=[DataRequired()])
 
@@ -15,8 +15,8 @@ class UserAddForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[Length(min=6)])
-    bio = StringField('Bio', validators=[DataRequired()])
-    image_url = StringField('(Optional) Image URL')
+    # bio = StringField('Bio', validators=[DataRequired()])
+    # image_url = StringField('(Optional) Image URL')
 
 
 class LoginForm(FlaskForm):

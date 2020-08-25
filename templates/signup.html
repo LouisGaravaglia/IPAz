@@ -4,22 +4,87 @@
 
 {% block content %}
 
-  <div class="row justify-content-md-center">
-  <div class="col-md-7 col-lg-5">
-    <h2 class="join-message">Join Warbler today.</h2>
-    <form method="POST" id="user_form">
-      {{ form.hidden_tag() }}
 
-      {% for field in form if field.widget.input_type != 'hidden' %}
-        {% for error in field.errors %}
-          <span class="text-danger">{{ error }}</span>
-        {% endfor %}
-        {{ field(placeholder=field.label.text, class="form-control") }}
-      {% endfor %}
 
-      <button class="btn btn-primary btn-lg btn-block">Sign me up!</button>
-    </form>
+
+
+
+
+<div class="columns">
+  <div class="column is-one-quarter">
+    
+  </div>
+  <div class="column is-half">
+    
+<div class="field">
+{{form.name.label(class_="label")}}
+  <!-- <label class="label">Name</label> -->
+  <div class="control">
+    {{form.name(class_="input", type="text", placeholder="Enter your first name")}}
+    <!-- <input class="input" type="text" placeholder="Text input"> -->
+  </div>
+  {% if form.name.errors %}
+      <p class="help is-danger">{{ form.name.errors  }}</p>
+  {% endif %}
+</div>
+
+<div class="field">
+  {{form.username.label(class_="label")}}
+  <!-- <label class="label">Username</label> -->
+  <div class="control has-icons-left">
+    {{form.username(class_="input", placeholder="Enter a username", type="text")}}
+    <!-- <input class="input is-success" type="text" placeholder="Text input" value="bulma"> -->
+    <span class="icon is-small is-left">
+      <i class="fas fa-user"></i>
+    </span>
+    <!-- <span class="icon is-small is-right">
+      <i class="fas fa-check"></i>
+    </span> -->
+  </div>
+  {% if form.username.errors %}
+      <p class="help is-danger">{{ form.password.errors  }}</p>
+  {% endif %}
+  <!-- <p class="help is-success">This username is available</p> -->
+</div>
+
+
+<div class="field">
+  {{form.password.label(class_="label")}}
+  <!-- <label class="label">Email</label> -->
+  <div class="control has-icons-left">
+     {{form.password(class_="input", placeholder="Enter a password", type="text")}}
+    <!-- <input class="input is-danger" type="email" placeholder="Email input" value="hello@"> -->
+    <span class="icon is-small is-left">
+      <i class="fas fa-lock"></i>
+    </span>
+    <!-- <span class="icon is-small is-right">
+      <i class="fas fa-exclamation-triangle"></i>
+    </span> -->
+  </div>
+  {% if form.password.errors %}
+      <p class="help is-danger">{{ form.password.errors  }}</p>
+  {% endif %}
+</div>
+
+
+<div class="field is-grouped">
+  <div class="control">
+    <button class="button is-link">Submit</button>
+  </div>
+  <div class="control">
+    <button class="button is-link is-light">Cancel</button>
   </div>
 </div>
+
+  </div>
+  <div class="column is-one-quarter">
+    
+  </div>
+
+</div>
+
+
+
+
 
 {% endblock %}

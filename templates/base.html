@@ -30,15 +30,19 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item">
+      <!-- <a href="/"class="navbar-item">
         Home
-      </a>
-
+      </a> -->
+      {% if not g.user %}
+      {% else %}
       <a class="navbar-item">
-        Documentation
+        Favorites
       </a>
-
-      <div class="navbar-item has-dropdown is-hoverable">
+      <a class="navbar-item">
+        Reviews
+      </a>
+      {% endif %}
+      <!-- <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
           More
         </a>
@@ -58,24 +62,24 @@
             Report an issue
           </a>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
         {% if not g.user %}
-          <a class="button is-primary">
+          <a href="/signup"class="button is-primary">
             <strong>Sign up</strong>
           </a>
-          <a class="button is-light">
+          <a href="/login" class="button is-light">
             Log in
           </a>
           {% else %}
-         <a class="button is-primary">
+         <a href="/user" class="button is-primary">
             <strong>Profile</strong>
           </a>
-          <a class="button is-light">
+          <a href="/logout" class="button is-light">
             Logout
           </a>
           {% endif %}

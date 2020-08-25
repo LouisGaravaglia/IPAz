@@ -28,7 +28,7 @@ class User(db.Model):
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     bio = db.Column(db.String(2000), nullable=False)
-    img_url = db.Column(db.String(100), nullable=False)
+    img_url = db.Column(db.String(100), default="/static/images/default-pic")
     posts = db.relationship("Post", backref="user", cascade="all, delete-orphan")
     
     
