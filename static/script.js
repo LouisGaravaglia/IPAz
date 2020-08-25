@@ -276,7 +276,7 @@ async function sendVarietals(varietal) {
 
 // =================================================  PICKING FILTERS / RESULTS PAGE  ================================================
 
-async function toggleFilters(sibling, siblingName, targetInput, filterName ) {
+async function toggleSortByFilter(sibling, siblingName, targetInput, filterName ) {
           await sendSortBy(filterName)
           const wine_results = await axios.get(`/wine_style/""`)
           populateWineResults(wine_results.data.wine_results)
@@ -292,20 +292,7 @@ async function toggleFilters(sibling, siblingName, targetInput, filterName ) {
         }   
 }
 
-$("#checkboxes").on("click", ".panel-block", async function(e) {
-  const target = e.target;
-  // console.log(target.parentElement.firstElementChild);
-  
-  // console.log(target.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild);
-  // if (target.tagName == "LABEL") {
-    
-  // } else 
-
-  if (target.tagName == "INPUT") {
-    const filterName = target.nextSibling.data;
-    const targetInput = target.parentElement.firstElementChild;
-
-      if (filterName == 'Red') {
+async function toggleWineTypeFilter(target, filterName, targetInput) {
         allAbove = target.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
         const res = await axios.get(`/wine_type/${filterName}`)
         
@@ -322,40 +309,29 @@ $("#checkboxes").on("click", ".panel-block", async function(e) {
 
         const wine_results = await axios.get(`/wine_style/""`)
         populateWineResults(wine_results.data.wine_results)
+}
+
+$("#checkboxes").on("click", ".panel-block", async function(e) {
+  const target = e.target;
+  // console.log(target.parentElement.firstElementChild);
+  
+  // console.log(target.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild);
+  // if (target.tagName == "LABEL") {
+    
+  // } else 
+
+  if (target.tagName == "INPUT") {
+    const filterName = target.nextSibling.data;
+    const targetInput = target.parentElement.firstElementChild;
+
+      if (filterName == 'Red') {
+        toggleWineTypeFilter(target, filterName, targetInput)
 
       } else if (filterName == 'White') {
-          allAbove = target.parentElement.parentElement.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
-          const res = await axios.get(`/wine_type/${filterName}`)
-          
-          if (allAbove.classList.contains("is-focused")) {
-            allAbove.classList.remove("is-focused");
-           const res = await axios.get(`/wine_type/'All of the above'`)
-          }
-          if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        }
-
-        const wine_results = await axios.get(`/wine_style/""`)
-        populateWineResults(wine_results.data.wine_results)
+          toggleWineTypeFilter(target, filterName, targetInput)
 
       } else if (filterName == 'Rose') {
-          allAbove = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
-          const res = await axios.get(`/wine_type/${filterName}`)
-          
-          if (allAbove.classList.contains("is-focused")) {
-            allAbove.classList.remove("is-focused");
-            const res = await axios.get(`/wine_type/'All of the above'`)
-          }
-          if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        }
-
-        const wine_results = await axios.get(`/wine_style/""`)
-        populateWineResults(wine_results.data.wine_results)
+          toggleWineTypeFilter(target, filterName, targetInput)
 
     } else if (filterName == 'All of the above') {
           rose = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
@@ -387,22 +363,22 @@ $("#checkboxes").on("click", ".panel-block", async function(e) {
     } else if (filterName == 'Rating (Highest)') {
           ratingLowest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
           siblingName = 'Rating (Lowest)'
-          toggleFilters(ratingLowest, siblingName, targetInput, filterName ) 
+          toggleSortByFilter(ratingLowest, siblingName, targetInput, filterName ) 
 
     } else if (filterName == 'Rating (Lowest)') {
           ratingHighest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
           siblingName = 'Rating (Highest)'
-          toggleFilters(ratingHighest, siblingName, targetInput, filterName )
+          toggleSortByFilter(ratingHighest, siblingName, targetInput, filterName )
 
     } else if (filterName == 'Vintage (Oldest)') {
           vintageYoungest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
           siblingName = 'Vintage (Youngest)'
-          toggleFilters(vintageYoungest, siblingName, targetInput, filterName )
+          toggleSortByFilter(vintageYoungest, siblingName, targetInput, filterName )
 
     } else if (filterName == 'Vintage (Youngest)') {
           vintageOldest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
           siblingName = 'Vintage (Oldest)'
-          toggleFilters(vintageOldest, siblingName, targetInput, filterName )
+          toggleSortByFilter(vintageOldest, siblingName, targetInput, filterName )
 
     } else if (filterName == 'Winery (Alphabetically)') {
           await sendSortBy(filterName)
