@@ -124,6 +124,7 @@ $("#wine-style").on("click", ".wine-style", async function(e) {
 
 
   const wine_results = await axios.get(`/wine_style/${wineStyle}`)
+  // console.log(wine_results.data.wine_results);
  
   populateWineResults(wine_results.data.wine_results)
   
@@ -132,11 +133,16 @@ $("#wine-style").on("click", ".wine-style", async function(e) {
 function populateWineResults(wine_results) {
   wineHtml = $("#wine-results")
   wineHtml.html("")
-
-
-for (wine of wine_results) {
-
   
+  if (wine_results[0] == "No Results") {
+
+    const html = '<h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>'
+    wineHtml.append(html)
+
+  } else {
+
+    for (wine of wine_results) {
+
   const html = `<div class="column is-half">
   <div class="has-text-centered">
   </div>
@@ -169,14 +175,14 @@ for (wine of wine_results) {
     <a href="#" class="card-footer-item">Favorite</a>
     <a href="#" class="card-footer-item">Review</a>
   </footer>
-</div>
-</div>`
+  </div>
+  </div>`
 
-wineHtml.append(html)
+    wineHtml.append(html)
 
+    }
+  }
 }
-}
-
 
 
 // =================================================  FILTER BY / HOME PAGE ================================================

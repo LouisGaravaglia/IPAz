@@ -21,7 +21,7 @@
 <aside class="menu sticky">
   <ul class="menu-list">
     <li>
-      <a class="">Filter By</a>
+      <p class="">Filter By</p>
       <ul id="checkboxes">
         {% for filter in session['filters'] %}
           {% if filter in session['filter_by'] %}
@@ -44,8 +44,10 @@
 <div class="column is-three-quarters">
 <div class="columns my-3 mx-3 is-multiline" id="wine-results">
 {% for wine in wines%}
-
-
+  {% if wine == 'No Results' %}
+  <h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>
+{% else %}
+  
 <div class="column is-half">
   <div class="has-text-centered">
   </div>
@@ -80,8 +82,8 @@
   </footer>
 </div>
 </div>
-
-
+  
+  {% endif %}
 {% endfor %}
 </div>
 </div>

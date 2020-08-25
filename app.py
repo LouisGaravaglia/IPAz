@@ -319,7 +319,12 @@ def get_wine_style_choices(new_wine_style):
         wine_results = filter_results.blends_only(filter_list, varietals)
     else: 
         wine_results = filter_results.single_varietal(filter_list, varietals)
+        
+    if wine_results == []:
+        wine_results = ['No Results']
 
+    
+    
     return jsonify(wine_results=wine_results)
 
 
@@ -420,6 +425,9 @@ def show_results():
 
    
     wine_results = filter_results.all_wines(filter_list, varietals)
+    
+    if wine_results == []:
+        wine_results = ['No Results']
 
     return render_template("wine_results.html", wines=wine_results)
 
