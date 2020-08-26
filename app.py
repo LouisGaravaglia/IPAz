@@ -180,7 +180,7 @@ def add_like(wine_id):
         
     db.session.commit()
 
-    return redirect("/show_results")
+    return jsonify(user_favorites=user_favorites)
 
 # ===================================    REVIEWS ROUTE    =====================================
 
@@ -206,7 +206,7 @@ def review(wine_id):
         rating = form.rating.data
         content = form.review.data
             
-        review = Post(rating=rating, review=content)
+        review = Post(rating=rating, review=content, wine_id=wine_id, user_id=g.user.id)
         db.session.add(review)
         db.session.commit()
 
@@ -214,7 +214,13 @@ def review(wine_id):
         return redirect("/user")
 
     else:
-        return render_template('review.html', form=form)
+        
+        wine = Wine.query.get_or_404(wine_id)
+        
+        # import pdb
+        # pdb.set_trace()
+        
+        return render_template('review.html', form=form, wine=wine)
 
 
 # ===================================    CACHE    =====================================

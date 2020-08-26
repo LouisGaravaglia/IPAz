@@ -4,18 +4,64 @@
 
 {% block content %}
 
-
-
-
-
-
+<!-- =====================================  WINE  =====================================  -->
 
 <div class="columns">
-  <div class="column is-one-third">
-    
+  <!-- <div class="column is-one-quarter"></div> -->
+   <!-- <div class="column is-one-fifth"></div> -->
+  <div class="column ml-6 mt-3">
+  <article class="message is-dark">
+  
+  <div class="message-header">
+    <p>{{wine.name}}</p>
   </div>
 
-  <div class="column is-one-third mx-6">
+  <div class="message-body">
+    <p><strong>NAME: </strong>{{wine.name}}</p>
+    <p><strong>WINERY: </strong>{{wine.winery}}</p>
+    <p><strong>COUNTRY: </strong>{{wine.country}}</p>
+    <p><strong>AREA: </strong>{{wine.area}}</p>
+    <p><strong>VINTAGE: </strong>{{wine.vintage}}</p>
+    <p><strong>VARIETAL: </strong>{{wine.varietal}}</p>
+    <p><strong>TYPE: </strong>{{wine.type}}</p>
+    <p><strong>RATING: </strong>{{wine.rating}}</p>
+    <p><strong>WINE ID: </strong>{{wine.id}}</p>
+  </div>
+
+  <div class="columns">
+    <div class="column is-half has-text-centered mx-0 my-0" id="favorite-button">
+      <!-- <form method="POST" action="/user/add_favorite/{{wine['ID']}}" id="review-form"> -->
+      {% if wine['ID'] in user_favorites %}
+      <button class="button is-dark fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
+      {% else %}
+      <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
+      {% endif %}
+      
+        <span class="icon is-small favorite-button">
+        <i class="fas fa-thumbtack favorite-button"></i>
+        </span>
+      </button>
+      <!-- </form> -->
+    </div>
+    <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
+      <form method="POST" action="/user/review/{{wine['ID']}}" id="review-form">
+      <button class="button is-text review-btn" data-id="{{wine['ID']}}">
+        <span class="icon is-small is-right review-btn">
+        <i class="fas fa-pen review-btn"></i>
+        </span>
+      </button>
+      </form>
+    </div>
+  </div>
+</article>
+</div>
+
+<div class="column is-one-fifth"></div>
+<!-- =====================================  REVIEW FORM  =====================================  -->
+
+
+
+  <div class="column mr-6 mt-3">
 <form method="POST" id="user_form">
   {{ form.hidden_tag() }} 
 
@@ -60,13 +106,11 @@
   </div>
   
 
-  <div class="column is-one-third">
-    
-  </div>
+ <!-- <div class="column is-one-fifth"></div> -->
+<!-- <div class="column is-one-quarter"></div> -->
+
 
 </div>
-
-
 
 
 

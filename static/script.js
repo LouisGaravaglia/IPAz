@@ -90,7 +90,8 @@ for (varietal of varietal_array) {
 
 $("#wine-style").on("click", ".wine-style", async function(e) {
   const selected_button = e.target.parentElement;
-  
+   
+
 
 
 
@@ -134,10 +135,6 @@ $("#wine-style").on("click", ".wine-style", async function(e) {
 function populateWineResults(wine_results, favorites) {
   wineHtml = $("#wine-results")
   wineHtml.html("")
-   console.log(favorites);
-   console.log(wine_results);
-   console.log(wine_results[0]['ID']);
-   console.log(favorites.includes(wine_results[0]['ID']));
   
   if (wine_results[0] == "No Results") {
 
@@ -153,7 +150,7 @@ function populateWineResults(wine_results, favorites) {
   <div class="has-text-centered">
   </div>
 
-<article class="message is-dark" id="favorite-button">
+<article class="message is-dark">
   
   <div class="message-header">
     <p>${wine['Name']}</p>
@@ -172,13 +169,11 @@ function populateWineResults(wine_results, favorites) {
 
   <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0" id="favorite-button">
-    <form method="POST" action="/user/add_favorite/${wine['ID']}" id="review-form">
       <button class="button is-dark favorite-button" data-id="${wine['ID']}">
         <span class="icon is-small favorite-button">
         <i class="fas fa-thumbtack favorite-button"></i>
         </span>
       </button>
-      </form>
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
     <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
@@ -200,7 +195,7 @@ function populateWineResults(wine_results, favorites) {
   <div class="has-text-centered">
   </div>
 
-<article class="message is-dark" id="favorite-button">
+<article class="message is-dark">
   
   <div class="message-header">
     <p>${wine['Name']}</p>
@@ -219,13 +214,11 @@ function populateWineResults(wine_results, favorites) {
 
   <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0" id="favorite-button">
-    <form method="POST" action="/user/add_favorite/${wine['ID']}" id="review-form">
       <button class="button is-text favorite-button" data-id="${wine['ID']}">
         <span class="icon is-small favorite-button">
         <i class="fas fa-thumbtack favorite-button"></i>
         </span>
       </button>
-      </form>
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
     <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
@@ -254,19 +247,43 @@ function populateWineResults(wine_results, favorites) {
 
 // =================================================  FAVORITE BUTTON ================================================
 
-
+window.addEventListener('load', (event) => {
+ 
 
 $("#favorite-button").on("click", ".favorite-button", async function(e) {
-  console.log(e);
+  console.log(e.target.dataset.id);
+
+  // const favorite_log = await axios.post(`/user/add_favorite/${e.target.dataset.id}`)
+
+  // const wine_results = await axios.get(`/wine_style/""`)
+  // wines = wine_results.data.wine_results;
+  // favs = wine_results.data.user_favorites;
+ 
+  // populateWineResults(wines, favs)
   
 
-  const wine_results = await axios.get(`/wine_style/""`)
-  wines = wine_results.data.wine_results;
-  favs = wine_results.data.user_favorites;
- 
-  populateWineResults(wines, favs)
 
 })
+
+
+  })
+
+// document.addEventListener('DOMContentLoaded', favoriteToggle, false);
+
+// function favoriteToggle() {
+// $("#favorite-button").on("click", ".favorite-button", async function(e) {
+//   alert("jaja")
+  
+
+//   // const wine_results = await axios.get(`/wine_style/""`)
+//   // wines = wine_results.data.wine_results;
+//   // favs = wine_results.data.user_favorites;
+ 
+//   // populateWineResults(wines, favs)
+
+// })
+// }
+
 
 
 // =================================================  REVIEW BUTTON ================================================
@@ -292,7 +309,7 @@ $("#filter-by").on("click", ".filter-by", async function(e) {
   const selected_button = e.target;
   selected_button.classList.toggle("is-focused")
   filterBy = selected_button.innerText
-  console.log(e.target);
+  
 
 
   if (filterBy == 'Rating (Highest)') {
