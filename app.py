@@ -155,7 +155,7 @@ def profile_page():
 
 # ===================================    FAVORITES ROUTE    =====================================
 
-@app.route("/user/add_like/<int:wine_id>", methods=['POST'])
+@app.route("/user/add_favorite/<int:wine_id>", methods=['POST'])
 def add_like(wine_id):
     """Add the liked message user id to a list."""
     
