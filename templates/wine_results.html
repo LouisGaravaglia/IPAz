@@ -85,11 +85,13 @@
       </button>
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
+      <form method="POST" action="/user/review/{{wine['ID']}}" id="review-form">
       <button class="button is-text review-btn" data-id="{{wine['ID']}}">
         <span class="icon is-small is-right review-btn">
         <i class="fas fa-pen review-btn"></i>
         </span>
       </button>
+      </form>
     </div>
   </div>
 </article>

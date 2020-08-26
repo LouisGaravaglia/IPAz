@@ -179,11 +179,13 @@ function populateWineResults(wine_results, favorites) {
       </button>
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
+    <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
       <button class="button is-text review-btn" data-id="${wine['ID']}>
         <span class="icon is-small is-right review-btn">
         <i class="fas fa-pen review-btn"></i>
         </span>
       </button>
+      </form>
     </div>
   </div>
 </article>
@@ -222,11 +224,13 @@ function populateWineResults(wine_results, favorites) {
       </button>
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
+    <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
       <button class="button is-text review-btn" data-id="${wine['ID']}>
         <span class="icon is-small is-right review-btn">
         <i class="fas fa-pen review-btn"></i>
         </span>
       </button>
+      </form>
     </div>
   </div>
 </article>
@@ -265,17 +269,17 @@ $("#favorite-button").on("click", ".favorite-button", async function(e) {
 
 
 
-$("#review-btn").on("click", ".review-btn", async function(e) {
-  console.log(e);
-  // const res = await axios.post("/user/add_like/<int:wine_id>")
+// $("#review-btn").on("click", ".review-btn", async function(e) {
+//   console.log(e);
+//   // const res = await axios.post("/user/add_like/<int:wine_id>")
 
-  // const wine_results = await axios.get(`/wine_style/""`)
-  // wines = wine_results.data.wine_results;
-  // favs = wine_results.data.user_favorites;
+//   // const wine_results = await axios.get(`/wine_style/""`)
+//   // wines = wine_results.data.wine_results;
+//   // favs = wine_results.data.user_favorites;
  
-  // populateWineResults(wines, favs)
+//   // populateWineResults(wines, favs)
 
-})
+// })
 
 
 // =================================================  FILTER BY / HOME PAGE ================================================
