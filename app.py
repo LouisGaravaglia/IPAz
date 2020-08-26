@@ -168,6 +168,8 @@ def add_like(wine_id):
         flash("Access unauthorized.", "danger")
         return redirect("/show_results")
 
+
+        
     faved_wine = Wine.query.get_or_404(wine_id)
     # if faved_wine.user_id in g.user.fav_wines:
     #     flash("You've already liked that.", "danger")

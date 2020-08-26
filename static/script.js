@@ -123,7 +123,6 @@ $("#wine-style").on("click", ".wine-style", async function(e) {
 
   wineStyle = selected_button.innerText
 
-
   const wine_results = await axios.get(`/wine_style/${wineStyle}`)
   wines = wine_results.data.wine_results;
   favs = wine_results.data.user_favorites;
@@ -297,7 +296,7 @@ function populateWineResults(wine_results, favorites) {
         wines = wine_results.data.wine_results;
         favs = fav_wine_list.data.fav_wine_list;
         populateWineResults(wines, favs)
-        
+
     }
     
 
