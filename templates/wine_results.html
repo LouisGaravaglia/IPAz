@@ -71,7 +71,7 @@
   </div>
 
   <div class="columns">
-    <div class="column is-half has-text-centered mx-0 my-0" id="favorite-button">
+    <div class="column is-half has-text-centered mx-0 my-0">
       <!-- <form method="POST" action="/user/add_favorite/{{wine['ID']}}" id="review-form"> -->
       {% if wine['ID'] in user_favorites %}
       <button class="button is-dark fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
@@ -79,8 +79,8 @@
       <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
       {% endif %}
       
-        <span class="icon is-small favorite-button">
-        <i class="fas fa-thumbtack favorite-button"></i>
+        <span class="icon is-small">
+        <i class="fas fa-thumbtack"></i>
         </span>
       </button>
       <!-- </form> -->

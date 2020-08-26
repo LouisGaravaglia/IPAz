@@ -155,6 +155,8 @@ def profile_page():
 
 # ===================================    FAVORITES ROUTE    =====================================
 
+########################### ADDING A FAVORITE
+
 @app.route("/user/add_favorite/<int:wine_id>", methods=['POST'])
 def add_like(wine_id):
     """Add the liked message user id to a list."""
@@ -179,8 +181,37 @@ def add_like(wine_id):
         g.user.fav_wines.append(faved_wine)
         
     db.session.commit()
+    
+    fav_wine_list = []
+    
+    for wine in g.user.fav_wines:
+        fav_wine_list.append(wine.id)
 
-    return jsonify(user_favorites=user_favorites)
+    return jsonify(fav_wine_list=fav_wine_list)
+
+########################### VIEWING USER FAVORITES
+
+@app.route("/user/favorites")
+def view_favorites():
+    """Viewing all favorited wines of the user."""
+    
+    # import pdb
+    # pdb.set_trace()
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/show_results")
+
+    user = User.query.get_or_404(g.user.id)
+    faved_wines = user.fav_wines
+    
+    # if faved_wine.user_id in g.user.fav_wines:
+    #     flash("You've already liked that.", "danger")
+    #     return redirect("/")
+    
+
+
+    return render_template("favorites.html", faved_wines=faved_wines)
 
 # ===================================    REVIEWS ROUTE    =====================================
 

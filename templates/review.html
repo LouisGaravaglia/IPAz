@@ -6,10 +6,10 @@
 
 <!-- =====================================  WINE  =====================================  -->
 
-<div class="columns">
+<div class="columns is-vcentered">
   <!-- <div class="column is-one-quarter"></div> -->
    <!-- <div class="column is-one-fifth"></div> -->
-  <div class="column ml-6 mt-3">
+  <div class="column ml-6 mt-3 is-centered">
   <article class="message is-dark">
   
   <div class="message-header">
@@ -28,31 +28,8 @@
     <p><strong>WINE ID: </strong>{{wine.id}}</p>
   </div>
 
-  <div class="columns">
-    <div class="column is-half has-text-centered mx-0 my-0" id="favorite-button">
-      <!-- <form method="POST" action="/user/add_favorite/{{wine['ID']}}" id="review-form"> -->
-      {% if wine['ID'] in user_favorites %}
-      <button class="button is-dark fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
-      {% else %}
-      <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
-      {% endif %}
-      
-        <span class="icon is-small favorite-button">
-        <i class="fas fa-thumbtack favorite-button"></i>
-        </span>
-      </button>
-      <!-- </form> -->
-    </div>
-    <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-      <form method="POST" action="/user/review/{{wine['ID']}}" id="review-form">
-      <button class="button is-text review-btn" data-id="{{wine['ID']}}">
-        <span class="icon is-small is-right review-btn">
-        <i class="fas fa-pen review-btn"></i>
-        </span>
-      </button>
-      </form>
-    </div>
-  </div>
+
+
 </article>
 </div>
 
@@ -83,7 +60,7 @@
   {{form.review.label(class_="label")}}
   <!-- <label class="label">Email</label> -->
   <div class="control has-icons-left">
-     {{form.review(class_="textarea", placeholder="Enter a review", rows="10")}}
+     {{form.review(class_="textarea", placeholder="Enter a review", rows="6")}}
     <!-- <input class="input is-danger" type="email" placeholder="Email input" value="hello@"> -->
 <!-- <textarea class="textarea" placeholder="10 lines of textarea" rows="10"></textarea> -->
   </div>

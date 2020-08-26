@@ -168,10 +168,10 @@ function populateWineResults(wine_results, favorites) {
   </div>
 
   <div class="columns">
-    <div class="column is-half has-text-centered mx-0 my-0" id="favorite-button">
+    <div class="column is-half has-text-centered mx-0 my-0">
       <button class="button is-dark favorite-button" data-id="${wine['ID']}">
-        <span class="icon is-small favorite-button">
-        <i class="fas fa-thumbtack favorite-button"></i>
+        <span class="icon is-small">
+        <i class="fas fa-thumbtack"></i>
         </span>
       </button>
     </div>
@@ -213,10 +213,10 @@ function populateWineResults(wine_results, favorites) {
   </div>
 
   <div class="columns">
-    <div class="column is-half has-text-centered mx-0 my-0" id="favorite-button">
+    <div class="column is-half has-text-centered mx-0 my-0">
       <button class="button is-text favorite-button" data-id="${wine['ID']}">
-        <span class="icon is-small favorite-button">
-        <i class="fas fa-thumbtack favorite-button"></i>
+        <span class="icon is-small">
+        <i class="fas fa-thumbtack"></i>
         </span>
       </button>
     </div>
@@ -247,26 +247,66 @@ function populateWineResults(wine_results, favorites) {
 
 // =================================================  FAVORITE BUTTON ================================================
 
-window.addEventListener('load', (event) => {
- 
 
-$("#favorite-button").on("click", ".favorite-button", async function(e) {
-  console.log(e.target.dataset.id);
+  $("#wine-results").on("click", ".favorite-button", async function(e) {
 
-  // const favorite_log = await axios.post(`/user/add_favorite/${e.target.dataset.id}`)
+    const target = e.target;
 
-  // const wine_results = await axios.get(`/wine_style/""`)
-  // wines = wine_results.data.wine_results;
-  // favs = wine_results.data.user_favorites;
- 
-  // populateWineResults(wines, favs)
+    if (target.tagName == "BUTTON") {
+      let wineId = target.dataset.id;
+      console.log(wineId);
+
+        const fav_wine_list = await axios.post(`/user/add_favorite/${wineId}`)
+        const wine_results = await axios.get(`/wine_style/""`)
+        wines = wine_results.data.wine_results;
+        favs = fav_wine_list.data.fav_wine_list;
+        populateWineResults(wines, favs)
+
+    } else if (target.tagName == "path") {
+      const button = target.parentElement.parentElement.parentElement;
+      let wineId = button.dataset.id;
+      // console.log(button);
+      console.log(wineId);
+
+       const fav_wine_list = await axios.post(`/user/add_favorite/${wineId}`)
+        const wine_results = await axios.get(`/wine_style/""`)
+        wines = wine_results.data.wine_results;
+        favs = fav_wine_list.data.fav_wine_list;
+        populateWineResults(wines, favs)
+
+    } else if (target.tagName == "SPAN") {
+      const button = target.parentElement;
+      let wineId = button.dataset.id;
+      // console.log(button);
+      console.log(wineId);
+
+        const fav_wine_list = await axios.post(`/user/add_favorite/${wineId}`)
+        const wine_results = await axios.get(`/wine_style/""`)
+        wines = wine_results.data.wine_results;
+        favs = fav_wine_list.data.fav_wine_list;
+        populateWineResults(wines, favs)
+
+    } else if (target.tagName == "svg") {
+      const button = target.parentElement.parentElement;
+      let wineId = button.dataset.id;
+      // console.log(button);
+      console.log(wineId);
+
+       const fav_wine_list = await axios.post(`/user/add_favorite/${wineId}`)
+        const wine_results = await axios.get(`/wine_style/""`)
+        wines = wine_results.data.wine_results;
+        favs = fav_wine_list.data.fav_wine_list;
+        populateWineResults(wines, favs)
+        
+    }
+    
+
+
   
 
 
-})
-
-
   })
+
 
 // document.addEventListener('DOMContentLoaded', favoriteToggle, false);
 
