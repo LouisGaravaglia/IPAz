@@ -52,7 +52,7 @@
   <div class="has-text-centered">
   </div>
   
-  <article class="message is-dark">
+  <article class="message is-dark" id="favorite-button">
   
   <div class="message-header">
     <p>{{wine['Name']}}</p>
@@ -67,27 +67,27 @@
     <p><strong>VARIETAL: </strong>{{wine['Varietal']}}</p>
     <p><strong>TYPE: </strong>{{wine['Type']}}</p>
     <p><strong>RATING: </strong>{{wine['Rating']}}</p>
+    <p><strong>WINE ID: </strong>{{wine['ID']}}</p>
   </div>
 
   <div class="columns">
-    <div class="column is-half has-text-centered mx-0 my-0">
-    <form method="POST" action="/user/add_like/{{wine['ID']}}" id="favorite-form">
+    <div class="column is-half has-text-centered mx-0 my-0" id="favorite-button">
       
       {% if wine['ID'] in user_favorites %}
-      <button class="button is-dark" type="submit">
+      <button class="button is-dark fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
       {% else %}
-      <button class="button is-text" type="submit">
+      <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
       {% endif %}
       
-        <span class="icon is-small">
-        <i class="fas fa-thumbtack"></i>
+        <span class="icon is-small favorite-button">
+        <i class="fas fa-thumbtack favorite-button"></i>
         </span>
       </button>
     </div>
-    <div class="column is-half has-text-centered mx-0 my-0">
-      <button class="button is-text">
-        <span class="icon is-small is-right">
-        <i class="fas fa-pen"></i>
+    <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
+      <button class="button is-text review-btn" data-id="{{wine['ID']}}">
+        <span class="icon is-small is-right review-btn">
+        <i class="fas fa-pen review-btn"></i>
         </span>
       </button>
     </div>

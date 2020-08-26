@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import StringField, PasswordField, TextAreaField, DecimalField
 from wtforms.validators import InputRequired, Optional, NumberRange, URL, AnyOf, Length, Email, DataRequired
 
 
 class ReviewForm(FlaskForm):
     """Form for adding/editing reviews."""
 
-    text = TextAreaField('text', validators=[DataRequired()])
+    rating = DecimalField('Rating', validators=[DataRequired()])
+    review = TextAreaField('Review', validators=[DataRequired()])
 
 
 class UserAddForm(FlaskForm):

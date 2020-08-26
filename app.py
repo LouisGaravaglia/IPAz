@@ -184,9 +184,40 @@ def add_like(wine_id):
 
 # ===================================    REVIEWS ROUTE    =====================================
 
+@app.route('/user/review/<int:wine_id>', methods=["GET", "POST"])
+def review(wine_id):
+    """Handle going to review form for a specific wine, 
+    and posting the review.
+    """
+
+    form = ReviewForm()
+    
+    if form.is_submitted():
+        print("submitted")
+    
+
+    if form.validate():
+        print("valid")
+        
+    print(form.errors)
+
+    if form.validate_on_submit():
+        
+        rating = form.rating.data
+        content = form.review.data
+            
+        review = Post(rating=rating, review=content)
+        db.session.add(review)
+        db.session.commit()
+
+    
+        return redirect("/user")
+
+    else:
+        return render_template('review.html', form=form)
 
 
-##############################################################################
+# ===================================    CACHE    =====================================
 # Turn off all caching in Flask
 #   (useful for dev; in production, this kind of stuff is typically
 #   handled elsewhere)
@@ -440,15 +471,14 @@ def get_varietals():
 
     filter_list = session['filter_by']
     
-    # import pdb
-    # pdb.set_trace()
+    
     
     if 'Red' in filter_list:
         red_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Red").all()]
         
     if 'White' in filter_list:
         white_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="White").all()]
-        
+       
     if 'Rose' in filter_list:
         rose_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Rose").all()]
         
@@ -498,6 +528,9 @@ def show_results():
 
    
     wine_results = filter_results.all_wines(filter_list, varietals)
+    
+    # import pdb
+    # pdb.set_trace()
     
     if g.user:
         user_favorites = []
