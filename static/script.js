@@ -304,8 +304,9 @@ const getFavList = async function(wineId) {
 function populateFavorites(favorites) {
   favoritesHtml = $("#wine-favorites")
   favoritesHtml.html("")
-  
-  if (favorites[0] == "No Results") {
+  // console.log(favorites);
+  // console.log(favorites[0]);
+  if (!favorites[0]) {
 
     const html = '<h3 class="title is-3 has-text-centered mt-6">No favorites yet.</h3>'
     favoritesHtml.append(html)

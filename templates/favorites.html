@@ -6,7 +6,11 @@
 {% block content %}
 
 <div class="columns my-3 mx-3 is-multiline" id="wine-favorites">
+ {% if faved_wines[0] == Undefined %}
+    <h3 class="title is-3 has-text-centered mt-6">No favorites yet.</h3>
+  {% else %}
 {% for wine in faved_wines %}
+ 
 
 <div class="column is-one-third">
   <article class="message is-dark">
@@ -49,7 +53,9 @@
 </article>
 </div>
 
+  
 {% endfor %}
+{% endif %}
 </div>
 
 
