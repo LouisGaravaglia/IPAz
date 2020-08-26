@@ -1,14 +1,18 @@
 
 
-// This function is here so that the varietal selects do not get added upon each other when user hits the back GamepadButton.
-// window.addEventListener( "pageshow", function ( event ) {
-//   var historyTraversal = event.persisted || 
-//                          ( typeof window.performance != "undefined" && 
-//                               window.performance.navigation.type === 2 );
-//   if ( historyTraversal ) {
-//     window.location.reload();
-//   }
-// });
+// This function is here so that the user favorites get updated in the show_results route if the user
+// hits back from the favorties route after unfavoriting a wine.
+window.addEventListener( "pageshow", function ( event ) {
+  const address = document.location.href;
+
+  if (address.includes("show_results") ) {
+      var historyTraversal = event.persisted || 
+            ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
+      if ( historyTraversal ) {
+        window.location.reload();
+      }
+  }
+});
 
 // =================================================  WINE TYPE / HOME PAGE  ================================================
 
@@ -675,6 +679,22 @@ async function makeAPIcall() {
   await axios.get("/api/get_rose_wines")
 
 }
+async function getReds() {
+  await axios.get("/api/get_red_wines")
+
+
+}
+
+async function getWhites() {
+  await axios.get("/api/get_white_wines")
+
+}
+
+async function getRose() {
+  await axios.get("/api/get_rose_wines")
+
+}
+
 
 
 
