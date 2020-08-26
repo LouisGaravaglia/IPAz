@@ -90,7 +90,7 @@ for (varietal of varietal_array) {
 
 $("#wine-style").on("click", ".wine-style", async function(e) {
   const selected_button = e.target.parentElement;
-  console.log(selected_button.innerText);
+  
 
 
 
@@ -124,15 +124,20 @@ $("#wine-style").on("click", ".wine-style", async function(e) {
 
 
   const wine_results = await axios.get(`/wine_style/${wineStyle}`)
-  // console.log(wine_results.data.wine_results);
+  wines = wine_results.data.wine_results;
+  favs = wine_results.data.user_favorites;
  
-  populateWineResults(wine_results.data.wine_results)
+  populateWineResults(wines, favs)
   
 })
 
-function populateWineResults(wine_results) {
+function populateWineResults(wine_results, favorites) {
   wineHtml = $("#wine-results")
   wineHtml.html("")
+   console.log(favorites);
+   console.log(wine_results);
+   console.log(wine_results[0]['ID']);
+   console.log(favorites.includes(wine_results[0]['ID']));
   
   if (wine_results[0] == "No Results") {
 
@@ -142,6 +147,51 @@ function populateWineResults(wine_results) {
   } else {
 
     for (wine of wine_results) {
+
+      if (favorites.includes(wine['ID'])) {
+  const html = `<div class="column is-half">
+  <div class="has-text-centered">
+  </div>
+
+<article class="message is-dark">
+  
+  <div class="message-header">
+    <p>${wine['Name']}</p>
+  </div>
+
+  <div class="message-body">
+    <p><strong>NAME: </strong>${wine['Name']}</p>
+    <p><strong>WINERY: </strong>${wine['Winery']}</p>
+    <p><strong>COUNTRY: </strong>${wine['Country']}</p>
+    <p><strong>AREA: </strong>${wine['Area']}</p>
+    <p><strong>VINTAGE: </strong>${wine['Vintage']}</p>
+    <p><strong>VARIETAL: </strong>${wine['Varietal']}</p>
+    <p><strong>TYPE: </strong>${wine['Type']}</p>
+    <p><strong>RATING: </strong>${wine['Rating']}</p>
+  </div>
+
+  <div class="columns">
+    <div class="column is-half has-text-centered mx-0 my-0">
+    <form method="POST" action="/user/add_like/${wine['ID']}" id="favorite-form">
+      <button class="button is-dark">
+        <span class="icon is-small">
+        <i class="fas fa-thumbtack"></i>
+        </span>
+      </button>
+    </div>
+    <div class="column is-half has-text-centered mx-0 my-0">
+      <button class="button is-text">
+        <span class="icon is-small is-right">
+        <i class="fas fa-pen"></i>
+        </span>
+      </button>
+    </div>
+  </div>
+</article>
+
+  </div>`
+   wineHtml.append(html)
+      } else {
 
   const html = `<div class="column is-half">
   <div class="has-text-centered">
@@ -166,6 +216,7 @@ function populateWineResults(wine_results) {
 
   <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0">
+    <form method="POST" action="/user/add_like/${wine['ID']}" id="favorite-form">
       <button class="button is-text">
         <span class="icon is-small">
         <i class="fas fa-thumbtack"></i>
@@ -184,7 +235,12 @@ function populateWineResults(wine_results) {
 
   </div>`
 
-    wineHtml.append(html)
+ wineHtml.append(html)
+      }
+
+
+
+   
 
     }
   }
@@ -291,7 +347,9 @@ async function sendVarietals(varietal) {
 async function toggleSortByFilter(sibling, siblingName, targetInput, filterName ) {
           await sendSortBy(filterName)
           const wine_results = await axios.get(`/wine_style/""`)
-          populateWineResults(wine_results.data.wine_results)
+          wines = wine_results.data.wine_results;
+          favs = wine_results.data.user_favorites;
+          populateWineResults(wines, favs)
 
           if (sibling.classList.contains("is-focused")) {
             sibling.classList.remove("is-focused");
@@ -320,7 +378,9 @@ async function toggleWineTypeFilter(target, filterName, targetInput) {
         }
 
         const wine_results = await axios.get(`/wine_style/""`)
-        populateWineResults(wine_results.data.wine_results)
+        wines = wine_results.data.wine_results;
+        favs = wine_results.data.user_favorites;
+        populateWineResults(wines, favs)
 }
 
 $("#checkboxes").on("click", ".panel-block", async function(e) {
@@ -364,7 +424,9 @@ $("#checkboxes").on("click", ".panel-block", async function(e) {
         }
 
         const wine_results = await axios.get(`/wine_style/""`)
-        populateWineResults(wine_results.data.wine_results)
+        wines = wine_results.data.wine_results;
+        favs = wine_results.data.user_favorites;
+        populateWineResults(wines, favs)
 
     } else if (filterName == 'Rating (Highest)') {
           ratingLowest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
@@ -389,7 +451,9 @@ $("#checkboxes").on("click", ".panel-block", async function(e) {
     } else if (filterName == 'Winery (Alphabetically)') {
           await sendSortBy(filterName)
           const wine_results = await axios.get(`/wine_style/""`)
-          populateWineResults(wine_results.data.wine_results)
+          wines = wine_results.data.wine_results;
+          favs = wine_results.data.user_favorites;
+          populateWineResults(wines, favs)
 
           if (targetInput.classList.contains("is-focused")) {
           targetInput.classList.remove("is-focused")
@@ -437,8 +501,9 @@ $("#modal").on("click", ".toggle-off", async function() {
   modal.toggleClass("is-active")
 
   const wine_results = await axios.get(`/wine_style/""`)
- 
-  populateWineResults(wine_results.data.wine_results)
+  wines = wine_results.data.wine_results;
+  favs = wine_results.data.user_favorites;
+  populateWineResults(wines, favs)
 
 })
 

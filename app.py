@@ -159,8 +159,8 @@ def profile_page():
 def add_like(wine_id):
     """Add the liked message user id to a list."""
     
-    import pdb
-    pdb.set_trace()
+    # import pdb
+    # pdb.set_trace()
 
     if not g.user:
         flash("Access unauthorized.", "danger")
@@ -382,10 +382,23 @@ def get_wine_style_choices(new_wine_style):
         
     if wine_results == []:
         wine_results = ['No Results']
+    
+    
+        
+    if g.user:
+        user_favorites = []
+        user_favs = g.user.fav_wines
+        for fav in user_favs:
+            user_favorites.append(fav.id)
+        
+    else:
+        user_favorites = []
+        
+    
 
     
     
-    return jsonify(wine_results=wine_results)
+    return jsonify(wine_results=wine_results, user_favorites=user_favorites)
 
 
 
@@ -487,7 +500,11 @@ def show_results():
     wine_results = filter_results.all_wines(filter_list, varietals)
     
     if g.user:
-        user_favorites = g.user.fav_wines
+        user_favorites = []
+        user_favs = g.user.fav_wines
+        for fav in user_favs:
+            user_favorites.append(fav.id)
+        
     else:
         user_favorites = []
     
