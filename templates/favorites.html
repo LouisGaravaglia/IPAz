@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="columns">
+<div class="columns my-3 mx-3 is-multiline" id="wine-favorites">
 {% for wine in faved_wines %}
 
 <div class="column is-one-third">
@@ -28,19 +28,13 @@
   </div>
 
     <div class="columns">
-    <div class="column is-half has-text-centered mx-0 my-0" id="favorite-button">
-      <!-- <form method="POST" action="/user/add_favorite/{{wine['ID']}}" id="review-form"> -->
-      {% if wine.id in user_favorites %}
+    <div class="column is-half has-text-centered mx-0 my-0">
       <button class="button is-dark fav-button favorite-button" data-id="{{wine.id}}" type="submit">
-      {% else %}
-      <button class="button is-text fav-button favorite-button" data-id="{{wine.id}}" type="submit">
-      {% endif %}
-      
-        <span class="icon is-small favorite-button">
-        <i class="fas fa-thumbtack favorite-button"></i>
+        <span class="icon is-small">
+        <i class="fas fa-thumbtack"></i>
         </span>
       </button>
-      <!-- </form> -->
+      
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
       <form method="POST" action="/user/review/{{wine.id}}" id="review-form">

@@ -153,9 +153,7 @@ def profile_page():
     return render_template("profile.html", user=user)
 
 
-# ===================================    FAVORITES ROUTE    =====================================
-
-########################### ADDING A FAVORITE
+# ===================================    ADDING FAVORITE   =====================================
 
 @app.route("/user/add_favorite/<int:wine_id>", methods=['POST'])
 def add_like(wine_id):
@@ -184,14 +182,24 @@ def add_like(wine_id):
         
     db.session.commit()
     
-    fav_wine_list = []
+    fav_ids = []
+    fav_wines = []
     
     for wine in g.user.fav_wines:
-        fav_wine_list.append(wine.id)
+        fav_ids.append(wine.id)
+        fav_wines.append({'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name})
+        
+        
+    
+    
+    
+    
+    # import pdb
+    # pdb.set_trace()
 
-    return jsonify(fav_wine_list=fav_wine_list)
+    return jsonify(fav_wine_list=fav_ids, fav_wines=fav_wines)
 
-########################### VIEWING USER FAVORITES
+# ===================================    VIEWING FAVORITES   =====================================
 
 @app.route("/user/favorites")
 def view_favorites():
@@ -204,8 +212,10 @@ def view_favorites():
         flash("Access unauthorized.", "danger")
         return redirect("/show_results")
 
-    user = User.query.get_or_404(g.user.id)
-    faved_wines = user.fav_wines
+    # user = User.query.get_or_404(g.user.id)
+    faved_wines = g.user.fav_wines
+    
+
     
     # if faved_wine.user_id in g.user.fav_wines:
     #     flash("You've already liked that.", "danger")
