@@ -7,22 +7,28 @@
 
   <!-- <h1 class="title is-1 has-text-centered mt-6">Want to.</h1> -->
 
-<div id="wine-style"class="tabs is-centered">
+<!-- ===============================  ORIGINAL WINE STYLE SORTING BAR  ===============================  -->
+
+
+<!-- <div id="wine-style"class="tabs is-centered">
   <ul>
     <li class="is-active wine-style"><a>All</a></li>
-    <li class="wine-style"><a>Blends Only</a></li>
-    <li class="wine-style"><a>Single Varietals Only</a></li>
+    <li class="wine-style"><a>Blends</a></li>
+    <li class="wine-style"><a>Single Varietals</a></li>
   </ul>
-</div>
+</div> -->
 
-<div class="columns my-3 mx-3">
+
+<!-- ===============================  ORIGINAL SIDE BAR  ===============================  -->
+
+<!-- <div class="columns my-3 mx-3">
 
 <div class="column is-one-quarter">
 <aside class="menu sticky">
   <ul class="menu-list">
     <li>
-      <p class="">Filter By</p>
-      <ul id="checkboxes">
+      <div><p class="">Filter By</p></div>
+      <ul id="checkboxes" class="hidden">
         {% for filter in session['filters'] %}
           {% if filter in session['filter_by'] %}
             <li><label class="panel-block"><input type="button" class="button is-primary is-outlined is-rounded is-small mx-2 is-focused" checked="checked">{{filter}}</label></li>
@@ -37,9 +43,85 @@
 
   <ul class="menu-list">
     <li><a id="choose-varietals" class="">Choose Varietals</a></li>
+</ul>
+   
+</aside>
+</div> -->
+
+
+
+<!-- ===============================  SORT BY SIDE BAR  ===============================  -->
+
+<div class="columns my-3 mx-3">
+
+<div class="column is-one-fifth">
+<aside class="menu sticky">
+  <ul class="menu-list">
+    <li>
+      <li><a id="choose-wine-type" class="noselect">Wine Types</a></li>
+      <hr class="dropdown-divider">
+      <ul id="wine-type-checkboxes" class="hidden">
+        {% for type in session['wine_type_options'] %}
+          {% if type in session['wine_type'] %}
+            <li><label class="panel-block"><input type="button" class="button is-primary is-outlined is-rounded is-small mx-2 is-focused" checked="checked">{{type}}</label></li>
+          {% else %}
+            <li><label class="panel-block"><input type="button" class="button is-primary is-outlined is-rounded is-small mx-2">{{type}}</label></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </li>
+  </ul>
+  <ul class="menu-list">
+    <li>
+      <li><a id="choose-wine-style" class="noselect">Wine Style</a></li>
+      <hr class="dropdown-divider">
+      <ul id="wine-style-checkboxes" class="hidden">
+        {% for style in session['wine_style_options'] %}
+          {% if style in session['wine_style'] %}
+            <li><label class="panel-block"><input type="button" class="button is-primary is-outlined is-rounded is-small mx-2 is-focused" checked="checked">{{style}}</label></li>
+          {% else %}
+            <li><label class="panel-block"><input type="button" class="button is-primary is-outlined is-rounded is-small mx-2">{{style}}</label></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </li>
+  </ul>
+  <ul class="menu-list">
+    <li>
+      <li><a id="choose-sort-by" class="noselect">Sort By</a></li>
+      <hr class="dropdown-divider">
+      <ul id="sort-by-checkboxes" class="hidden">
+        {% for sort in session['sort_by_options'] %}
+          {% if sort in session['sort_by'] %}
+            <li><label class="panel-block"><input type="button" class="button is-primary is-outlined is-rounded is-small mx-2 is-focused" checked="checked">{{sort}}</label></li>
+          {% else %}
+            <li><label class="panel-block"><input type="button" class="button is-primary is-outlined is-rounded is-small mx-2">{{sort}}</label></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </li>
+  </ul>
+
+  <ul class="menu-list">
+    <li><a id="choose-varietals"  class="noselect">Varietals</a></li>
+</ul>
+    <!-- ===============================  NEW SORT BY ===============================  -->
+<hr class="dropdown-divider">
+
+<!-- <div class="dropdown is-active">
+  <div class="dropdown-trigger">
+    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+      <span>Dropdown button</span>
+    </button>
+  </div>
+</div> -->
+
     
 </aside>
 </div>
+
+
+<!-- ===============================  WINE CARDS  ===============================  -->
 
 <div class="column is-three-quarters">
 <div class="columns my-3 mx-3 is-multiline" id="wine-results">
@@ -96,41 +178,6 @@
   </div>
 </article>
 
-
-  
-<!-- <div class="column is-half">
-  <div class="has-text-centered">
-  </div>
-
-  <div class="card">
-  <header class="card-header">
-    <p class="card-header-title">
-      Wine
-    </p>
-    <a href="#" class="card-header-icon" aria-label="more options">
-      <span class="icon">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </a>
-  </header>
-  <div class="card-content">
-    <div class="content">
-    <p>NAME: {{wine['Name']}}</p>
-    <p>WINERY: {{wine['Winery']}}</p>
-    <p>COUNTRY: {{wine['Country']}}</p>
-    <p>AREA: {{wine['Area']}}</p>
-    <p>VINTAGE: {{wine['Vintage']}}</p>
-    <p>VARIETAL: {{wine['Varietal']}}</p>
-    <p>TYPE: {{wine['Type']}}</p>
-    <p>RATING: {{wine['Rating']}}</p>
-      
-    </div>
-  </div>
-  <footer class="card-footer">
-    <a href="#" class="card-footer-item">Favorite</a>
-    <a href="#" class="card-footer-item">Review</a>
-  </footer>
-</div> -->
 </div>
   
   {% endif %}
@@ -139,6 +186,7 @@
 </div>
 </div>
 
+<!-- ===============================  MODAL FOR VARIETALS  ===============================  -->
 
 
 <div id="modal" class="modal">
@@ -152,7 +200,7 @@
       <!-- Content ... -->
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success toggle-off">Save changes</button>
+      <button class="button is-success toggle-off">Save</button>
       <!-- <button class="button toggle-off">Cancel</button> -->
     </footer>
   </div>

@@ -5,13 +5,13 @@
 window.addEventListener( "pageshow", function ( event ) {
   const address = document.location.href;
 
-  if (address.includes("show_results") ) {
+  // if (address.includes("show_results") ) {
       var historyTraversal = event.persisted || 
             ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
       if ( historyTraversal ) {
         window.location.reload();
       }
-  }
+  // }
 });
 
 // =================================================  WINE TYPE / HOME PAGE  ================================================
@@ -22,45 +22,6 @@ $("#wine-type").on("click", ".wine-type", async function(e) {
   wine_type = selected_button.innerText
   varietalDiv = $("#varietals")
   varietalDiv.html("")
-
-    if (wine_type == 'Red') {
-      allAbove = e.target.nextElementSibling.nextElementSibling.nextElementSibling;
-      if (allAbove.classList.contains("is-focused")) {
-          allAbove.classList.remove("is-focused")
-          await sendWineType('All of the above')
-      }
-    } else if (wine_type == 'White') {
-        allAbove = e.target.nextElementSibling.nextElementSibling;
-        if (allAbove.classList.contains("is-focused")) {
-           allAbove.classList.remove("is-focused")
-           await sendWineType('All of the above')
-        }
-    } else if (wine_type == 'Rose') {
-        allAbove = e.target.nextElementSibling;
-        if (allAbove.classList.contains("is-focused")) {
-           allAbove.classList.remove("is-focused")
-           await sendWineType('All of the above')
-        }
-    } else {
-        rose = e.target.previousElementSibling;
-        white = rose.previousElementSibling;
-        red = white.previousElementSibling;
-
-        if (rose.classList.contains("is-focused")) {
-           rose.classList.remove("is-focused")
-           await sendWineType('Rose')
-        }
-
-        if (white.classList.contains("is-focused")) {
-           white.classList.remove("is-focused")
-           await sendWineType('White')
-        }
-
-        if (red.classList.contains("is-focused")) {
-           red.classList.remove("is-focused")
-           await sendWineType('Red')
-        }
-    }
 
   await sendWineType(wine_type)
 
@@ -76,6 +37,22 @@ async function sendWineType(wine_type) {
   const res = await axios.get(`/wine_type/${wine_type}`)
 }
 
+// =================================================  SORT BY / HOME PAGE ================================================
+
+$("#filter-by").on("click", ".filter-by", async function(e) {
+  const selected_button = e.target;
+  selected_button.classList.toggle("is-focused")
+  filterBy = selected_button.innerText
+  
+  await sendSortBy(filterBy)
+  
+})
+
+async function sendSortBy(filterBy) {
+  const res = await axios.get(`/sort_by/${filterBy}`)
+}
+
+// =================================================  LOADING VARIETALS / HOME PAGE ================================================
 function populateVarietals(varietal_array, selected_varietals) {
 
 for (varietal of varietal_array) {
@@ -90,50 +67,31 @@ for (varietal of varietal_array) {
 }
 }
 
-// =================================================  WINE STYLE / RESULTS PAGE  ================================================
-
-$("#wine-style").on("click", ".wine-style", async function(e) {
-  const selected_button = e.target.parentElement;
-   
 
 
 
+// =================================================  PICKING VARIETALS / HOME PAGE  ================================================
 
-  if (selected_button.classList.contains("is-active")) {
-    return
-  } else {
-    if (selected_button.innerText == 'All') {
-      const blends = selected_button.nextElementSibling;
-      const single = blends.nextElementSibling;
 
-      blends.classList.remove("is-active");
-      single.classList.remove("is-active");
-    } else if (selected_button.innerText == 'Blends Only') {
-      const all = selected_button.previousElementSibling;
-      const single = selected_button.nextElementSibling;
-
-      all.classList.remove("is-active");
-      single.classList.remove("is-active");
-    } else {
-      const blends = selected_button.previousElementSibling;
-      const all = blends.previousElementSibling;
-
-      blends.classList.remove("is-active");
-      all.classList.remove("is-active");
-    }
-  }
-
-  selected_button.classList.toggle("is-active")
-
-  wineStyle = selected_button.innerText
-
-  const wine_results = await axios.get(`/wine_style/${wineStyle}`)
-  wines = wine_results.data.wine_results;
-  favs = wine_results.data.user_favorites;
- 
-  populateWineResults(wines, favs)
-  
+$("#varietals").on("click", ".varietals", async function(e) {
+  const selected_button = e.target;
+  selected_button.classList.toggle("is-focused")
+  varietal = selected_button.innerText
+  await sendVarietals(varietal)
 })
+
+
+
+async function sendVarietals(varietal) {
+  const res = await axios.get(`/log_varietals/${varietal}`)
+}
+
+
+
+
+
+
+// =================================================  POPULATE WINE RESULTS ================================================
 
 const userFavorite = function(wine) {
 
@@ -411,52 +369,76 @@ const getFavs = async function(wineId) {
 // })
 
 
-// =================================================  FILTER BY / HOME PAGE ================================================
 
-$("#filter-by").on("click", ".filter-by", async function(e) {
-  const selected_button = e.target;
-  selected_button.classList.toggle("is-focused")
-  filterBy = selected_button.innerText
-  
+// =================================================  TOGGLE OPEN SORT BY OPTIONS / RESULTS PAGE  ================================================
 
-
-  if (filterBy == 'Rating (Highest)') {
-      ratingLowest = e.target.nextElementSibling;
-      if (ratingLowest.classList.contains("is-focused")) {
-          ratingLowest.classList.remove("is-focused")
-          await sendSortBy('Rating (Lowest)')
-      }
-    } else if (filterBy == 'Rating (Lowest)') {
-        ratingHighest = e.target.previousElementSibling;
-        if (ratingHighest.classList.contains("is-focused")) {
-           ratingHighest.classList.remove("is-focused")
-           await sendWineType('Rating (Highest)')
-        }
-    } else if (filterBy == 'Vintage (Oldest)') {
-        vintageYoungest = e.target.nextElementSibling;
-        if (vintageYoungest.classList.contains("is-focused")) {
-           vintageYoungest.classList.remove("is-focused")
-           await sendWineType('Vintage (Youngest)')
-        }
-    } else if (filterBy == 'Vintage (Youngest)') {
-        vintageOldest = e.target.previousElementSibling;
-        if (vintageOldest.classList.contains("is-focused")) {
-           vintageOldest.classList.remove("is-focused")
-           await sendWineType('Vintage (Oldest)')
-        }
-    } 
-
-
-
-  await sendSortBy(filterBy)
-  
+$("#choose-wine-type").on("click", function(e) {
+  $("#wine-type-checkboxes").toggleClass("hidden")
 })
 
-async function sendSortBy(filterBy) {
-  const res = await axios.get(`/sort_by/${filterBy}`)
-}
+$("#choose-wine-style").on("click", function(e) {
+  $("#wine-style-checkboxes").toggleClass("hidden")
+})
 
-// =================================================  LOADING VARIETALS / HOME PAGE ================================================
+$("#choose-sort-by").on("click", function(e) {
+  $("#sort-by-checkboxes").toggleClass("hidden")
+})
+// =================================================  CLICK EVENT FOR WINE OPTIONS / RESULTS PAGE  ================================================
+
+$("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
+  const target = e.target;
+
+  if (target.tagName == "INPUT") {
+    const filterName = target.nextSibling.data;
+    const targetInput = target.parentElement.firstElementChild;
+    $(targetInput).toggleClass("is-focused")
+    const res = await axios.get(`/wine_type/${filterName}`)
+    const wine_results = await axios.get(`/wine_style/""`)
+    wines = wine_results.data.wine_results;
+    favs = wine_results.data.user_favorites;
+    populateWineResults(wines, favs)
+
+  }
+
+})
+
+$("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
+  const target = e.target;
+
+  if (target.tagName == "INPUT") {
+    const filterName = target.nextSibling.data;
+    const targetInput = target.parentElement.firstElementChild;
+    $(targetInput).toggleClass("is-focused")
+    const wine_results = await axios.get(`/wine_style/${filterName}`)
+    wines = wine_results.data.wine_results;
+    favs = wine_results.data.user_favorites;
+
+    populateWineResults(wines, favs)
+
+  }
+
+})
+
+
+$("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
+  const target = e.target;
+
+  if (target.tagName == "INPUT") {
+    const filterName = target.nextSibling.data;
+    const targetInput = target.parentElement.firstElementChild;
+    $(targetInput).toggleClass("is-focused")
+    const res = await axios.get(`/sort_by/${filterName}`)
+    const wine_results = await axios.get(`/wine_style/""`)
+    wines = wine_results.data.wine_results;
+    favs = wine_results.data.user_favorites;
+    populateWineResults(wines, favs)
+
+  }
+
+})
+
+// =================================================  LOADING VARIETALS / RESULTS PAGE ================================================
+
 
 $("#varietals-button").on("click", async function() {
   varietalDiv = $("#varietals")
@@ -488,148 +470,6 @@ for (varietal of varietal_array) {
 
 }
 }
-
-
-// =================================================  PICKING VARIETALS / HOME PAGE  ================================================
-
-
-$("#varietals").on("click", ".varietals", async function(e) {
-  const selected_button = e.target;
-  selected_button.classList.toggle("is-focused")
-  varietal = selected_button.innerText
-  await sendVarietals(varietal)
-})
-
-
-
-async function sendVarietals(varietal) {
-  const res = await axios.get(`/log_varietals/${varietal}`)
-}
-
-// =================================================  PICKING FILTERS / RESULTS PAGE  ================================================
-
-async function toggleSortByFilter(sibling, siblingName, targetInput, filterName ) {
-          await sendSortBy(filterName)
-          const wine_results = await axios.get(`/wine_style/""`)
-          wines = wine_results.data.wine_results;
-          favs = wine_results.data.user_favorites;
-          populateWineResults(wines, favs)
-
-          if (sibling.classList.contains("is-focused")) {
-            sibling.classList.remove("is-focused");
-            await sendSortBy(siblingName)
-          } 
-          if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        }   
-}
-
-async function toggleWineTypeFilter(target, filterName, targetInput) {
-        allAbove = target.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
-        const res = await axios.get(`/wine_type/${filterName}`)
-        
-        if (allAbove.classList.contains("is-focused")) {
-          allAbove.classList.remove("is-focused");
-          const res = await axios.get(`/wine_type/'All of the above'`)
-         
-        }
-        if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        }
-
-        const wine_results = await axios.get(`/wine_style/""`)
-        wines = wine_results.data.wine_results;
-        favs = wine_results.data.user_favorites;
-        populateWineResults(wines, favs)
-}
-
-$("#checkboxes").on("click", ".panel-block", async function(e) {
-  const target = e.target;
-
-  if (target.tagName == "INPUT") {
-    const filterName = target.nextSibling.data;
-    const targetInput = target.parentElement.firstElementChild;
-
-      if (filterName == 'Red') {
-        toggleWineTypeFilter(target, filterName, targetInput)
-
-      } else if (filterName == 'White') {
-          toggleWineTypeFilter(target, filterName, targetInput)
-
-      } else if (filterName == 'Rose') {
-          toggleWineTypeFilter(target, filterName, targetInput)
-
-    } else if (filterName == 'All of the above') {
-          rose = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
-          white = target.parentElement.parentElement.previousElementSibling.previousElementSibling.firstElementChild.firstElementChild;
-          red = target.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.firstElementChild.firstElementChild;
-          const res = await axios.get(`/wine_type/${filterName}`)
-          
-          if (red.classList.contains("is-focused")) {
-            red.classList.remove("is-focused");
-            const res = await axios.get(`/wine_type/'Red'`)
-          }
-          if (white.classList.contains("is-focused")) {
-            white.classList.remove("is-focused");
-            const res = await axios.get(`/wine_type/'White'`)
-          }
-          if (rose.classList.contains("is-focused")) {
-            rose.classList.remove("is-focused");
-            const res = await axios.get(`/wine_type/'Rose'`)
-          }
-          if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        }
-
-        const wine_results = await axios.get(`/wine_style/""`)
-        wines = wine_results.data.wine_results;
-        favs = wine_results.data.user_favorites;
-        populateWineResults(wines, favs)
-
-    } else if (filterName == 'Rating (Highest)') {
-          ratingLowest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
-          siblingName = 'Rating (Lowest)'
-          toggleSortByFilter(ratingLowest, siblingName, targetInput, filterName ) 
-
-    } else if (filterName == 'Rating (Lowest)') {
-          ratingHighest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
-          siblingName = 'Rating (Highest)'
-          toggleSortByFilter(ratingHighest, siblingName, targetInput, filterName )
-
-    } else if (filterName == 'Vintage (Oldest)') {
-          vintageYoungest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
-          siblingName = 'Vintage (Youngest)'
-          toggleSortByFilter(vintageYoungest, siblingName, targetInput, filterName )
-
-    } else if (filterName == 'Vintage (Youngest)') {
-          vintageOldest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
-          siblingName = 'Vintage (Oldest)'
-          toggleSortByFilter(vintageOldest, siblingName, targetInput, filterName )
-
-    } else if (filterName == 'Winery (Alphabetically)') {
-          await sendSortBy(filterName)
-          const wine_results = await axios.get(`/wine_style/""`)
-          wines = wine_results.data.wine_results;
-          favs = wine_results.data.user_favorites;
-          populateWineResults(wines, favs)
-
-          if (targetInput.classList.contains("is-focused")) {
-          targetInput.classList.remove("is-focused")
-        } else {
-          targetInput.classList.add("is-focused")
-        }
-           
-         
-    }  
-  }
-
-})
 
 
 // =================================================  PICKING VARIETALS / RESULTS PAGE  ================================================

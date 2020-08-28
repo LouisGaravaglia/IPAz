@@ -7,7 +7,7 @@ from models import db, connect_db, User, Post, Wine, Favorite
 
 class Varietals():
     
-    def get_all_varietals(self, varietals):
+    def get_all_varietals(self, wine_type):
         """Take a list of varietals and filters through each item to make sure 
         that no elements other than text exist, as well as are certain than
         a certain length and are not empty. Then adds to a set to remove any
@@ -15,9 +15,25 @@ class Varietals():
         """     
         varietal_list = []
         varietal_set = set()
+        red_varietals = []
+        white_varietals = []
+        rose_varietals = []
+        all_varietals = []
         
-        # for varietals in merged_varietals:
-    #     varietal_list = varietal_list + varietals
+        if 'Red' in wine_type:
+            red_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Red").all()]
+        
+        if 'White' in wine_type:
+            white_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="White").all()]
+        
+        if 'Rose' in wine_type:
+            rose_varietals = [wine.varietal.split(",") for wine in Wine.query.filter_by(type="Rose").all()]
+            
+        if (not 'Red' in wine_type and not 'White' in wine_type and not 'Rose' in wine_type) or 'All of the above' in wine_type:
+            all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
+            
+        varietals = red_varietals + white_varietals + rose_varietals + all_varietals
+            
     
         for varietal in varietals:
             varietal_list = varietal_list + varietal
