@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %} VIEW REVIEWS {% endblock %}
+
+
+{% block content %}
+<div id="flash"></div>
+<div class="columns my-3 mx-3 is-multiline" id="wine-favorites">
+ {% if wine_reviews[0] == Undefined %}
+    <h3 class="title is-3 has-text-centered mt-6">No reviews.</h3>
+  {% else %}
+{% for wine in wine_reviews %}
+ 
+
+<div class="column is-one-third">
+  <article class="message is-dark">
+  
+  <div class="message-header">
+    <p>{{wine['Name']}}</p>
+  </div>
+
+  <div class="message-body">
+    <p><strong>NAME: </strong>{{wine['Name']}}</p>
+    <p><strong>WINERY: </strong>{{wine['Winery']}}</p>
+    <p><strong>COUNTRY: </strong>{{wine['Country']}}</p>
+    <p><strong>AREA: </strong>{{wine['Area']}}</p>
+    <p><strong>VINTAGE: </strong>{{wine['Vintage']}}</p>
+    <p><strong>VARIETAL: </strong>{{wine['Varietal']}}</p>
+    <p><strong>TYPE: </strong>{{wine['Type']}}</p>
+    <p><strong>RATING: </strong>{{wine['Rating']}}</p>
+  </div>
+
+
+
+    <div class="columns">
+    <div class="column is-half has-text-centered mx-0 my-0">
+      <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
+        <span class="icon is-small">
+        {% if wine['ID'] in user_favorites %}
+            <i class="fas fa-star"></i>
+        {% else %}
+            <i class="far fa-star"></i>
+        {% endif %}
+        </span>
+      </button>
+      
+    </div>
+
+    <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
+      <form method="POST" action="/user/review/{{wine['ID']}}" id="review-form">
+      <button class="button is-text review-btn" data-id="{{wine['ID']}}">
+        <span class="icon review-btn">
+        <i class="far fa-times-circle"></i>
+        </span>
+      </button>
+      </form>
+    </div>
+
+  </div>
+<hr class="dropdown-divider"> 
+<br>
+ <div class="message-body">
+    <p><strong>RATING: </strong>{{wine['Post_rating']}}</p>
+    <p><strong>REVIEW: </strong>{{wine['Post_review']}}</p>
+  </div>
+
+
+</article>
+</div>
+
+  
+{% endfor %}
+{% endif %}
+</div>
+
+{% endblock %}

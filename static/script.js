@@ -93,7 +93,7 @@ async function sendVarietals(varietal) {
 
 // =================================================  POPULATE WINE RESULTS ================================================
 
-const userFavorite = function(wine) {
+const addWineCard = function(wine, favBtn, reviewBtn) {
 
   const html = `<div class="column is-half">
   <div class="has-text-centered">
@@ -118,66 +118,17 @@ const userFavorite = function(wine) {
 
   <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0">
-      <button class="button is-dark favorite-button" data-id="${wine['ID']}">
-        <span class="icon is-small">
-        <i class="fas fa-thumbtack"></i>
-        </span>
-      </button>
-    </div>
-    <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-    <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
-      <button class="button is-text review-btn" data-id="${wine['ID']}>
-        <span class="icon is-small is-right review-btn">
-        <i class="fas fa-pen review-btn"></i>
-        </span>
-      </button>
-      </form>
-    </div>
-  </div>
-</article>
-
-  </div>`
-
-  return html;
-
-}
-
-const notFavorite = function(wine){
-
-const html = `<div class="column is-half">
-  <div class="has-text-centered">
-  </div>
-
-<article class="message is-dark">
-  
-  <div class="message-header">
-    <p>${wine['Name']}</p>
-  </div>
-
-  <div class="message-body">
-    <p><strong>NAME: </strong>${wine['Name']}</p>
-    <p><strong>WINERY: </strong>${wine['Winery']}</p>
-    <p><strong>COUNTRY: </strong>${wine['Country']}</p>
-    <p><strong>AREA: </strong>${wine['Area']}</p>
-    <p><strong>VINTAGE: </strong>${wine['Vintage']}</p>
-    <p><strong>VARIETAL: </strong>${wine['Varietal']}</p>
-    <p><strong>TYPE: </strong>${wine['Type']}</p>
-    <p><strong>RATING: </strong>${wine['Rating']}</p>
-  </div>
-
-  <div class="columns">
-    <div class="column is-half has-text-centered mx-0 my-0">
       <button class="button is-text favorite-button" data-id="${wine['ID']}">
-        <span class="icon is-small">
-        <i class="fas fa-thumbtack"></i>
+        <span class="icon">
+        ${favBtn}
         </span>
       </button>
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
     <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
       <button class="button is-text review-btn" data-id="${wine['ID']}>
-        <span class="icon is-small is-right review-btn">
-        <i class="fas fa-pen review-btn"></i>
+        <span class="icon review-btn">
+        ${reviewBtn}
         </span>
       </button>
       </form>
@@ -191,31 +142,140 @@ const html = `<div class="column is-half">
 
 }
 
-function populateWineResults(wine_results, favorites) {
+// const notFavorite = function(wine){
+
+// const html = `<div class="column is-half">
+//   <div class="has-text-centered">
+//   </div>
+
+// <article class="message is-dark">
+  
+//   <div class="message-header">
+//     <p>${wine['Name']}</p>
+//   </div>
+
+//   <div class="message-body">
+//     <p><strong>NAME: </strong>${wine['Name']}</p>
+//     <p><strong>WINERY: </strong>${wine['Winery']}</p>
+//     <p><strong>COUNTRY: </strong>${wine['Country']}</p>
+//     <p><strong>AREA: </strong>${wine['Area']}</p>
+//     <p><strong>VINTAGE: </strong>${wine['Vintage']}</p>
+//     <p><strong>VARIETAL: </strong>${wine['Varietal']}</p>
+//     <p><strong>TYPE: </strong>${wine['Type']}</p>
+//     <p><strong>RATING: </strong>${wine['Rating']}</p>
+//   </div>
+
+//   <div class="columns">
+//     <div class="column is-half has-text-centered mx-0 my-0">
+//       <button class="button is-text favorite-button" data-id="${wine['ID']}">
+//         <span class="icon is-small">
+//         <i class="fas fa-thumbtack"></i>
+//         </span>
+//       </button>
+//     </div>
+//     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
+//     <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
+//       <button class="button is-text review-btn" data-id="${wine['ID']}>
+//         <span class="icon is-small is-right review-btn">
+//         <i class="fas fa-pen review-btn"></i>
+//         </span>
+//       </button>
+//       </form>
+//     </div>
+//   </div>
+// </article>
+
+//   </div>`
+
+//   return html;
+
+// }
+
+function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_reviews) {
   wineHtml = $("#wine-results")
   wineHtml.html("")
-  
+  const address = document.location.href;
+
+
   if (wine_results[0] == "No Results") {
     
     const html = '<h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>'
     wineHtml.append(html)
 
+  } else if (address.includes("user/review")) {
+
+   for (wine of wine_reviews) { 
+
+    if (favorites.includes(wine['ID'])) {
+        let favBtn = '<i class="fas fa-star"></i>'
+        let reviewBtn = '<i class="far fa-times-circle deleteBtn"></i>'
+        const html = addWineCard(wine, favBtn, reviewBtn)
+        wineHtml.append(html)
+      } else {
+        const favBtn = '<i class="far fa-star"></i>'
+        const reviewBtn = '<i class="far fa-times-circle deleteBtn"></i>'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        const html = addWineCard(wine, favBtn, reviewBtn)
+        wineHtml.append(html)
+      }
+
+    }
+
+  } else if (address.includes("user/favorites")) {
+
+    for (wine of fav_wines) { 
+
+    if (favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+        let favBtn = '<i class="fas fa-star"></i>'
+        let reviewBtn = '<i class="fas fa-edit review-btn"></i>'
+        const html = addWineCard(wine, favBtn, reviewBtn)
+        wineHtml.append(html)
+      } else if (favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+          const favBtn = '<i class="fas fa-star"></i>'
+          const reviewBtn = '<i class="far fa-edit review-btn"></i>'
+          const html = addWineCard(wine, favBtn, reviewBtn)
+          wineHtml.append(html)
+      } else if (!favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+          const favBtn = '<i class="far fa-star"></i>'
+          const reviewBtn = '<i class="fas fa-edit review-btn"></i>'
+          const html = addWineCard(wine, favBtn, reviewBtn)
+          wineHtml.append(html)
+      } else if (!favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+          const favBtn = '<i class="far fa-star"></i>'
+          const reviewBtn = '<i class="far fa-edit review-btn"></i>'
+          const html = addWineCard(wine, favBtn, reviewBtn)
+          wineHtml.append(html)
+      } 
+
+    }
+
   } else {
 
-    for (wine of wine_results) {
+    for (wine of wine_results) { 
 
-      if (favorites.includes(wine['ID'])) {
-  
-        const html = userFavorite(wine)
+    if (favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+        let favBtn = '<i class="fas fa-star"></i>'
+        let reviewBtn = '<i class="fas fa-edit review-btn"></i>'
+        const html = addWineCard(wine, favBtn, reviewBtn)
         wineHtml.append(html)
+      } else if (favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+          const favBtn = '<i class="fas fa-star"></i>'
+          const reviewBtn = '<i class="far fa-edit review-btn"></i>'
+          const html = addWineCard(wine, favBtn, reviewBtn)
+          wineHtml.append(html)
+      } else if (!favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+          const favBtn = '<i class="far fa-star"></i>'
+          const reviewBtn = '<i class="fas fa-edit review-btn"></i>'
+          const html = addWineCard(wine, favBtn, reviewBtn)
+          wineHtml.append(html)
+      } else if (!favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+          const favBtn = '<i class="far fa-star"></i>'
+          const reviewBtn = '<i class="far fa-edit review-btn"></i>'
+          const html = addWineCard(wine, favBtn, reviewBtn)
+          wineHtml.append(html)
+      } 
 
-      } else {
-
-        const html = notFavorite(wine)
-        wineHtml.append(html)
-
-      }
     }
+
   }
 }
 
@@ -252,7 +312,10 @@ message = `<section class="hero is-small is-info">
       const wine_results = await axios.get(`/wine_style/""`)
       wines = wine_results.data.wine_results;
       favs = json.data.fav_wine_list;
-      populateWineResults(wines, favs)
+      reviews = wine_results.data.reviews;
+      fav_wines = json.data.fav_wines;
+      wine_reviews = json.data.wine_reviews;
+      populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
   }
   
   
@@ -303,99 +366,99 @@ message = `<section class="hero is-small is-info">
 
 // =================================================  FAVORITE BUTTON ON FAVORITES PAGE ================================================
 
-function populateFavorites(favorites) {
-  favoritesHtml = $("#wine-favorites")
-  favoritesHtml.html("")
-  // console.log(favorites);
-  // console.log(favorites[0]);
-  if (!favorites[0]) {
+// function populateFavorites(favorites) {
+//   favoritesHtml = $("#wine-favorites")
+//   favoritesHtml.html("")
+//   // console.log(favorites);
+//   // console.log(favorites[0]);
+//   if (!favorites[0]) {
 
-    const html = '<h3 class="title is-3 has-text-centered mt-6">No favorites.</h3>'
-    favoritesHtml.append(html)
+//     const html = '<h3 class="title is-3 has-text-centered mt-6">No favorites.</h3>'
+//     favoritesHtml.append(html)
 
-  } else {
+//   } else {
 
-    for (wine of favorites) {
+//     for (wine of favorites) {
 
     
-  const html = `<div class="column is-one-third">
-  <article class="message is-dark">
+//   const html = `<div class="column is-one-third">
+//   <article class="message is-dark">
   
-  <div class="message-header">
-    <p>${wine['Name']}</p>
-  </div>
+//   <div class="message-header">
+//     <p>${wine['Name']}</p>
+//   </div>
 
-  <div class="message-body">
-    <p><strong>NAME: </strong>${wine['Name']}</p>
-    <p><strong>WINERY: </strong>${wine['Winery']}</p>
-    <p><strong>COUNTRY: </strong>${wine['Country']}</p>
-    <p><strong>AREA: </strong>${wine['Area']}</p>
-    <p><strong>VINTAGE: </strong>${wine['Vintage']}</p>
-    <p><strong>VARIETAL: </strong>${wine['Varietal']}</p>
-    <p><strong>TYPE: </strong>${wine['Type']}</p>
-    <p><strong>RATING: </strong>${wine['Rating']}</p>
-  </div>
+//   <div class="message-body">
+//     <p><strong>NAME: </strong>${wine['Name']}</p>
+//     <p><strong>WINERY: </strong>${wine['Winery']}</p>
+//     <p><strong>COUNTRY: </strong>${wine['Country']}</p>
+//     <p><strong>AREA: </strong>${wine['Area']}</p>
+//     <p><strong>VINTAGE: </strong>${wine['Vintage']}</p>
+//     <p><strong>VARIETAL: </strong>${wine['Varietal']}</p>
+//     <p><strong>TYPE: </strong>${wine['Type']}</p>
+//     <p><strong>RATING: </strong>${wine['Rating']}</p>
+//   </div>
 
-    <div class="columns">
-    <div class="column is-half has-text-centered mx-0 my-0">
-      <button class="button is-dark fav-button favorite-button" data-id="${wine['ID']}" type="submit">
-        <span class="icon is-small">
-        <i class="fas fa-thumbtack"></i>
-        </span>
-      </button>
+//     <div class="columns">
+//     <div class="column is-half has-text-centered mx-0 my-0">
+//       <button class="button is-dark fav-button favorite-button" data-id="${wine['ID']}" type="submit">
+//         <span class="icon is-small">
+//         <i class="fas fa-thumbtack"></i>
+//         </span>
+//       </button>
       
-    </div>
-    <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-      <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
-      <button class="button is-text review-btn" data-id="${wine['ID']}">
-        <span class="icon is-small is-right review-btn">
-        <i class="fas fa-pen review-btn"></i>
-        </span>
-      </button>
-      </form>
-    </div>
-  </div>
+//     </div>
+//     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
+//       <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
+//       <button class="button is-text review-btn" data-id="${wine['ID']}">
+//         <span class="icon is-small is-right review-btn">
+//         <i class="fas fa-pen review-btn"></i>
+//         </span>
+//       </button>
+//       </form>
+//     </div>
+//   </div>
 
-</article>
-</div>`
-   favoritesHtml.append(html)
-      } 
-  }
-}
+// </article>
+// </div>`
+//    favoritesHtml.append(html)
+//       } 
+//   }
+// }
 
 
-const getFavs = async function(wineId) {
-  const favs = await axios.post(`/user/add_favorite/${wineId}`)
-  console.log(favs);
-  favorites = favs.data.fav_wines;
-  populateFavorites(favorites)
+// const getFavs = async function(wineId) {
+//   const favs = await axios.post(`/user/add_favorite/${wineId}`)
+//   console.log(favs);
+//   favorites = favs.data.fav_wines;
+//   populateFavorites(favorites)
 
-}
+// }
 
-  $("#wine-favorites").on("click", ".favorite-button", async function(e) {
-    const target = e.target;
+  // $("#wine-favorites").on("click", ".favorite-button", async function(e) {
+  //   const target = e.target;
 
-    if (target.tagName == "BUTTON") {
-      let wineId = target.dataset.id;
-      getFavs(wineId);
+  //   if (target.tagName == "BUTTON") {
+  //     let wineId = target.dataset.id;
+  //     getFavs(wineId);
      
 
-    } else if (target.tagName == "path") {
-      const button = target.parentElement.parentElement.parentElement;
-      let wineId = button.dataset.id;
-      getFavs(wineId);
+  //   } else if (target.tagName == "path") {
+  //     const button = target.parentElement.parentElement.parentElement;
+  //     let wineId = button.dataset.id;
+  //     getFavs(wineId);
 
-    } else if (target.tagName == "SPAN") {
-      const button = target.parentElement;
-      let wineId = button.dataset.id;
-      getFavs(wineId);
+  //   } else if (target.tagName == "SPAN") {
+  //     const button = target.parentElement;
+  //     let wineId = button.dataset.id;
+  //     getFavs(wineId);
 
-    } else if (target.tagName == "svg") {
-      const button = target.parentElement.parentElement;
-      let wineId = button.dataset.id;
-      getFavs(wineId);
-    }
-  })
+  //   } else if (target.tagName == "svg") {
+  //     const button = target.parentElement.parentElement;
+  //     let wineId = button.dataset.id;
+  //     getFavs(wineId);
+  //   }
+  // })
 
 // =================================================  REVIEW BUTTON ================================================
 
@@ -441,7 +504,8 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     const wine_results = await axios.get(`/wine_style/""`)
     wines = wine_results.data.wine_results;
     favs = wine_results.data.user_favorites;
-    populateWineResults(wines, favs)
+    reviews = wine_results.data.reviews;
+    populateWineResults(wines, favs, reviews)
 
   }
 
@@ -457,8 +521,9 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     const wine_results = await axios.get(`/wine_style/${filterName}`)
     wines = wine_results.data.wine_results;
     favs = wine_results.data.user_favorites;
+    reviews = wine_results.data.reviews;
 
-    populateWineResults(wines, favs)
+    populateWineResults(wines, favs, reviews)
 
   }
 
@@ -476,7 +541,8 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
     const wine_results = await axios.get(`/wine_style/""`)
     wines = wine_results.data.wine_results;
     favs = wine_results.data.user_favorites;
-    populateWineResults(wines, favs)
+    reviews = wine_results.data.reviews;
+    populateWineResults(wines, favs, reviews)
 
   }
 
@@ -552,7 +618,8 @@ $("#modal").on("click", ".toggle-off", async function() {
   const wine_results = await axios.get(`/wine_style/""`)
   wines = wine_results.data.wine_results;
   favs = wine_results.data.user_favorites;
-  populateWineResults(wines, favs)
+  reviews = wine_results.data.reviews;
+  populateWineResults(wines, favs, reviews)
 
 })
 

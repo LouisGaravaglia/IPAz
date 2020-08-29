@@ -184,16 +184,22 @@ def add_like(wine_id):
     
     fav_ids = []
     fav_wines = []
+    wine_reviews = []
+
     
     for wine in g.user.fav_wines:
         fav_ids.append(wine.id)
         fav_wines.append({'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name})
-        
     
+    for review in g.user.posts:
+        wine = Wine.query.get_or_404(review.wine_id)
+        post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
+        wine_reviews.append(post)
+        
     # import pdb
     # pdb.set_trace()
 
-    return jsonify(fav_wine_list=fav_ids, fav_wines=fav_wines)
+    return jsonify(fav_wine_list=fav_ids, fav_wines=fav_wines, wine_reviews=wine_reviews)
 
 # ===================================    VIEWING FAVORITES   =====================================
 
@@ -211,7 +217,12 @@ def view_favorites():
     # user = User.query.get_or_404(g.user.id)
     faved_wines = g.user.fav_wines
     
-
+    if g.user:
+        user_reviews = []
+        for post in g.user.posts:
+            user_reviews.append(post.wine_id)
+    else:
+        user_reviews = []
     
     # if faved_wine.user_id in g.user.fav_wines:
     #     flash("You've already liked that.", "danger")
@@ -219,9 +230,9 @@ def view_favorites():
     
 
 
-    return render_template("favorites.html", faved_wines=faved_wines)
+    return render_template("favorites.html", faved_wines=faved_wines, user_reviews=user_reviews)
 
-# ===================================    REVIEWS ROUTE    =====================================
+# ===================================    REVIEWS ROUTE / POST    =====================================
 
 @app.route('/user/review/<int:wine_id>', methods=["GET", "POST"])
 def review(wine_id):
@@ -256,7 +267,7 @@ def review(wine_id):
         db.session.commit()
 
     
-        return redirect("/user")
+        return redirect("/user/reviews")
 
     else:
         
@@ -267,6 +278,32 @@ def review(wine_id):
         
         return render_template('review.html', form=form, wine=wine)
 
+# ===================================    VIEW REVIEWS PAGE    =====================================
+
+@app.route('/user/reviews')
+def view_reviews():
+    """Handle going to review form for a specific wine, 
+    and posting the review.
+    """
+
+    # if not g.user:
+    #     return jsonify(message="Please log in or sign up to review wines!") 
+    if not g.user:
+        flash("Please log in or sign up to see your reviews!", "error")
+        return redirect("/show_results")
+    
+    wine_reviews = []
+    
+    reviews = g.user.posts
+    
+    for review in reviews:
+        wine = Wine.query.get_or_404(review.wine_id)
+        post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
+        wine_reviews.append(post)
+    
+    user_favorites = g.user.fav_wines
+    
+    return render_template('view_reviews.html', wine_reviews=wine_reviews, user_favorites=user_favorites)
 
 # ===================================    CACHE    =====================================
 # Turn off all caching in Flask
@@ -492,9 +529,14 @@ def get_wine_style_choices(new_wine_style):
             user_favorites.append(fav.id) 
     else:
         user_favorites = []
+        
+    reviews = []
+    
+    for wine in g.user.posts:
+        reviews.append(wine.id)
     
     
-    return jsonify(wine_results=wine_results, user_favorites=user_favorites)
+    return jsonify(wine_results=wine_results, user_favorites=user_favorites, reviews=reviews)
 
 # ===================================    RECEIVING SORT BY PICKS   =====================================
 
@@ -581,16 +623,23 @@ def show_results():
     # pdb.set_trace()
     
     if g.user:
+        user_reviews = []
+        for post in g.user.posts:
+            user_reviews.append(post.wine_id)
+    else:
+        user_reviews = []
+    
+    if g.user:
         user_favorites = []
-        user_favs = g.user.fav_wines
-        for fav in user_favs:
+        for fav in g.user.fav_wines:
             user_favorites.append(fav.id)
-        
     else:
         user_favorites = []
     
     if wine_results == []:
         wine_results = ['No Results']
+        
+        
 
-    return render_template("wine_results.html", wines=wine_results, user_favorites=user_favorites)
+    return render_template("wine_results.html", wines=wine_results, user_favorites=user_favorites, user_reviews=user_reviews)
 

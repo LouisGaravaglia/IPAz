@@ -154,14 +154,13 @@
   <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0">
       <!-- <form method="POST" action="/user/add_favorite/{{wine['ID']}}" id="review-form"> -->
-      {% if wine['ID'] in user_favorites %}
-      <button class="button is-dark fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
-      {% else %}
-      <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
-      {% endif %}
-      
-        <span class="icon is-small">
-        <i class="fas fa-thumbtack"></i>
+            <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
+              <span class="icon">
+                {% if wine['ID'] in user_favorites %}
+                    <i class="fas fa-star"></i>
+                {% else %}
+                    <i class="far fa-star"></i>
+                {% endif %}
         </span>
       </button>
       <!-- </form> -->
@@ -169,8 +168,13 @@
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
       <form method="POST" action="/user/review/{{wine['ID']}}" id="review-form">
       <button class="button is-text review-btn" data-id="{{wine['ID']}}">
-        <span class="icon is-small is-right review-btn">
-        <i class="fas fa-pen review-btn"></i>
+        <span class="icon review-btn">
+            {% if wine['ID'] in user_reviews %}
+                <i class="fas fa-edit review-btn"></i>
+            {% else %}
+                <i class="far fa-edit review-btn"></i>
+            {% endif %}
+        
         </span>
       </button>
       </form>

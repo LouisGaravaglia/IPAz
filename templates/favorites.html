@@ -5,7 +5,7 @@
 
 {% block content %}
 <div id="flash"></div>
-<div class="columns my-3 mx-3 is-multiline" id="wine-favorites">
+<div class="columns my-3 mx-3 is-multiline" id="wine-results">
  {% if faved_wines[0] == Undefined %}
     <h3 class="title is-3 has-text-centered mt-6">No favorites.</h3>
   {% else %}
@@ -32,9 +32,9 @@
 
     <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0">
-      <button class="button is-dark fav-button favorite-button" data-id="{{wine.id}}" type="submit">
-        <span class="icon is-small">
-        <i class="fas fa-thumbtack"></i>
+      <button class="button is-text fav-button favorite-button" data-id="{{wine.id}}" type="submit">
+        <span class="icon">
+        <i class="fas fa-star"></i>
         </span>
       </button>
       
@@ -42,8 +42,12 @@
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
       <form method="POST" action="/user/review/{{wine.id}}" id="review-form">
       <button class="button is-text review-btn" data-id="{{wine.id}}">
-        <span class="icon is-small is-right review-btn">
-        <i class="fas fa-pen review-btn"></i>
+        <span class="icon review-btn">
+        {% if wine['ID'] in user_reviews %}
+                <i class="fas fa-edit review-btn"></i>
+            {% else %}
+                <i class="far fa-edit review-btn"></i>
+            {% endif %}
         </span>
       </button>
       </form>
