@@ -219,16 +219,136 @@ function populateWineResults(wine_results, favorites) {
   }
 }
 
-// =================================================  FAVORITE BUTTON ================================================
+// =================================================  FAVORITE BUTTON ON RESULTS PAGE ================================================
 
 
 const getFavList = async function(wineId) {
-  const fav_wine_list = await axios.post(`/user/add_favorite/${wineId}`)
-  const wine_results = await axios.get(`/wine_style/""`)
-  wines = wine_results.data.wine_results;
-  favs = fav_wine_list.data.fav_wine_list;
-  populateWineResults(wines, favs)
+  
+  const json = await axios.post(`/user/add_favorite/${wineId}`)
+  noUserObj = json.data
+
+  if (Object.keys(noUserObj).length == 1) {
+    // message = `<h2 class="subtitle has-text-centered pt-1 mb-2 error is-fullwidth">${noUserObj.message}</h2>`
+    
+
+
+message = `<section class="hero is-small is-info">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        ${noUserObj.message}
+      </h1>
+    </div>
+  </div>
+</section>`
+
+    flashDiv = $("#flash")
+    flashDiv.html("");
+    flashDiv.prepend(message)
+    function hideMessage(){
+      flashDiv.html("");
+    }
+    setTimeout(hideMessage, 2000);
+
+    // $('#flash').hide().delay(100).fadeIn(200).delay(2500).fadeOut(200);
+  } else {
+      const wine_results = await axios.get(`/wine_style/""`)
+      wines = wine_results.data.wine_results;
+      favs = json.data.fav_wine_list;
+      populateWineResults(wines, favs)
+  }
+  
+  
+ 
 }
+
+// const getReviewList = async function(wineId) {
+  
+//   const json = await axios.get(`/user/review/${wineId}`)
+//   noUserObj = json.data
+
+//   if (Object.keys(noUserObj).length == 1) {
+//     // message = `<h2 class="subtitle has-text-centered pt-1 mb-2 error is-fullwidth">${noUserObj.message}</h2>`
+    
+
+
+// message = `<section class="hero is-small is-info">
+//   <div class="hero-body">
+//     <div class="container">
+//       <h1 class="title">
+//         ${noUserObj.message}
+//       </h1>
+//     </div>
+//   </div>
+// </section>`
+
+//     flashDiv = $("#flash")
+//     flashDiv.html("");
+//     flashDiv.prepend(message)
+//     function hideMessage(){
+//       flashDiv.html("");
+//     }
+//     setTimeout(hideMessage, 2000);
+
+//     // $('#flash').hide().delay(100).fadeIn(200).delay(2500).fadeOut(200);
+//   } else {
+//       // const wine_results = await axios.get(`/wine_style/""`)
+//       // wines = wine_results.data.wine_results;
+//       // favs = json.data.fav_wine_list;
+//       // populateWineResults(wines, favs)
+//   }
+ 
+// }
+
+
+    $(document).ready(function(){ 
+      flashDiv = $("#messageContainer");
+      // flashDiv.addClass("hidden");
+    
+        function hideMessage(){
+          flashDiv.html("");
+        }
+
+        setTimeout(hideMessage, 2000);
+
+    })
+
+    
+
+    // function hideMessage(){
+    //   flashDiv.html("");
+    // }
+
+    // setTimeout(hideMessage, 2000);
+
+  // $("#wine-results").on("click", ".review-btn", async function(e) {
+
+  //   const target = e.target;
+
+  //   if (target.tagName == "BUTTON") {
+  //     let wineId = target.dataset.id;
+  //     getReviewList(wineId);
+
+  //   } else if (target.tagName == "path") {
+  //     const button = target.parentElement.parentElement.parentElement;
+  //     let wineId = button.dataset.id;
+  //     getReviewList(wineId);
+
+  //   } else if (target.tagName == "SPAN") {
+  //     const button = target.parentElement;
+  //     let wineId = button.dataset.id;
+  //     getReviewList(wineId);
+
+  //   } else if (target.tagName == "svg") {
+  //     const button = target.parentElement.parentElement;
+  //     let wineId = button.dataset.id;
+  //     getReviewList(wineId);
+
+  //   }
+
+  // })
+
+
 
   $("#wine-results").on("click", ".favorite-button", async function(e) {
 
@@ -257,7 +377,7 @@ const getFavList = async function(wineId) {
 
   })
 
-// =================================================  VIEWING FAVORITES ================================================
+// =================================================  FAVORITE BUTTON ON FAVORITES PAGE ================================================
 
 function populateFavorites(favorites) {
   favoritesHtml = $("#wine-favorites")
@@ -322,6 +442,7 @@ function populateFavorites(favorites) {
 
 const getFavs = async function(wineId) {
   const favs = await axios.post(`/user/add_favorite/${wineId}`)
+  console.log(favs);
   favorites = favs.data.fav_wines;
   populateFavorites(favorites)
 

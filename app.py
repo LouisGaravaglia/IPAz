@@ -163,8 +163,8 @@ def add_like(wine_id):
     # pdb.set_trace()
 
     if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/show_results")
+        return jsonify(message="Please log in or sign up to favorite wines!") 
+
 
 
         
@@ -205,7 +205,7 @@ def view_favorites():
     # pdb.set_trace()
 
     if not g.user:
-        flash("Access unauthorized.", "danger")
+        flash("Access unauthorized.", "error")
         return redirect("/show_results")
 
     # user = User.query.get_or_404(g.user.id)
@@ -229,6 +229,12 @@ def review(wine_id):
     and posting the review.
     """
 
+    # if not g.user:
+    #     return jsonify(message="Please log in or sign up to review wines!") 
+    if not g.user:
+        flash("Please log in or sign up to review wines!", "error")
+        return redirect("/show_results")
+    
     form = ReviewForm()
     
     if form.is_submitted():

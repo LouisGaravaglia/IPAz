@@ -92,15 +92,43 @@
   </div>
 </nav>
 
+<div id="messageContainer">
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 <section class="messages">
 {% for category, msg in messages %}
-<p class="{{category}}">{{msg}}</p>
+{% if category == 'error'%}
+<section class="hero is-small is-info">
+    
+  <div class="hero-body">
+    
+    <div class="container">
+      
+      <h1 class="title">
+        {{msg}}
+      </h1>
+    </div>
+  </div>
+</section>
+
+{% else %}
+
+<section class="hero is-small is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        {{msg}}
+      </h1>
+    </div>
+  </div>
+</section>
+
+{% endif %}
 {% endfor %}
 </section>
 {% endif %}
 {% endwith%}
+</div>
 {% block content %}{% endblock %}
 
  
