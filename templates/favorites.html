@@ -43,7 +43,7 @@
       <form method="POST" action="/user/review/{{wine.id}}" id="review-form">
       <button class="button is-text review-btn" data-id="{{wine.id}}">
         <span class="icon review-btn">
-        {% if wine['ID'] in user_reviews %}
+        {% if wine.id in user_reviews %}
                 <i class="fas fa-edit review-btn"></i>
             {% else %}
                 <i class="far fa-edit review-btn"></i>

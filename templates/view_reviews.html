@@ -5,7 +5,7 @@
 
 {% block content %}
 <div id="flash"></div>
-<div class="columns my-3 mx-3 is-multiline" id="wine-favorites">
+<div class="columns my-3 mx-3 is-multiline" id="wine-results">
  {% if wine_reviews[0] == Undefined %}
     <h3 class="title is-3 has-text-centered mt-6">No reviews.</h3>
   {% else %}
@@ -50,20 +50,29 @@
       <form method="POST" action="/user/review/{{wine['ID']}}" id="review-form">
       <button class="button is-text review-btn" data-id="{{wine['ID']}}">
         <span class="icon review-btn">
-        <i class="far fa-times-circle"></i>
+        <i class="fas fa-edit review-btn"></i>
         </span>
       </button>
       </form>
     </div>
 
   </div>
+
 <hr class="dropdown-divider"> 
 <br>
  <div class="message-body">
     <p><strong>RATING: </strong>{{wine['Post_rating']}}</p>
     <p><strong>REVIEW: </strong>{{wine['Post_review']}}</p>
   </div>
-
+  <br>
+  <div class="has-text-centered">
+    <button class="button is-dark is-outlined review-delete">
+    <span>Delete</span>
+    <span class="icon is-small">
+      <i class="fas fa-times"></i>
+    </span>
+  </button>
+</div>
 
 </article>
 </div>
