@@ -301,7 +301,13 @@ def view_reviews():
         post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
         wine_reviews.append(post)
     
-    user_favorites = g.user.fav_wines
+    if g.user:
+        user_favorites = []
+        user_favs = g.user.fav_wines
+        for fav in user_favs:
+            user_favorites.append(fav.id) 
+    else:
+        user_favorites = []
     
     return render_template('view_reviews.html', wine_reviews=wine_reviews, user_favorites=user_favorites)
 
