@@ -59,4 +59,6 @@ class Varietals():
         
         my_varietals = [varietal for varietal in varietal_set]
         
-        return my_varietals
+        sorted_list = sorted(my_varietals)
+        
+        return sorted_list
