@@ -412,6 +412,15 @@ message = `<section class="hero is-small is-info">
 
   })
 
+// =================================================  EDIT REVIEW BUTTON ================================================
+
+// $("#edit-review").on("click", ".edit-review", function() {
+
+
+// })
+
+
+
 // =================================================  FAVORITE BUTTON ON FAVORITES PAGE ================================================
 
 // function populateFavorites(favorites) {

@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 from flask_cors import CORS
 from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
-from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm
+from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm, EditReviewForm
 from models import db, connect_db, User, Post, Wine, Favorite
 from results import WineResults
 from get_varietals import Varietals
@@ -232,16 +232,24 @@ def view_favorites():
 
     return render_template("favorites.html", faved_wines=faved_wines, user_reviews=user_reviews)
 
-# ===================================    REVIEWS ROUTE / POST    =====================================
+# ===================================    REVIEWS / POST    =====================================
 
 @app.route('/user/review/<int:wine_id>', methods=["GET", "POST"])
 def review(wine_id):
     """Handle going to review form for a specific wine, 
     and posting the review.
     """
-
-    # if not g.user:
-    #     return jsonify(message="Please log in or sign up to review wines!") 
+    if g.user:
+        user_reviews = []
+        for post in g.user.posts:
+            user_reviews.append(post.wine_id)
+    else:
+        user_reviews = []
+        
+    if wine_id in user_reviews:
+        flash("This wine has already been reivewed.", "error")
+        return redirect("/user/reviews")
+    
     if not g.user:
         flash("Please log in or sign up to review wines!", "error")
         return redirect("/show_results")
@@ -278,7 +286,7 @@ def review(wine_id):
         
         return render_template('review.html', form=form, wine=wine)
 
-# ===================================    VIEW REVIEWS PAGE    =====================================
+# ===================================    REVIEWS / GET   =====================================
 
 @app.route('/user/reviews')
 def view_reviews():
@@ -310,6 +318,52 @@ def view_reviews():
         user_favorites = []
     
     return render_template('view_reviews.html', wine_reviews=wine_reviews, user_favorites=user_favorites)
+
+
+# ===================================    REVIEWS / PATCH   =====================================
+
+@app.route('/user/reviews/<int:wine_id>', methods=["POST"])
+def patch_reviews(wine_id):
+    """Handle going to review form for a specific wine, 
+    and posting the review.
+    """
+
+    if not g.user:
+        flash("Please log in or sign up to see your reviews!", "error")
+        return redirect("/show_results")
+    
+    form = EditReviewForm()
+    
+    if form.is_submitted():
+        print("submitted")
+    
+
+    if form.validate():
+        print("valid")
+        
+    print(form.errors)
+
+    if form.validate_on_submit():
+        
+     
+        post = Post.query.filter(Post.wine_id == wine_id).first()
+    
+        post.rating = form.rating.data
+        post.review = form.review.data
+        
+        db.session.commit()
+
+    
+        return redirect("/user/reviews")
+
+    else:
+  
+        review = Post.query.filter(Post.wine_id == wine_id).first()
+        wine = Wine.query.get_or_404(wine_id)
+        original_post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
+    
+        return render_template('edit_review.html', form=form, original_post=original_post)
+
 
 # ===================================    CACHE    =====================================
 # Turn off all caching in Flask

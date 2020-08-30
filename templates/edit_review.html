@@ -4,37 +4,58 @@
 
 {% block content %}
 
-<!-- =====================================  WINE  =====================================  -->
+<!-- =====================================  REVIEW  =====================================  -->
 
 <div class="columns is-vcentered">
-  <!-- <div class="column is-one-quarter"></div> -->
-   <!-- <div class="column is-one-fifth"></div> -->
   <div class="column ml-6 mt-3 is-centered">
+  
+
+
+
+ 
+
+
   <article class="message is-dark">
   
   <div class="message-header">
-    <p>{{wine.name}}</p>
+    <p>{{original_post['Name']}}</p>
   </div>
 
   <div class="message-body">
-    <p><strong>NAME: </strong>{{wine.name}}</p>
-    <p><strong>WINERY: </strong>{{wine.winery}}</p>
-    <p><strong>COUNTRY: </strong>{{wine.country}}</p>
-    <p><strong>AREA: </strong>{{wine.area}}</p>
-    <p><strong>VINTAGE: </strong>{{wine.vintage}}</p>
-    <p><strong>VARIETAL: </strong>{{wine.varietal}}</p>
-    <p><strong>TYPE: </strong>{{wine.type}}</p>
-    <p><strong>RATING: </strong>{{wine.rating}}</p>
-    <p><strong>WINE ID: </strong>{{wine.id}}</p>
+    <p><strong>NAME: </strong>{{original_post['Name']}}</p>
+    <p><strong>WINERY: </strong>{{original_post['Winery']}}</p>
+    <p><strong>COUNTRY: </strong>{{original_post['Country']}}</p>
+    <p><strong>AREA: </strong>{{original_post['Area']}}</p>
+    <p><strong>VINTAGE: </strong>{{original_post['Vintage']}}</p>
+    <p><strong>VARIETAL: </strong>{{original_post['Varietal']}}</p>
+    <p><strong>TYPE: </strong>{{original_post['Type']}}</p>
+    <p><strong>RATING: </strong>{{original_post['Rating']}}</p>
   </div>
 
 
 
+   
+
+<hr class="dropdown-divider"> 
+<br>
+ <div class="ml-5">
+    <p><strong>MY RATING: </strong>{{original_post['Post_rating']}}</p>
+    <p><strong>REVIEW: </strong>{{original_post['Post_review']}}</p>
+  </div>
+  <br>
+
+  
+
 </article>
+
+
+
+
+
 </div>
 
 <div class="column is-one-fifth"></div>
-<!-- =====================================  REVIEW FORM  =====================================  -->
+<!-- =====================================  EDIT REVIEW FORM  =====================================  -->
 
 
 

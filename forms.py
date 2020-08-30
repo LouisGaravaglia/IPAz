@@ -8,6 +8,13 @@ class ReviewForm(FlaskForm):
 
     rating = DecimalField('Rating', validators=[DataRequired()])
     review = TextAreaField('Review', validators=[DataRequired()])
+    
+class EditReviewForm(FlaskForm):
+    """Form for adding/editing reviews."""
+
+    rating = DecimalField('Rating', validators=[DataRequired()])
+    review = TextAreaField('Review', validators=[DataRequired()])
+
 
 
 class UserAddForm(FlaskForm):

@@ -8,7 +8,8 @@
 
 
 
-
+<h1 class="title is-1 has-text-centered">SIGN UP</h1>
+<hr>
 
 <div class="columns">
   <div class="column is-one-third">
@@ -25,9 +26,9 @@
     {{form.name(class_="input", type="text", placeholder="Enter your first name")}}
     <!-- <input class="input" type="text" placeholder="Text input"> -->
   </div>
-  {% if form.name.errors %}
-      <p class="help is-danger">{{ form.name.errors  }}</p>
-  {% endif %}
+  {% for err in form.name.errors %}
+      <p class="help is-danger">{{ err  }}</p>
+  {% endfor %}
 </div>
 
 <div class="field">
@@ -43,9 +44,9 @@
       <i class="fas fa-check"></i>
     </span> -->
   </div>
-  {% if form.username.errors %}
-      <p class="help is-danger">{{ form.password.errors  }}</p>
-  {% endif %}
+  {% for err in form.username.errors %}
+      <p class="help is-danger">{{ err }}</p>
+  {% endfor %}
   <!-- <p class="help is-success">This username is available</p> -->
 </div>
 
@@ -63,9 +64,9 @@
       <i class="fas fa-exclamation-triangle"></i>
     </span> -->
   </div>
-  {% if form.password.errors %}
-      <p class="help is-danger">{{ form.password.errors  }}</p>
-  {% endif %}
+  {% for err in form.password.errors %}
+      <p class="help is-danger">{{ err  }}</p>
+  {% endfor %}
 </div>
 
 
