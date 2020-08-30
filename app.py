@@ -159,8 +159,8 @@ def profile_page():
 def add_like(wine_id):
     """Add the liked message user id to a list."""
     
-    import pdb
-    pdb.set_trace()
+    # import pdb
+    # pdb.set_trace()
 
     if not g.user:
         return jsonify(message="Please log in or sign up to favorite wines!") 
@@ -169,6 +169,7 @@ def add_like(wine_id):
 
         
     faved_wine = Wine.query.get_or_404(wine_id)
+
 
     if faved_wine in g.user.fav_wines:
         g.user.fav_wines = [wine for wine in g.user.fav_wines if wine != faved_wine]
@@ -179,28 +180,22 @@ def add_like(wine_id):
     
     fav_ids = []
     fav_wines = []
-    # wine_reviews = []
-    # reviews_id_list = []
+    wine_reviews = []
 
     
     for wine in g.user.fav_wines:
         fav_ids.append(wine.id)
         fav_wines.append({'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name})
     
-    # for review in g.user.posts:
-    #     wine = Wine.query.get_or_404(review.wine_id)
-    #     post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
-    #     wine_reviews.append(post)
-    
-    # for wine in wine_reviews:
-    #     wine_id = wine['ID']
-    #     reviews_id_list.append(wine_id)
-        
+    for review in g.user.posts:
+        wine = Wine.query.get_or_404(review.wine_id)
+        post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
+        wine_reviews.append(post)
         
     # import pdb
     # pdb.set_trace()
 
-    return jsonify(fav_ids=fav_ids, fav_wines=fav_wines)
+    return jsonify(fav_wine_list=fav_ids, fav_wines=fav_wines, wine_reviews=wine_reviews)
 
 # ===================================    VIEWING FAVORITES   =====================================
 
@@ -559,7 +554,8 @@ def get_wine_style_choices(new_wine_style):
     wine_type = session['wine_type']
     wine_style = session['wine_style']
     
-    
+    # import pdb
+    # pdb.set_trace()
 
     if new_wine_style == '""':
        new_wine_style = session['wine_style'] 
@@ -584,45 +580,24 @@ def get_wine_style_choices(new_wine_style):
         wine_results = ['No Results']
           
           
-    # if g.user:
-    #     user_favorites = []
-    #     user_favs = g.user.fav_wines
-    #     for fav in user_favs:
-    #         user_favorites.append(fav.id) 
-    # else:
-    #     user_favorites = []
+    if g.user:
+        user_favorites = []
+        user_favs = g.user.fav_wines
+        for fav in user_favs:
+            user_favorites.append(fav.id) 
+    else:
+        user_favorites = []
         
     
-    # if g.user:
-    #     reviews = []
-    #     for wine in g.user.posts:
-    #         reviews.append(wine.id)
-    # else:
-    #     reviews = []
-        
-    #################
-    
-    fav_ids = []
-    fav_wines = []
-    wine_reviews = []
-    reviews_id_list = []
-
-    
-    for wine in g.user.fav_wines:
-        fav_ids.append(wine.id)
-        fav_wines.append({'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name})
-    
-    for review in g.user.posts:
-        wine = Wine.query.get_or_404(review.wine_id)
-        post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
-        wine_reviews.append(post)
-    
-    for wine in wine_reviews:
-        wine_id = wine['ID']
-        reviews_id_list.append(wine_id)
+    if g.user:
+        reviews = []
+        for post in g.user.posts:
+            reviews.append(post.wine_id)
+    else:
+        reviews = []
     
     
-    return jsonify(wine_results=wine_results, user_favorites=fav_ids, reviews_id_list=reviews_id_list, wine_reviews=wine_reviews, fav_wines=fav_wines)
+    return jsonify(wine_results=wine_results, user_favorites=user_favorites, reviews=reviews)
 
 # ===================================    RECEIVING SORT BY PICKS   =====================================
 
