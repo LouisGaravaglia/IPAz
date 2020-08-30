@@ -126,7 +126,7 @@ const addWineCard = function(wine, favBtn, reviewBtn, reviewHTML, cardSize) {
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
     <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
-      <button class="button is-text review-btn" data-id="${wine['ID']}>
+      <button class="button is-text review-btn" data-id="${wine['ID']}">
         <span class="icon review-btn">
         ${reviewBtn}
         </span>
@@ -357,12 +357,13 @@ message = `<section class="hero is-small is-info">
     setTimeout(hideMessage, 2000);
 
   } else {
-      const wine_results = await axios.get(`/wine_style/""`)
-      wines = wine_results.data.wine_results;
-      favs = json.data.fav_wine_list;
-      reviews = wine_results.data.reviews;
-      fav_wines = json.data.fav_wines;
-      wine_reviews = json.data.wine_reviews;
+      const res = await axios.get(`/wine_style/""`)
+      wines = res.data.wine_results;
+      favs = res.data.user_favorites;
+      reviews = res.data.reviews_id_list;
+      fav_wines = res.data.fav_wines;
+      wine_reviews = res.data.wine_reviews;
+      
       populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
   }
   
@@ -557,12 +558,15 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
     $(targetInput).toggleClass("is-focused")
-    const res = await axios.get(`/wine_type/${filterName}`)
-    const wine_results = await axios.get(`/wine_style/""`)
-    wines = wine_results.data.wine_results;
-    favs = wine_results.data.user_favorites;
-    reviews = wine_results.data.reviews;
-    populateWineResults(wines, favs, reviews)
+    const response = await axios.get(`/wine_type/${filterName}`)
+    const res = await axios.get(`/wine_style/""`)
+    wines = res.data.wine_results;
+    favs = res.data.user_favorites;
+    reviews = res.data.reviews_id_list;
+    fav_wines = res.data.fav_wines;
+    wine_reviews = res.data.wine_reviews;
+    
+    populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
 
   }
 
@@ -575,12 +579,14 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
     $(targetInput).toggleClass("is-focused")
-    const wine_results = await axios.get(`/wine_style/${filterName}`)
-    wines = wine_results.data.wine_results;
-    favs = wine_results.data.user_favorites;
-    reviews = wine_results.data.reviews;
-
-    populateWineResults(wines, favs, reviews)
+    const res = await axios.get(`/wine_style/${filterName}`)
+    wines = res.data.wine_results;
+    favs = res.data.user_favorites;
+    reviews = res.data.reviews_id_list;
+    fav_wines = res.data.fav_wines;
+    wine_reviews = res.data.wine_reviews;
+    
+    populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
 
   }
 
@@ -594,12 +600,15 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
     $(targetInput).toggleClass("is-focused")
-    const res = await axios.get(`/sort_by/${filterName}`)
-    const wine_results = await axios.get(`/wine_style/""`)
-    wines = wine_results.data.wine_results;
-    favs = wine_results.data.user_favorites;
-    reviews = wine_results.data.reviews;
-    populateWineResults(wines, favs, reviews)
+    const response = await axios.get(`/sort_by/${filterName}`)
+    const res = await axios.get(`/wine_style/""`)
+    wines = res.data.wine_results;
+    favs = res.data.user_favorites;
+    reviews = res.data.reviews_id_list;
+    fav_wines = res.data.fav_wines;
+    wine_reviews = res.data.wine_reviews;
+    
+    populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
 
   }
 
@@ -672,11 +681,14 @@ $("#modal").on("click", ".toggle-off", async function() {
   modal = $(".modal");
   modal.toggleClass("is-active")
 
-  const wine_results = await axios.get(`/wine_style/""`)
-  wines = wine_results.data.wine_results;
-  favs = wine_results.data.user_favorites;
-  reviews = wine_results.data.reviews;
-  populateWineResults(wines, favs, reviews)
+  const res = await axios.get(`/wine_style/""`)
+  wines = res.data.wine_results;
+  favs = res.data.user_favorites;
+  reviews = res.data.reviews_id_list;
+  fav_wines = res.data.fav_wines;
+  wine_reviews = res.data.wine_reviews;
+  
+  populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
 
 })
 
