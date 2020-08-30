@@ -173,9 +173,8 @@ def add_like(wine_id):
     #     flash("You've already liked that.", "danger")
     #     return redirect("/")
     
-    user_favorites = g.user.fav_wines
-    
-    if faved_wine in user_favorites:
+   
+    if faved_wine in g.user.fav_wines:
         g.user.fav_wines = [wine for wine in user_favorites if wine != faved_wine]
     else:
         g.user.fav_wines.append(faved_wine)
@@ -217,12 +216,10 @@ def view_favorites():
     # user = User.query.get_or_404(g.user.id)
     faved_wines = g.user.fav_wines
     
-    if g.user:
-        user_reviews = []
-        for post in g.user.posts:
-            user_reviews.append(post.wine_id)
-    else:
-        user_reviews = []
+   
+    user_reviews = []
+    for post in g.user.posts:
+        user_reviews.append(post.wine_id)
     
     # if faved_wine.user_id in g.user.fav_wines:
     #     flash("You've already liked that.", "danger")
@@ -239,20 +236,24 @@ def review(wine_id):
     """Handle going to review form for a specific wine, 
     and posting the review.
     """
-    if g.user:
-        user_reviews = []
-        for post in g.user.posts:
-            user_reviews.append(post.wine_id)
-    else:
-        user_reviews = []
+    
+    if not g.user:
+        flash("Please log in or sign up to review wines!", "error")
+        return redirect("/show_results")
+    
+    
+    
+    user_reviews = []
+    for post in g.user.posts:
+        user_reviews.append(post.wine_id)
+   
+    
         
     if wine_id in user_reviews:
         flash("This wine has already been reivewed.", "error")
         return redirect("/user/reviews")
     
-    if not g.user:
-        flash("Please log in or sign up to review wines!", "error")
-        return redirect("/show_results")
+    
     
     form = ReviewForm()
     
@@ -309,13 +310,12 @@ def view_reviews():
         post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
         wine_reviews.append(post)
     
-    if g.user:
-        user_favorites = []
-        user_favs = g.user.fav_wines
-        for fav in user_favs:
-            user_favorites.append(fav.id) 
-    else:
-        user_favorites = []
+  
+    user_favorites = []
+    user_favs = g.user.fav_wines
+    for fav in user_favs:
+        user_favorites.append(fav.id) 
+ 
     
     return render_template('view_reviews.html', wine_reviews=wine_reviews, user_favorites=user_favorites)
 
@@ -582,6 +582,7 @@ def get_wine_style_choices(new_wine_style):
     if wine_results == []:
         wine_results = ['No Results']
           
+          
     if g.user:
         user_favorites = []
         user_favs = g.user.fav_wines
@@ -590,10 +591,13 @@ def get_wine_style_choices(new_wine_style):
     else:
         user_favorites = []
         
-    reviews = []
     
-    for wine in g.user.posts:
-        reviews.append(wine.id)
+    if g.user:
+        reviews = []
+        for wine in g.user.posts:
+            reviews.append(wine.id)
+    else:
+        reviews = []
     
     
     return jsonify(wine_results=wine_results, user_favorites=user_favorites, reviews=reviews)
