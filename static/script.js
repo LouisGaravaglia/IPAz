@@ -142,54 +142,6 @@ const addWineCard = function(wine, favBtn, reviewBtn, reviewHTML, cardSize) {
 
 }
 
-// const notFavorite = function(wine){
-
-// const html = `<div class="column is-half">
-//   <div class="has-text-centered">
-//   </div>
-
-// <article class="message is-dark">
-  
-//   <div class="message-header">
-//     <p>${wine['Name']}</p>
-//   </div>
-
-//   <div class="message-body">
-//     <p><strong>NAME: </strong>${wine['Name']}</p>
-//     <p><strong>WINERY: </strong>${wine['Winery']}</p>
-//     <p><strong>COUNTRY: </strong>${wine['Country']}</p>
-//     <p><strong>AREA: </strong>${wine['Area']}</p>
-//     <p><strong>VINTAGE: </strong>${wine['Vintage']}</p>
-//     <p><strong>VARIETAL: </strong>${wine['Varietal']}</p>
-//     <p><strong>TYPE: </strong>${wine['Type']}</p>
-//     <p><strong>RATING: </strong>${wine['Rating']}</p>
-//   </div>
-
-//   <div class="columns">
-//     <div class="column is-half has-text-centered mx-0 my-0">
-//       <button class="button is-text favorite-button" data-id="${wine['ID']}">
-//         <span class="icon is-small">
-//         <i class="fas fa-thumbtack"></i>
-//         </span>
-//       </button>
-//     </div>
-//     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-//     <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
-//       <button class="button is-text review-btn" data-id="${wine['ID']}>
-//         <span class="icon is-small is-right review-btn">
-//         <i class="fas fa-pen review-btn"></i>
-//         </span>
-//       </button>
-//       </form>
-//     </div>
-//   </div>
-// </article>
-
-//   </div>`
-
-//   return html;
-
-// }
 
 function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_reviews) {
   wineHtml = $("#wine-results")
@@ -412,127 +364,61 @@ message = `<section class="hero is-small is-info">
 
   })
 
-// =================================================  EDIT REVIEW BUTTON ================================================
+// =================================================  DELETE REVIEW / REVIEWS PAGE  ================================================
 
-// $("#edit-review").on("click", ".edit-review", function() {
-
-
-// })
-
-
-
-// =================================================  FAVORITE BUTTON ON FAVORITES PAGE ================================================
-
-// function populateFavorites(favorites) {
-//   favoritesHtml = $("#wine-favorites")
-//   favoritesHtml.html("")
-//   // console.log(favorites);
-//   // console.log(favorites[0]);
-//   if (!favorites[0]) {
-
-//     const html = '<h3 class="title is-3 has-text-centered mt-6">No favorites.</h3>'
-//     favoritesHtml.append(html)
-
-//   } else {
-
-//     for (wine of favorites) {
-
-    
-//   const html = `<div class="column is-one-third">
-//   <article class="message is-dark">
+$("#wine-results").on("click", ".review-delete", async function(e) {
+  const target = e.target;
   
-//   <div class="message-header">
-//     <p>${wine['Name']}</p>
-//   </div>
+ if (target.tagName == "BUTTON") {
+      let wineId = target.dataset.id;
+      const res = await axios.get(`/user/reviews/${wineId}/delete`)
+      const wine_results = await axios.get(`/wine_style/""`)
+      wines = wine_results.data.wine_results;
+      favs = wine_results.data.user_favorites;
+      reviews = wine_results.data.reviews;
+      fav_wines = res.data.fav_wines;
+      wine_reviews = res.data.wine_reviews;
+      populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
 
-//   <div class="message-body">
-//     <p><strong>NAME: </strong>${wine['Name']}</p>
-//     <p><strong>WINERY: </strong>${wine['Winery']}</p>
-//     <p><strong>COUNTRY: </strong>${wine['Country']}</p>
-//     <p><strong>AREA: </strong>${wine['Area']}</p>
-//     <p><strong>VINTAGE: </strong>${wine['Vintage']}</p>
-//     <p><strong>VARIETAL: </strong>${wine['Varietal']}</p>
-//     <p><strong>TYPE: </strong>${wine['Type']}</p>
-//     <p><strong>RATING: </strong>${wine['Rating']}</p>
-//   </div>
+    } else if (target.tagName == "path") {
+      const button = target.parentElement.parentElement.parentElement;
+      let wineId = button.dataset.id;
+      const res = await axios.get(`/user/reviews/${wineId}/delete`)
+      const wine_results = await axios.get(`/wine_style/""`)
+      wines = wine_results.data.wine_results;
+      favs = wine_results.data.user_favorites;
+      reviews = wine_results.data.reviews;
+      fav_wines = res.data.fav_wines;
+      wine_reviews = res.data.wine_reviews;
+      populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
 
-//     <div class="columns">
-//     <div class="column is-half has-text-centered mx-0 my-0">
-//       <button class="button is-dark fav-button favorite-button" data-id="${wine['ID']}" type="submit">
-//         <span class="icon is-small">
-//         <i class="fas fa-thumbtack"></i>
-//         </span>
-//       </button>
-      
-//     </div>
-//     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-//       <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
-//       <button class="button is-text review-btn" data-id="${wine['ID']}">
-//         <span class="icon is-small is-right review-btn">
-//         <i class="fas fa-pen review-btn"></i>
-//         </span>
-//       </button>
-//       </form>
-//     </div>
-//   </div>
+    } else if (target.tagName == "SPAN") {
+      const button = target.parentElement;
+      let wineId = button.dataset.id;
+      const res = await axios.get(`/user/reviews/${wineId}/delete`)
+      const wine_results = await axios.get(`/wine_style/""`)
+      wines = wine_results.data.wine_results;
+      favs = wine_results.data.user_favorites;
+      reviews = wine_results.data.reviews;
+      fav_wines = res.data.fav_wines;
+      wine_reviews = res.data.wine_reviews;
+      populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
 
-// </article>
-// </div>`
-//    favoritesHtml.append(html)
-//       } 
-//   }
-// }
+    } else if (target.tagName == "svg") {
+      const button = target.parentElement.parentElement;
+      let wineId = button.dataset.id;
+      const res = await axios.get(`/user/reviews/${wineId}/delete`)
+      const wine_results = await axios.get(`/wine_style/""`)
+      wines = wine_results.data.wine_results;
+      favs = wine_results.data.user_favorites;
+      reviews = wine_results.data.reviews;
+      fav_wines = res.data.fav_wines;
+      wine_reviews = res.data.wine_reviews;
+      populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
 
+    }
 
-// const getFavs = async function(wineId) {
-//   const favs = await axios.post(`/user/add_favorite/${wineId}`)
-//   console.log(favs);
-//   favorites = favs.data.fav_wines;
-//   populateFavorites(favorites)
-
-// }
-
-  // $("#wine-favorites").on("click", ".favorite-button", async function(e) {
-  //   const target = e.target;
-
-  //   if (target.tagName == "BUTTON") {
-  //     let wineId = target.dataset.id;
-  //     getFavs(wineId);
-     
-
-  //   } else if (target.tagName == "path") {
-  //     const button = target.parentElement.parentElement.parentElement;
-  //     let wineId = button.dataset.id;
-  //     getFavs(wineId);
-
-  //   } else if (target.tagName == "SPAN") {
-  //     const button = target.parentElement;
-  //     let wineId = button.dataset.id;
-  //     getFavs(wineId);
-
-  //   } else if (target.tagName == "svg") {
-  //     const button = target.parentElement.parentElement;
-  //     let wineId = button.dataset.id;
-  //     getFavs(wineId);
-  //   }
-  // })
-
-// =================================================  REVIEW BUTTON ================================================
-
-
-
-// $("#review-btn").on("click", ".review-btn", async function(e) {
-//   console.log(e);
-//   // const res = await axios.post("/user/add_like/<int:wine_id>")
-
-//   // const wine_results = await axios.get(`/wine_style/""`)
-//   // wines = wine_results.data.wine_results;
-//   // favs = wine_results.data.user_favorites;
- 
-//   // populateWineResults(wines, favs)
-
-// })
-
+})
 
 
 // =================================================  TOGGLE OPEN SORT BY OPTIONS / RESULTS PAGE  ================================================

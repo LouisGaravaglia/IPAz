@@ -70,13 +70,14 @@
   <br>
 
   
-    <div class="field is-grouped ml-5">
-    <button class="button is-dark is-outlined review-delete mb-5">
-    <span>Delete</span>
-    <span class="icon is-small">
-      <i class="fas fa-times"></i>
+    <div class="field is-grouped ml-5" id="review-delete">
+    <button class="button is-dark is-outlined review-delete mb-5" data-id="{{wine['ID']}}">
+    <span class="review-delete">Delete</span>
+    <span class="icon is-small review-delete">
+      <i class="fas fa-times review-delete"></i>
     </span>
   </button>
+
 
   <form method="POST" action="/user/reviews/{{wine['ID']}}" id="edit-review">
   <button class="button is-dark is-outlined edit-review mb-5 ml-2" type="submit">

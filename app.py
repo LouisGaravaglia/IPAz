@@ -362,6 +362,42 @@ def patch_reviews(wine_id):
         return render_template('edit_review.html', form=form, original_post=original_post)
 
 
+# ===================================    REVIEWS / DELETE   =====================================
+
+@app.route('/user/reviews/<int:wine_id>/delete')
+def delete_review(wine_id):
+    """Handle going to review form for a specific wine, 
+    and posting the review.
+    """
+
+    if not g.user:
+        flash("Please log in or sign up to see your reviews!", "error")
+        return redirect("/show_results")
+ 
+    post = Post.query.filter(Post.wine_id == wine_id).first()
+
+    db.session.delete(post)
+    db.session.commit()
+    
+    
+    fav_ids = []
+    fav_wines = []
+    wine_reviews = []
+
+    
+    for wine in g.user.fav_wines:
+        fav_ids.append(wine.id)
+        fav_wines.append({'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name})
+    
+    for review in g.user.posts:
+        wine = Wine.query.get_or_404(review.wine_id)
+        post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
+        wine_reviews.append(post)
+
+    return jsonify(fav_ids=fav_ids, fav_wines=fav_wines, wine_reviews=wine_reviews)
+
+
+    
 # ===================================    CACHE    =====================================
 # Turn off all caching in Flask
 #   (useful for dev; in production, this kind of stuff is typically
