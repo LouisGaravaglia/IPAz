@@ -142,6 +142,39 @@ const addWineCard = function(wine, favBtn, reviewBtn, reviewHTML, cardSize) {
 
 }
 
+const addReviewHTML = function(wine) {
+
+  html = `<hr class="dropdown-divider"> 
+<br>
+ <div class="ml-5">
+    <p><strong>MY RATING: </strong>${wine['Post_rating']}</p>
+    <p><strong>REVIEW: </strong>${wine['Post_review']}</p>
+  </div>
+  <br>
+
+  
+    <div class="field is-grouped ml-5" id="review-delete">
+    <button class="button is-dark is-outlined review-delete mb-5" data-id="${wine['ID']}">
+    <span class="review-delete">Delete</span>
+    <span class="icon is-small review-delete">
+      <i class="fas fa-times review-delete"></i>
+    </span>
+  </button>
+
+
+  <form method="POST" action="/user/reviews/${wine['ID']}" id="edit-review">
+  <button class="button is-dark is-outlined edit-review mb-5 ml-2" type="submit">
+    <span>Edit</span>
+    <span class="icon is-small">
+      <i class="fas fa-times"></i>
+    </span>
+  </button>
+  </form>
+</div>`
+
+return html
+}
+
 
 function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_reviews) {
   wineHtml = $("#wine-results")
@@ -162,42 +195,14 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
         const favBtn = '<i class="fas fa-star"></i>';
         const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
         const cardSize = 'is-one-third';
-        const reviewHTML = `<hr class="dropdown-divider"> 
-                            <br>
-                            <div class="ml-5">
-                                <p><strong>MY RATING: </strong>${wine['Post_rating']}</p>
-                                <p><strong>REVIEW: </strong>${wine['Post_review']}</p>
-                              </div>
-                              <br>
-                              <div class="has-text-centered">
-                                <button class="button is-dark is-outlined review-delete mb-5">
-                                <span>Delete</span>
-                                <span class="icon is-small">
-                                  <i class="fas fa-times"></i>
-                                </span>
-                              </button>
-                              </div>`
+        const reviewHTML = addReviewHTML(wine)
         const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
         wineHtml.append(html)
       } else {
         const favBtn = '<i class="far fa-star"></i>';
         const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
         const cardSize = 'is-one-third';                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-        const reviewHTML = `<hr class="dropdown-divider"> 
-                            <br>
-                            <div class="ml-5">
-                                <p><strong>MY RATING: </strong>${wine['Post_rating']}</p>
-                                <p><strong>REVIEW: </strong>${wine['Post_review']}</p>
-                              </div>
-                              <br>
-                              <div class="has-text-centered">
-                                <button class="button is-dark is-outlined review-delete mb-5">
-                                <span>Delete</span>
-                                <span class="icon is-small">
-                                  <i class="fas fa-times"></i>
-                                </span>
-                              </button>
-                              </div>`
+        const reviewHTML = addReviewHTML(wine)
         const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
         wineHtml.append(html)
       }
@@ -368,7 +373,7 @@ message = `<section class="hero is-small is-info">
 
 $("#wine-results").on("click", ".review-delete", async function(e) {
   const target = e.target;
-  
+
  if (target.tagName == "BUTTON") {
       let wineId = target.dataset.id;
       const res = await axios.get(`/user/reviews/${wineId}/delete`)
