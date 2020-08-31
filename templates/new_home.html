@@ -21,7 +21,7 @@
   <div id="wine-type" class="wine-type-container has-text-centered">
     
     <h3 class="title wine-type-title">Choose your wine type</h3>
-    <div class="button-box pb-4">
+    <div class="button-box has-text-centered">
     {% for type in session['wine_type_options'] %}
     
       <button class="button is-info is-light is-rounded mt-3 mb-2 mx-2 wine-type">{{type}}</button>
@@ -38,7 +38,7 @@
 
   <div class="varietals-container has-text-centered">
     <h3 class="title varietals-title">Choose your varietals</h3>
-    <div class="has-text-centered " id="varietals">
+    <div class="button-box has-text-centered" id="varietals">
       {% for varietal in varietals %}
       <button
         class="button is-info is-light is-rounded mt-3 mb-2 mx-2 varietals"
@@ -58,7 +58,7 @@
 
   <div id="filter-by" class="filter-by-container has-text-centered sort-by-container">
     <h3 class="title sort-by-title">Sort your results</h3>
-    <div class="button-box pb-4">
+    <div class="button-box has-text-centered">
     {% for sort in session['sort_by_options'] %}
 
     <button

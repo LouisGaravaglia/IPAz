@@ -226,9 +226,9 @@ def view_favorites():
 
     return render_template("favorites.html", faved_wines=faved_wines, user_reviews=user_reviews)
 
-# ===================================    REVIEWS / POST    =====================================
+# ===================================    SINGLE REVIEW / POST    =====================================
 
-@app.route('/user/review/<int:wine_id>', methods=["GET", "POST"])
+@app.route('/user/review/<int:wine_id>', methods=['GET', 'POST'])
 def review(wine_id):
     """Handle going to review form for a specific wine, 
     and posting the review.
@@ -238,30 +238,18 @@ def review(wine_id):
         flash("Please log in or sign up to review wines!", "error")
         return redirect("/show_results")
     
-    
-    
     user_reviews = []
     for post in g.user.posts:
         user_reviews.append(post.wine_id)
-   
     
-        
+     
     if wine_id in user_reviews:
         flash("This wine has already been reivewed.", "error")
         return redirect("/user/reviews")
     
-    
-    
+  
     form = ReviewForm()
     
-    if form.is_submitted():
-        print("submitted")
-    
-
-    if form.validate():
-        print("valid")
-        
-    print(form.errors)
 
     if form.validate_on_submit():
         
@@ -319,7 +307,7 @@ def view_reviews():
 
 # ===================================    REVIEWS / PATCH   =====================================
 
-@app.route('/user/reviews/<int:wine_id>', methods=["POST"])
+@app.route('/user/reviews/<int:wine_id>', methods=["GET", "POST"])
 def patch_reviews(wine_id):
     """Handle going to review form for a specific wine, 
     and posting the review.
@@ -331,14 +319,7 @@ def patch_reviews(wine_id):
     
     form = EditReviewForm()
     
-    if form.is_submitted():
-        print("submitted")
-    
 
-    if form.validate():
-        print("valid")
-        
-    print(form.errors)
 
     if form.validate_on_submit():
         
@@ -369,6 +350,7 @@ def delete_review(wine_id):
     """Handle going to review form for a specific wine, 
     and posting the review.
     """
+
 
     if not g.user:
         flash("Please log in or sign up to see your reviews!", "error")

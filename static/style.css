@@ -92,7 +92,7 @@ a {
 
 .wine-type-container {
   background-color: #fff;
-  padding-bottom: 120px;
+  /* padding-bottom: 120px; */
   padding-top: 120px;
   /* width: 100vw; */
 }
@@ -100,6 +100,11 @@ a {
 .wine-type-title {
   font-size: 4rem;
   color: #3198db;
+}
+
+.button-box {
+  margin-top: 40px;
+  padding-bottom: 120px;
 }
 
 /* .wine-type-span {
@@ -117,7 +122,6 @@ a {
 
 .varietals-container {
   background-color: #a5d4f4;
-  padding-bottom: 120px;
   padding-top: 120px;
   /* width: 100vw; */
 }
@@ -131,7 +135,6 @@ a {
 
 .sort-by-container {
   background-color: #fff;
-  padding-bottom: 120px;
   padding-top: 120px;
   /* width: 100vw; */
 }
@@ -154,16 +157,19 @@ a {
 .results-btn-title {
   font-size: 4rem;
   color: #fff;
+  
 }
 
 .results-arrow {
-  font-size: 1.5rem;
-  padding: 0 60px;
+ margin-top: 20px;
+ padding: 30px 50px;
 }
 
-.results-arrow .fas {
-  font-size: 4rem;
+.fa-long-arrow-alt-right {
+  font-size: 5rem;
 }
+
+
 
 
 /* ================================  SORT SIDE BAR / RESULTS PAGE  ================================  */

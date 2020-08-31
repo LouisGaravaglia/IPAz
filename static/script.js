@@ -134,13 +134,11 @@ const addWineCard = function(wine, favBtn, reviewBtn, reviewHTML, cardSize) {
       </button>
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-    <form method="POST" action="/user/review/${wine['ID']}" id="review-form">
-      <button class="button is-text review-btn" data-id="${wine['ID']}">
+    <a href="/user/review/${wine['ID']}" class="button is-text review-btn" data-id="${wine['ID']}">
         <span class="icon review-btn">
         ${reviewBtn}
         </span>
-      </button>
-      </form>
+      </a
     </div>
   </div>
   ${reviewHTML}
@@ -169,11 +167,10 @@ const addReviewHTML = function(wine) {
   </button>
 
 
-  <form method="POST" action="/user/reviews/${wine['ID']}" id="edit-review">
-  <button class="button is-info is-outlined edit-review mb-5 ml-2" type="submit">
+ 
+  <a href="/user/reviews/${wine['ID']}" class="button is-info is-outlined edit-review mb-5 ml-2" id="edit-review">
     <span>Edit</span>
-  </button>
-  </form>
+  </a>
 </div>`
 
 return html

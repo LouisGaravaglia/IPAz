@@ -185,8 +185,9 @@
       <!-- </form> -->
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-      <form method="POST" action="/user/review/{{wine['ID']}}" id="review-form">
-      <button class="button is-text review-btn" data-id="{{wine['ID']}}">
+      <!-- <form method="POST" action="/user/review/{{wine['ID']}}" id="review-form"> -->
+      <!-- <button class="button is-text review-btn" data-id="{{wine['ID']}}"> -->
+        <a href="/user/review/{{wine['ID']}}" class="button is-text review-btn" data-id="{{wine['ID']}}">
         <span class="icon review-btn">
             {% if wine['ID'] in user_reviews %}
                 <i class="fas fa-edit review-btn"></i>
@@ -195,8 +196,9 @@
             {% endif %}
         
         </span>
-      </button>
-      </form>
+        </a>
+      <!-- </button> -->
+      <!-- </form> -->
     </div>
   </div>
 </article>
