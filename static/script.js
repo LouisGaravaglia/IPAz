@@ -18,7 +18,10 @@ window.addEventListener( "pageshow", function ( event ) {
 
 $("#wine-type").on("click", ".wine-type", async function(e) {
   const selected_button = e.target;
-  selected_button.classList.toggle("is-focused")
+
+  // selected_button.classList.toggle("is-focused")
+  $(selected_button).toggleClass("is-light")
+
   wine_type = selected_button.innerText
   varietalDiv = $("#varietals")
   varietalDiv.html("")
@@ -41,7 +44,10 @@ async function sendWineType(wine_type) {
 
 $("#filter-by").on("click", ".filter-by", async function(e) {
   const selected_button = e.target;
-  selected_button.classList.toggle("is-focused")
+
+  // selected_button.classList.toggle("is-focused")
+  $(selected_button).toggleClass("is-light")
+
   filterBy = selected_button.innerText
   
   await sendSortBy(filterBy)
@@ -57,10 +63,10 @@ function populateVarietals(varietal_array, selected_varietals) {
 
 for (varietal of varietal_array) {
   if (selected_varietals.includes(varietal)) {
-    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals is-focused">${varietal}</button>`
+    html = `<button class="button is-info is-rounded mt-3 mb-2 mx-2 varietals">${varietal}</button>`
     varietalDiv.append(html);
   } else {
-    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">${varietal}</button>`
+    html = `<button class="button is-info is-light is-rounded mt-3 mb-2 mx-2 varietals">${varietal}</button>`
     varietalDiv.append(html);
   }
 
@@ -75,7 +81,10 @@ for (varietal of varietal_array) {
 
 $("#varietals").on("click", ".varietals", async function(e) {
   const selected_button = e.target;
-  selected_button.classList.toggle("is-focused")
+
+  // selected_button.classList.toggle("is-focused")
+  $(selected_button).toggleClass("is-light")
+
   varietal = selected_button.innerText
   await sendVarietals(varietal)
 })
@@ -99,7 +108,7 @@ const addWineCard = function(wine, favBtn, reviewBtn, reviewHTML, cardSize) {
   <div class="has-text-centered">
   </div>
 
-<article class="message is-dark">
+<article class="message is-info">
   
   <div class="message-header">
     <p>${wine['Name']}</p>
@@ -146,7 +155,8 @@ const addReviewHTML = function(wine) {
 
   html = `<hr class="dropdown-divider"> 
 <br>
- <div class="ml-5">
+
+ <div class="ml-5 has-text-info-dark">
     <p><strong>MY RATING: </strong>${wine['Post_rating']}</p>
     <p><strong>REVIEW: </strong>${wine['Post_review']}</p>
   </div>
@@ -154,20 +164,14 @@ const addReviewHTML = function(wine) {
 
   
     <div class="field is-grouped ml-5" id="review-delete">
-    <button class="button is-dark is-outlined review-delete mb-5" data-id="${wine['ID']}">
+    <button class="button is-info is-outlined review-delete mb-5" data-id="${wine['ID']}">
     <span class="review-delete">Delete</span>
-    <span class="icon is-small review-delete">
-      <i class="fas fa-times review-delete"></i>
-    </span>
   </button>
 
 
   <form method="POST" action="/user/reviews/${wine['ID']}" id="edit-review">
-  <button class="button is-dark is-outlined edit-review mb-5 ml-2" type="submit">
+  <button class="button is-info is-outlined edit-review mb-5 ml-2" type="submit">
     <span>Edit</span>
-    <span class="icon is-small">
-      <i class="fas fa-times"></i>
-    </span>
   </button>
   </form>
 </div>`
@@ -184,8 +188,17 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
 
   if (wine_results[0] == "No Results") {
     
-    const html = '<h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>'
-    wineHtml.append(html)
+    message = `<section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-grey-dark">
+        No wines available.
+      </h1>
+    </div>
+  </div>
+</section>`
+    // const html = '<h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>'
+    wineHtml.append(message)
 
   } else if (address.includes("user/review")) {
 
@@ -447,7 +460,8 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
   if (target.tagName == "INPUT") {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
-    $(targetInput).toggleClass("is-focused")
+    // $(targetInput).toggleClass("is-focused")
+    $(targetInput).toggleClass("is-light")
     const res = await axios.get(`/wine_type/${filterName}`)
     const wine_results = await axios.get(`/wine_style/""`)
     wines = wine_results.data.wine_results;
@@ -465,7 +479,8 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
   if (target.tagName == "INPUT") {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
-    $(targetInput).toggleClass("is-focused")
+    // $(targetInput).toggleClass("is-focused")
+    $(targetInput).toggleClass("is-light")
     const wine_results = await axios.get(`/wine_style/${filterName}`)
     wines = wine_results.data.wine_results;
     favs = wine_results.data.user_favorites;
@@ -484,7 +499,8 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
   if (target.tagName == "INPUT") {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
-    $(targetInput).toggleClass("is-focused")
+    // $(targetInput).toggleClass("is-focused")
+    $(targetInput).toggleClass("is-light")
     const res = await axios.get(`/sort_by/${filterName}`)
     const wine_results = await axios.get(`/wine_style/""`)
     wines = wine_results.data.wine_results;
@@ -520,10 +536,10 @@ function makeModal(varietal_array, selected_varietals) {
 
 for (varietal of varietal_array) {
   if (selected_varietals.includes(varietal)) {
-    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals is-focused">${varietal}</button>`
+    html = `<button class="button is-info is-rounded mt-3 mx-2 wine-type varietals">${varietal}</button>`
     varietalDiv.append(html);
   } else {
-    html = `<button class="button is-primary is-outlined is-rounded is-small mt-3 mx-2 varietals">${varietal}</button>`
+    html = `<button class="button is-info is-light is-rounded mt-3 mx-2 wine-type varietals">${varietal}</button>`
     varietalDiv.append(html);
   }
 
@@ -553,8 +569,9 @@ $("#varietals-modal").on("click", ".varietals", async function(e) {
   const target = e.target;
   const targetName = target.innerText;
 
-  target.classList.toggle("is-focused")
-  
+  // target.classList.toggle("is-focused")
+  target.classList.toggle("is-light")
+
   await sendVarietals(targetName)
 })
 

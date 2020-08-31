@@ -19,7 +19,67 @@
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-.icon {
+.icon .fa-edit{
   font-size: 1.5rem;
+  color: #3298dc;
 }
+
+.icon .fa-star{
+  font-size: 1.5rem;
+  color: #3298dc;
+}
+
+.hero-text {
+  font-size: 10vw;
+  color: #ffffff;
+}
+
+.page-title {
+  font-size: 5vw;
+  color: #ffffff;  
+}
+
+.block-text {
+  background-color: #7a7a7a;
+  display: inline;
+  font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  padding: 13px 25px 10px;
+  color: #ffffff;
+}
+
+.sort-label {
+  background-color: #7a7a7a;
+  display: block;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  padding: 8px 120px 6px 10px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.sort-label:hover {
+  background-color: #6c6c6c;
+  display: block;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  padding: 8px 120px 6px 10px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.small-text {
+  background-color: #3298dc;
+  display: inline;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 800;
+  padding: 1px 4px 1px;
+  color: #ffffff;
+}
+
+
 

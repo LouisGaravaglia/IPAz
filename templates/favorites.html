@@ -5,10 +5,18 @@
 
 {% block content %}
 <div id="flash"></div>
-<h1 class="title is-1 has-text-centered">MY FAVORITES</h1>
-<hr>
+<!-- <h1 class="title is-1 has-text-grey has-text-centered mt-5 pb-2 new">MY FAVORITES</h1> -->
 
-<div class="columns my-3 mx-3 is-multiline" id="wine-results">
+<div class="has-text-centered mt-6">
+<h1 class="block-text">FAVORITES</h1>
+
+</div>
+
+    <!-- <div class="container is-fluid is-info">  
+    <hr>
+</div> -->
+
+<div class="columns my-5 mx-3 is-multiline" id="wine-results">
  {% if faved_wines[0] == Undefined %}
     <h3 class="title is-3 has-text-centered mt-6">No favorites.</h3>
   {% else %}
@@ -16,7 +24,7 @@
  
 
 <div class="column is-one-third">
-  <article class="message is-dark">
+  <article class="message is-info">
   
   <div class="message-header">
     <p>{{wine.name}}</p>

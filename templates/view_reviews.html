@@ -5,10 +5,17 @@
 
 {% block content %}
 <div id="flash"></div>
-<h1 class="title is-1 has-text-centered">MY REVIEWS</h1>
-<hr>
+<!-- <h1 class="title is-1 has-text-grey has-text-centered mt-5 pb-2 new">MY REVIEWS</h1> -->
+    <div class="has-text-centered mt-6">
+<h1 class="block-text">REVIEWS</h1>
 
-<div class="columns my-3 mx-3 is-multiline" id="wine-results">
+</div>
+    
+    <!-- <div class="container is-fluid is-info">  
+    <hr>
+</div> -->
+
+<div class="columns my-5 mx-3 is-multiline" id="wine-results">
  {% if wine_reviews[0] == Undefined %}
     <h3 class="title is-3 has-text-centered mt-6">No reviews.</h3>
   {% else %}
@@ -16,7 +23,7 @@
  
 
 <div class="column is-one-third">
-  <article class="message is-dark">
+  <article class="message is-info">
   
   <div class="message-header">
     <p>{{wine['Name']}}</p>
@@ -61,9 +68,12 @@
 
   </div>
 
+<!-- ==================================  USER REVIEW  ================================== -->
+
 <hr class="dropdown-divider"> 
 <br>
- <div class="ml-5">
+
+ <div class="ml-5 has-text-info-dark">
     <p><strong>MY RATING: </strong>{{wine['Post_rating']}}</p>
     <p><strong>REVIEW: </strong>{{wine['Post_review']}}</p>
   </div>
@@ -71,20 +81,14 @@
 
   
     <div class="field is-grouped ml-5" id="review-delete">
-    <button class="button is-dark is-outlined review-delete mb-5" data-id="{{wine['ID']}}">
+    <button class="button is-info is-outlined review-delete mb-5" data-id="{{wine['ID']}}">
     <span class="review-delete">Delete</span>
-    <span class="icon is-small review-delete">
-      <i class="fas fa-times review-delete"></i>
-    </span>
   </button>
 
 
   <form method="POST" action="/user/reviews/{{wine['ID']}}" id="edit-review">
-  <button class="button is-dark is-outlined edit-review mb-5 ml-2" type="submit">
+  <button class="button is-info is-outlined edit-review mb-5 ml-2" type="submit">
     <span>Edit</span>
-    <span class="icon is-small">
-      <i class="fas fa-times"></i>
-    </span>
   </button>
   </form>
 </div>

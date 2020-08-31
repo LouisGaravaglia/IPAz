@@ -11,11 +11,15 @@
   <script src="https://unpkg.com/jquery"></script>
   <script src="https://unpkg.com/popper"></script>
   <script src="https://unpkg.com/bootstrap"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.css">  
   <link rel="stylesheet" href="/static/style.css" type="text/css">
 </head>
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<!-- ================================= NAVBAR ================================= -->
+
+
+<nav class="navbar is-info" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="/">
       <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
@@ -43,6 +47,9 @@
       </a>
       <a href="/user/reviews" class="navbar-item">
         Reviews
+      </a>
+      <a href="/user" class="navbar-item">
+        Profile
       </a>
       {% endif %}
       <!-- <div class="navbar-item has-dropdown is-hoverable">
@@ -79,9 +86,6 @@
             Log in
           </a>
           {% else %}
-         <a href="/user" class="button is-primary">
-            <strong>Profile</strong>
-          </a>
           <a href="/logout" class="button is-light">
             Logout
           </a>
@@ -92,19 +96,18 @@
   </div>
 </nav>
 
+<!-- ================================= FLASH MESSAGES ================================= -->
+
 <div id="messageContainer">
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 <section class="messages">
 {% for category, msg in messages %}
 {% if category == 'error'%}
-<section class="hero is-small is-info">
-    
+<section class="hero is-small is-light">
   <div class="hero-body">
-    
     <div class="container">
-      
-      <h1 class="title">
+      <h1 class="title has-text-grey-dark">
         {{msg}}
       </h1>
     </div>
@@ -113,7 +116,7 @@
 
 {% else %}
 
-<section class="hero is-small is-primary">
+<section class="hero is-small is-success">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
