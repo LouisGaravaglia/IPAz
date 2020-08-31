@@ -1,11 +1,204 @@
+
+
+/* ================================  NAVBAR  ================================  */
+
+.logo-navbar {
+  /* background-color: #fff; */
+  display: inline;
+  font-size: 2rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 800;
+  /* padding: 1px 10px 1px; */
+  /* color: #3298dc; */
+  color: #fff;
+  margin: -15px 0;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+
+
+/* ================================  ICONS  ================================  */
+
+.icon .fa-edit{
+  font-size: 1.5rem;
+  color: #3298dc;
+}
+
+.icon .fa-star{
+  font-size: 1.5rem;
+  color: #3298dc;
+}
+
+/* ================================  LANDING PAGE HERO SECTION  ================================  */
+
+.hero-text {
+  font-size: 10vw;
+  color: #ffffff;
+}
+
+.hero-block-text {
+  background-color: #fff;
+  display: inline;
+  font-size: 10vw;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  padding: .1vw 2vw;
+  color: #3298dc;
+}
+
+
+.fa-chevron-down {
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+
+/* ================================  PAGE TITLES  ================================  */
+
+/* 
+.page-title {
+  font-size: 5vw;
+  color: #ffffff;  
+} */
+
+/* .block-text {
+  background-color: #7a7a7a;
+  display: inline;
+  font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  padding: 13px 25px 10px;
+  color: #ffffff;
+} */
+
+.block-text {
+  /* background-color: #7a7a7a; */
+  display: inline;
+  font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  padding: 13px 25px 10px;
+  color: #a5d4f4;
+}
+
+
+
+
+/* ================================  WINE TYPE SECTION / LANDING PAGE  ================================  */
+
+.wine-type-container {
+  background-color: #fff;
+  padding-bottom: 120px;
+  padding-top: 120px;
+  /* width: 100vw; */
+}
+
+.wine-type-title {
+  font-size: 4rem;
+  color: #3198db;
+}
+
+/* .wine-type-span {
+  background-color: #3298dc;
+  display: inline;
+  font-size: 3rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  padding: 5px 15px 5px;
+  color: #ffffff;
+} */
+
+
+/* ================================  VARIETALS / LANDING PAGE  ================================  */
+
+.varietals-container {
+  background-color: #a5d4f4;
+  padding-bottom: 120px;
+  padding-top: 120px;
+  /* width: 100vw; */
+}
+
+.varietals-title {
+  font-size: 4rem;
+  color: #fff;
+}
+
+/* ================================  SORT BY / LANDING PAGE  ================================  */
+
+.sort-by-container {
+  background-color: #fff;
+  padding-bottom: 120px;
+  padding-top: 120px;
+  /* width: 100vw; */
+}
+
+.sort-by-title {
+  font-size: 4rem;
+  color: #3198db;
+}
+
+
+
+/* ================================  RESULTS BUTTON / LANDING PAGE  ================================  */
+
+.results-button {
+  background-color: #a5d4f4;
+  padding-bottom: 120px;
+  padding-top: 120px;
+}
+
+.results-btn-title {
+  font-size: 4rem;
+  color: #fff;
+}
+
+.results-arrow {
+  font-size: 1.5rem;
+  padding: 0 60px;
+}
+
+.results-arrow .fas {
+  font-size: 4rem;
+}
+
+
+/* ================================  SORT SIDE BAR / RESULTS PAGE  ================================  */
+
 .sticky	{
   position: sticky;
   top: 30px;
 }
 
-
 .hidden {
   display: none;
+}
+
+.sort-label {
+  background-color: #a5d4f4;
+  display: block;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  padding: 8px 120px 6px 10px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.sort-label:hover {
+  background-color: #83c6f4;
+  display: block;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  padding: 8px 120px 6px 10px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  white-space: nowrap;
 }
 
 /* Prevents the sort by buttons from being highlighted when the user clicks on them */
@@ -19,57 +212,7 @@
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-.icon .fa-edit{
-  font-size: 1.5rem;
-  color: #3298dc;
-}
-
-.icon .fa-star{
-  font-size: 1.5rem;
-  color: #3298dc;
-}
-
-.hero-text {
-  font-size: 10vw;
-  color: #ffffff;
-}
-
-.page-title {
-  font-size: 5vw;
-  color: #ffffff;  
-}
-
-.block-text {
-  background-color: #7a7a7a;
-  display: inline;
-  font-size: 4rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 900;
-  padding: 13px 25px 10px;
-  color: #ffffff;
-}
-
-.sort-label {
-  background-color: #7a7a7a;
-  display: block;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-  padding: 8px 120px 6px 10px;
-  margin-bottom: 20px;
-  color: #ffffff;
-}
-
-.sort-label:hover {
-  background-color: #6c6c6c;
-  display: block;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-  padding: 8px 120px 6px 10px;
-  margin-bottom: 20px;
-  color: #ffffff;
-}
+/* ================================  SMALL BLOCK TEXT  ================================  */
 
 .small-text {
   background-color: #3298dc;
@@ -80,6 +223,5 @@
   padding: 1px 4px 1px;
   color: #ffffff;
 }
-
 
 

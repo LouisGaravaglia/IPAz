@@ -536,10 +536,10 @@ function makeModal(varietal_array, selected_varietals) {
 
 for (varietal of varietal_array) {
   if (selected_varietals.includes(varietal)) {
-    html = `<button class="button is-info is-rounded mt-3 mx-2 wine-type varietals">${varietal}</button>`
+    html = `<button class="button is-info is-rounded mt-3 mb-2 mx-2 wine-type varietals">${varietal}</button>`
     varietalDiv.append(html);
   } else {
-    html = `<button class="button is-info is-light is-rounded mt-3 mx-2 wine-type varietals">${varietal}</button>`
+    html = `<button class="button is-info is-light is-rounded mt-3 mb-2 mx-2 wine-type varietals">${varietal}</button>`
     varietalDiv.append(html);
   }
 

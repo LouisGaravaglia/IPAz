@@ -69,7 +69,7 @@
 <aside class="menu sticky">
   <ul class="menu-list">
     <li>
-      <li><p id="choose-wine-type" class="sort-label">Wine Types</p></li>
+      <li><p id="choose-wine-type" class="sort-label noselect">Wine Types</p></li>
       <!-- <hr class="dropdown-divider"> -->
       <ul id="wine-type-checkboxes" class="hidden">
         {% for type in session['wine_type_options'] %}
@@ -84,7 +84,7 @@
   </ul>
   <ul class="menu-list">
     <li>
-      <li><p id="choose-wine-style" class="sort-label">Wine Style</p></li>
+      <li><p id="choose-wine-style" class="sort-label noselect">Wine Style</p></li>
       <!-- <hr class="dropdown-divider"> -->
       <ul id="wine-style-checkboxes" class="hidden">
         {% for style in session['wine_style_options'] %}
@@ -99,7 +99,7 @@
   </ul>
   <ul class="menu-list">
     <li>
-      <li><p id="choose-sort-by" class="sort-label">Sort By</p></li>
+      <li><p id="choose-sort-by" class="sort-label noselect">Sort By</p></li>
       <!-- <hr class="dropdown-divider"> -->
       <ul id="sort-by-checkboxes" class="hidden">
         {% for sort in session['sort_by_options'] %}
@@ -114,7 +114,7 @@
   </ul>
 
   <ul class="menu-list">
-    <li><p id="choose-varietals"  class="sort-label">Varietals</p></li>
+    <li><p id="choose-varietals"  class="sort-label noselect">Varietals</p></li>
 </ul>
     <!-- ===============================  NEW SORT BY ===============================  -->
 <!-- <hr class="dropdown-divider"> -->
