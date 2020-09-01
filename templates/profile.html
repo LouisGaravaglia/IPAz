@@ -34,13 +34,21 @@
     <div>
     
       <a href="/user/favorites"><p class="heading profile-stat-title">Favorites</p></a>
+      {% if num_of_favs %}
       <a href="/user/favorites"><p class="title profile-stat">{{num_of_favs}}</p></a>
+      {% else %}
+      <a href="/user/favorites"><p class="title profile-stat">0</p></a>
+      {% endif %}
     </div>
   </div>
   <div class="level-item has-text-centered">
     <div>
       <a href="/user/reviews"><p class="heading profile-stat-title">Reviews</p></a>
+      {% if num_of_reviews %}
       <a href="/user/reviews"><p class="title profile-stat">{{num_of_reviews}}</p></a>
+      {% else %}
+      <a href="/user/reviews"><p class="title profile-stat">0</p></a>
+      {% endif %}
     </div>
   </div>
 </nav>
@@ -60,45 +68,69 @@
 <!-- ===========================================  MOST RECENT FAVORITE  =========================================== -->
 
 <div class="columns">
-<div class="column is-half mt-5">
+<div class="column is-half mt-5 pb-6">
   <div class="has-text-centered">
 <h1 class="block-text">FAVORITES</h1>
 <h2 class="profile-subtitle">Most recent favorite</h2>
 </div>
 
+{% if not most_recent_fav %}
+    <section class="hero is-small is-light mt-6 mx-6">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-info">
+        No favorites yet.
+      </h1>
+    </div>
+  </div>
+</section>
+  {% else %}
 <article class="message is-info form-container mx-6">
+
+  
   
   <div class="message-header">
-    <p>{{favs}}</p>
+    <p>{{most_recent_fav.name}}</p>
   </div>
 
   <div class="message-body">
-    <p><strong>NAME: </strong>{{wine.name}}</p>
-    <p><strong>WINERY: </strong>{{wine.winery}}</p>
-    <p><strong>COUNTRY: </strong>{{wine.country}}</p>
-    <p><strong>AREA: </strong>{{wine.area}}</p>
-    <p><strong>VINTAGE: </strong>{{wine.vintage}}</p>
-    <p><strong>VARIETAL: </strong>{{wine.varietal}}</p>
-    <p><strong>TYPE: </strong>{{wine.type}}</p>
-    <p><strong>RATING: </strong>{{wine.rating}}</p>
-    <p><strong>WINE ID: </strong>{{wine.id}}</p>
+    <p><strong>NAME: </strong>{{most_recent_fav.name}}</p>
+    <p><strong>WINERY: </strong>{{most_recent_fav.winery}}</p>
+    <p><strong>COUNTRY: </strong>{{most_recent_fav.country}}</p>
+    <p><strong>AREA: </strong>{{most_recent_fav.area}}</p>
+    <p><strong>VINTAGE: </strong>{{most_recent_fav.vintage}}</p>
+    <p><strong>VARIETAL: </strong>{{most_recent_fav.varietal}}</p>
+    <p><strong>TYPE: </strong>{{most_recent_fav.type}}</p>
+    <p><strong>RATING: </strong>{{most_recent_fav.rating}}</p>
+    <p><strong>WINE ID: </strong>{{most_recent_fav.id}}</p>
   </div>
 
 
 
 </article>
-
+{% endif %}
 
 </div>
 
 <!-- ===========================================  TOP RATED REVIEW  =========================================== -->
 
-<div class="column is-half mt-5">
+<div class="column is-half mt-5 pb-6">
 <div class="has-text-centered">
 <h1 class="block-text">REVIEWS</h1>
 <h2 class="profile-subtitle">Top Rated Review</h2>
   </div> 
 
+{% if not top_rated_review %}
+   <section class="hero is-small is-light mt-6 mx-6">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-info">
+        No reviews yet.
+      </h1>
+    </div>
+  </div>
+</section>
+  {% else %}
    <article class="message is-info form-container mx-6">
   
   <div class="message-header">
@@ -127,6 +159,7 @@
   
 
 </article>
+{% endif %}
 
 </div>
 </div>

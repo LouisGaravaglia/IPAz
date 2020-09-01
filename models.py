@@ -135,7 +135,7 @@ class Favorite(db.Model):
     
     __tablename__ = "favorites"
     
-    # id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     wine_id = db.Column(db.Integer, db.ForeignKey('wines.id'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
 

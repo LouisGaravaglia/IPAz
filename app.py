@@ -125,7 +125,7 @@ def login():
             flash(f"Hello, {user.username}!", "success")
             return redirect("/")
 
-        flash("Invalid credentials.", 'danger')
+        flash("Invalid credentials.", 'error')
 
     return render_template('login.html', form=form)
 
@@ -151,18 +151,51 @@ def profile_page():
     
     user = User.query.get_or_404(user_id)
     
-    likes = g.user.fav_wines
-    num_of_favs = len(likes)
+    if g.user.posts and g.user.fav_wines:
+        reviews = g.user.posts
+        num_of_reviews = len(reviews)
+            
+        top_rated_review = Post.query.order_by(Post.rating.desc()).first()
+        top_rated_wine = Wine.query.get_or_404(top_rated_review.wine_id)
+
+        likes = g.user.fav_wines
+        num_of_favs = len(likes)
+        
+        most_recent = Favorite.query.filter(Favorite.user_id == user_id).order_by(Favorite.id.desc()).first()
+        most_recent_fav = Wine.query.get_or_404(most_recent.wine_id)
+        
+        return render_template("profile.html", user=user, num_of_favs=num_of_favs, num_of_reviews=num_of_reviews, top_rated_review=top_rated_review, top_rated_wine=top_rated_wine, most_recent_fav=most_recent_fav)
+
+        
+    elif g.user.posts:
+        reviews = g.user.posts
+        num_of_reviews = len(reviews)
+        
+        top_rated_review = Post.query.order_by(Post.rating.desc()).first()
+        top_rated_wine = Wine.query.get_or_404(top_rated_review.wine_id)
+        
+        return render_template("profile.html", user=user, num_of_reviews=num_of_reviews, top_rated_review=top_rated_review, top_rated_wine=top_rated_wine)
+
     
-    reviews = g.user.posts
-    num_of_reviews = len(reviews)
+    elif g.user.fav_wines:
+        likes = g.user.fav_wines
+        num_of_favs = len(likes)
+        
+        most_recent = Favorite.query.filter(Favorite.user_id == user_id).order_by(Favorite.id.desc()).first()
+        most_recent_fav = Wine.query.get_or_404(most_recent.wine_id)
+        
+        return render_template("profile.html", user=user, num_of_favs=num_of_favs, most_recent_fav=most_recent_fav)
+
     
-    top_rated_review = Post.query.order_by(Post.rating.desc()).first()
-    top_rated_wine = Wine.query.get_or_404(top_rated_review.wine_id)
+    else:
     
-    favs = user.fav_wines
+        return render_template("profile.html", user=user)
+
     
-    return render_template("profile.html", user=user, num_of_favs=num_of_favs, num_of_reviews=num_of_reviews, top_rated_review=top_rated_review, top_rated_wine=top_rated_wine, favs=favs)
+   
+
+        
+    
 
 
 # ===================================    EDIT PROFILE ROUTE   =====================================
