@@ -121,7 +121,8 @@ a {
 
 .wine-type-title {
   font-size: 4rem;
-  color: #3198db;
+  /* color: #3198db; */
+  color: #a5d4f4;
 }
 
 .button-box {
@@ -163,7 +164,7 @@ a {
 
 .sort-by-title {
   font-size: 4rem;
-  color: #3198db;
+  color: #a5d4f4;
 }
 
 
@@ -289,9 +290,9 @@ a {
 /* ================================  FORMS  ================================  */
 
 .label {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-family: 'Roboto', sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   white-space: nowrap;
   color: #3198db
 }

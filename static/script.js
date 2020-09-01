@@ -138,7 +138,7 @@ const addWineCard = function(wine, favBtn, reviewBtn, reviewHTML, cardSize) {
         <span class="icon review-btn">
         ${reviewBtn}
         </span>
-      </a
+      </a>
     </div>
   </div>
   ${reviewHTML}
