@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 from flask_cors import CORS
 from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
-from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm, EditReviewForm
+from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm, EditReviewForm, EditUserForm
 from models import db, connect_db, User, Post, Wine, Favorite
 from results import WineResults
 from get_varietals import Varietals
@@ -143,14 +143,58 @@ def logout():
 def profile_page():
     """Show profile page"""
 
-    # import pdb
-    # pdb.set_trace()
+    if not g.user:
+        flash("Please log in or sign up!", "error")
+        return redirect("/show_results")
     
     user_id = session[CURR_USER_KEY]
     
     user = User.query.get_or_404(user_id)
     
-    return render_template("profile.html", user=user)
+    likes = g.user.fav_wines
+    num_of_favs = len(likes)
+    
+    reviews = g.user.posts
+    num_of_reviews = len(reviews)
+    
+    return render_template("profile.html", user=user, num_of_favs=num_of_favs, num_of_reviews=num_of_reviews)
+
+
+# ===================================    EDIT PROFILE ROUTE   =====================================
+
+@app.route('/user/edit/<int:user_id>', methods=["GET", "POST"])
+def edit_profile_page(user_id):
+    """Show profile page"""
+
+    
+    
+    if not g.user:
+        flash("Please log in or sign up to edit your profile!", "error")
+        return redirect("/show_results")
+    
+    form = EditUserForm()
+    
+
+
+    if form.validate_on_submit():
+        # import pdb
+        # pdb.set_trace()
+     
+        user = User.query.get_or_404(user_id)
+    
+        user.name = form.name.data
+        user.username = form.username.data
+        
+        db.session.commit()
+
+    
+        return redirect("/user")
+
+    else:
+  
+    
+        return render_template('edit_profile.html', form=form)
+
 
 
 # ===================================    ADDING FAVORITE   =====================================

@@ -230,4 +230,36 @@ a {
   color: #ffffff;
 }
 
+/* ================================  PROFILE PAGE ================================  */
 
+.profile-name {
+  font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.profile-stat-title {
+  font-size: 1.5rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.profile-stat {
+  font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.profile-subtitle {
+  font-size: 1.5rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  white-space: nowrap;
+  color: #3198db
+}

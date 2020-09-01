@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %} EDIT PROFILE {% endblock %}
+
+{% block content %}
+
+
+
+
+<!-- ================================= TITLE ================================= -->
+
+<div class="has-text-centered mt-6">
+<h1 class="block-text">EDIT PROFILE</h1>
+
+</div>
+    <div class="container is-fluid is-info">  
+    <hr>
+</div>
+
+<div class="columns">
+  <div class="column is-one-third">
+    
+  </div>
+
+  <div class="column is-one-third mx-6">
+
+<!-- ================================= NAME ================================= -->
+
+
+  
+<form method="POST" id="user_form">
+  {{ form.hidden_tag() }} 
+<div class="field">
+{{form.name.label(class_="label")}}
+  <!-- <label class="label">Name</label> -->
+  <div class="control">
+    {{form.name(class_="input", type="text", placeholder="Enter a new name")}}
+    <!-- <input class="input" type="text" placeholder="Text input"> -->
+  </div>
+  {% for err in form.name.errors %}
+      <p class="help is-danger">{{ err  }}</p>
+  {% endfor %}
+</div>
+
+<!-- ================================= USERNAME ================================= -->
+
+
+<form method="POST" id="user_form">
+  {{ form.hidden_tag() }} 
+
+<div class="field">
+  {{form.username.label(class_="label")}}
+  <div class="control has-icons-left">
+    {{form.username(class_="input", placeholder="Enter a new username", type="text")}}
+    <span class="icon is-small is-left">
+      <i class="fas fa-user"></i>
+    </span>
+  </div>
+  {% for err in form.username.errors %}
+      <p class="help is-danger">{{ err  }}</p>
+  {% endfor %}
+</div>
+
+
+
+<!-- ================================= BUTTONS ================================= -->
+
+<div class="field is-grouped" id="login-submit">
+  <div class="control">
+    <button class="button is-info" type="submit">Submit</button>
+  </div>
+  <div class="control">
+    <button class="button is-info is-light"><a href="/user">Cancel</a></button>
+  </div>
+</div>
+</form>
+  </div>
+
+  <div class="column is-one-third">
+  </div>
+
+</div>
+
+
+
+
+
+{% endblock %}

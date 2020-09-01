@@ -167,8 +167,7 @@ const addReviewHTML = function(wine) {
   </button>
 
 
- 
-  <a href="/user/reviews/${wine['ID']}" class="button is-info is-outlined edit-review mb-5 ml-2" id="edit-review">
+  <a href="/user/reviews/${wine['ID']}" class="button is-info is-outlined edit-review mb-5 ml-2">
     <span>Edit</span>
   </a>
 </div>`
@@ -305,10 +304,10 @@ const getFavList = async function(wineId) {
   // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
   if (Object.keys(noUserObj).length == 1) {
     
-message = `<section class="hero is-small is-info">
+message = `<section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title">
+      <h1 class="title has-text-grey-dark">
         ${noUserObj.message}
       </h1>
     </div>

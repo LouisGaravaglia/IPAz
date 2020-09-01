@@ -16,9 +16,12 @@
 <div class="columns">
   <div class="column is-half">
 
-      <h1 class="title">
+      <h1 class="title profile-name">
         {{user.name}}
       </h1>
+      <a href="/user/edit/{{user.id}}" class="subtitle button is-white is-outlined">
+    <span>Edit</span>
+  </a>
 
  </div>
 
@@ -29,14 +32,15 @@
 <nav class="level">
   <div class="level-item has-text-centered">
     <div>
-      <p class="heading">Favorites</p>
-      <p class="title">3,456</p>
+    
+      <a href="/user/favorites"><p class="heading profile-stat-title">Favorites</p></a>
+      <a href="/user/favorites"><p class="title profile-stat">{{num_of_favs}}</p></a>
     </div>
   </div>
   <div class="level-item has-text-centered">
     <div>
-      <p class="heading">Reviews</p>
-      <p class="title">123</p>
+      <a href="/user/reviews"><p class="heading profile-stat-title">Reviews</p></a>
+      <a href="/user/reviews"><p class="title profile-stat">{{num_of_reviews}}</p></a>
     </div>
   </div>
 </nav>
@@ -57,8 +61,8 @@
 
 <div class="columns">
 <div class="column is-half has-text-centered mt-5">
-<h1 class="title">Favorites</h1>
-<h2 class="subtitle">Most recent favorite</h2>
+<h1 class="block-text">FAVORITES</h1>
+<h2 class="profile-subtitle">Most recent favorite</h2>
    <div class="container is-fluid is-info">  
     <hr>
 </div>
@@ -69,8 +73,8 @@
 <!-- ===========================================  TOP RATED REVIEW  =========================================== -->
 
 <div class="column is-half has-text-centered mt-5">
-<h1 class="title">Reviews</h1>
-<h2 class="subtitle">Top Rated Review</h2>
+<h1 class="block-text">REVIEWS</h1>
+<h2 class="profile-subtitle">Top Rated Review</h2>
    <div class="container is-fluid is-info">  
     <hr>
 </div>
