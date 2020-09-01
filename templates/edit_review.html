@@ -6,16 +6,18 @@
 
 <!-- =====================================  REVIEW  =====================================  -->
 
-<div class="columns is-vcentered">
-  <div class="column ml-6 mt-3 is-centered">
+<div class="columns-edit-review is-vcentered ">
+  <div class="column-edit-review is-paddingless is-centered review-block">
   
 
 
-
+<div class="has-text-centered mt-6">
+<h1 class="block-text-review">REVIEW</h1>
+</div>
  
 
 
-  <article class="message is-dark">
+  <article class="message is-info form-container mx-6">
   
   <div class="message-header">
     <p>{{original_post['Name']}}</p>
@@ -38,7 +40,7 @@
 
 <hr class="dropdown-divider"> 
 <br>
- <div class="ml-5">
+ <div class=" has-text-info-dark ml-5">
     <p><strong>MY RATING: </strong>{{original_post['Post_rating']}}</p>
     <p><strong>REVIEW: </strong>{{original_post['Post_review']}}</p>
   </div>
@@ -54,38 +56,37 @@
 
 </div>
 
-<div class="column is-one-fifth"></div>
+<!-- <div class="column is-one-fifth"></div> -->
 <!-- =====================================  EDIT REVIEW FORM  =====================================  -->
 
 
 
-  <div class="column mr-6 mt-3">
+  <div class="column-edit-review is-paddingless edit-review-block">
+
+  <div class="has-text-centered pt-6">
+<h1 class="block-text-review-edit">EDIT REVIEW</h1>
+</div>
+
 <form method="POST" id="user_form">
   {{ form.hidden_tag() }} 
 
-<div class="field">
+<div class="field form-container mx-6">
   {{form.rating.label(class_="label")}}
-  <!-- <label class="label">Username</label> -->
   <div class="control has-icons-left">
     {{form.rating(class_="input", placeholder="Enter a rating between 1 - 100", type="text")}}
-    <!-- <input class="input is-success" type="text" placeholder="Text input" value="bulma"> -->
   </div>
   {% if form.rating.errors %}
   {% for err in form.rating.errors %}
       <p class="help is-danger">{{ err  }}</p>
   {% endfor %}
   {% endif %}
-  <!-- <p class="help is-success">This username is available</p> -->
 </div>
 
 
-<div class="field">
+<div class="field form-container mx-6">
   {{form.review.label(class_="label")}}
-  <!-- <label class="label">Email</label> -->
   <div class="control has-icons-left">
      {{form.review(class_="textarea", placeholder="Enter a review", rows="6")}}
-    <!-- <input class="input is-danger" type="email" placeholder="Email input" value="hello@"> -->
-<!-- <textarea class="textarea" placeholder="10 lines of textarea" rows="10"></textarea> -->
   </div>
   {% if form.review.errors %}
   {% for err in form.review.errors %}
@@ -95,7 +96,7 @@
 </div>
 
 
-<div class="field is-grouped">
+<div class="field is-grouped mx-6 button-group">
   <div class="control">
     <button class="button is-link" type="submit">Submit</button>
   </div>
@@ -106,10 +107,7 @@
 </div>
 </form>
   </div>
-  
 
- <!-- <div class="column is-one-fifth"></div> -->
-<!-- <div class="column is-one-quarter"></div> -->
 
 
 </div>

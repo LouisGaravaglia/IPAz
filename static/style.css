@@ -1,3 +1,25 @@
+/* override browser default */
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* use viewport-relative units to cover page fully */
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* include border and padding in element width and height */
+* {
+  box-sizing: border-box;
+}
+
+.columns {
+  margin: 0;
+  padding: 0;
+}
 
 
 /* ================================  NAVBAR  ================================  */
@@ -276,4 +298,44 @@ a {
 
 .form-container {
   margin-top: 40px;
+}
+
+/* ================================  EDIT REVIEW PAGE  ================================  */
+
+.edit-review-block {
+background-color: #a5d4f4;
+}
+
+.block-text-review {
+  display: inline;
+  font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  padding: 13px 25px 10px;
+  color: #a5d4f4;
+}
+
+.review-block {
+background-color: #fff;
+}
+
+.block-text-review-edit {
+  display: inline;
+  font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  padding: 13px 25px 10px;
+  color: #fff;
+}
+
+.columns-edit-review {
+display: flex;
+}
+
+.column-edit-review {
+flex: 50%;
+}
+
+.button-group {
+ padding-bottom: 50px;
 }

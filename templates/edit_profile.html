@@ -11,7 +11,6 @@
 
 <div class="has-text-centered mt-6">
 <h1 class="block-text">EDIT PROFILE</h1>
-
 </div>
     <!-- <div class="container is-fluid is-info">  
     <hr>
@@ -32,10 +31,8 @@
   {{ form.hidden_tag() }} 
 <div class="field">
 {{form.name.label(class_="label")}}
-  <!-- <label class="label">Name</label> -->
   <div class="control">
     {{form.name(class_="input", type="text", placeholder="Enter a new name")}}
-    <!-- <input class="input" type="text" placeholder="Text input"> -->
   </div>
   {% for err in form.name.errors %}
       <p class="help is-danger">{{ err  }}</p>
