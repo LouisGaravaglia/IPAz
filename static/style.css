@@ -121,6 +121,8 @@ a {
 
 .wine-type-title {
   font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
   /* color: #3198db; */
   color: #a5d4f4;
 }
@@ -151,6 +153,8 @@ a {
 
 .varietals-title {
   font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
   color: #fff;
 }
 
@@ -164,6 +168,8 @@ a {
 
 .sort-by-title {
   font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
   color: #a5d4f4;
 }
 
@@ -179,6 +185,8 @@ a {
 
 .results-btn-title {
   font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
   color: #fff;
   
 }
@@ -294,7 +302,8 @@ a {
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
   white-space: nowrap;
-  color: #3198db
+  /* color: #3198db */
+  color: #fff;
 }
 
 .form-container {

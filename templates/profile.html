@@ -60,27 +60,78 @@
 <!-- ===========================================  MOST RECENT FAVORITE  =========================================== -->
 
 <div class="columns">
-<div class="column is-half has-text-centered mt-5">
+<div class="column is-half mt-5">
+  <div class="has-text-centered">
 <h1 class="block-text">FAVORITES</h1>
 <h2 class="profile-subtitle">Most recent favorite</h2>
-   <div class="container is-fluid is-info">  
-    <hr>
 </div>
+
+<article class="message is-info form-container mx-6">
+  
+  <div class="message-header">
+    <p>{{favs}}</p>
+  </div>
+
+  <div class="message-body">
+    <p><strong>NAME: </strong>{{wine.name}}</p>
+    <p><strong>WINERY: </strong>{{wine.winery}}</p>
+    <p><strong>COUNTRY: </strong>{{wine.country}}</p>
+    <p><strong>AREA: </strong>{{wine.area}}</p>
+    <p><strong>VINTAGE: </strong>{{wine.vintage}}</p>
+    <p><strong>VARIETAL: </strong>{{wine.varietal}}</p>
+    <p><strong>TYPE: </strong>{{wine.type}}</p>
+    <p><strong>RATING: </strong>{{wine.rating}}</p>
+    <p><strong>WINE ID: </strong>{{wine.id}}</p>
+  </div>
+
+
+
+</article>
 
 
 </div>
 
 <!-- ===========================================  TOP RATED REVIEW  =========================================== -->
 
-<div class="column is-half has-text-centered mt-5">
+<div class="column is-half mt-5">
+<div class="has-text-centered">
 <h1 class="block-text">REVIEWS</h1>
 <h2 class="profile-subtitle">Top Rated Review</h2>
-   <div class="container is-fluid is-info">  
-    <hr>
-</div>
+  </div> 
+
+   <article class="message is-info form-container mx-6">
+  
+  <div class="message-header">
+    <p>{{top_rated_wine.name}}</p>
+  </div>
+
+  <div class="message-body">
+    <p><strong>NAME: </strong>{{top_rated_wine.name}}</p>
+    <p><strong>WINERY: </strong>{{top_rated_wine.winery}}</p>
+    <p><strong>COUNTRY: </strong>{{top_rated_wine.country}}</p>
+    <p><strong>AREA: </strong>{{top_rated_wine.area}}</p>
+    <p><strong>VINTAGE: </strong>{{top_rated_wine.vintage}}</p>
+    <p><strong>VARIETAL: </strong>{{top_rated_wine.varietal}}</p>
+    <p><strong>TYPE: </strong>{{top_rated_wine.type}}</p>
+    <p><strong>RATING: </strong>{{top_rated_wine.rating}}</p>
+  </div>
+
+<hr class="dropdown-divider"> 
+<br>
+ <div class=" has-text-info-dark ml-5">
+    <p><strong>MY RATING: </strong>{{top_rated_review.rating}}</p>
+    <p><strong>REVIEW: </strong>{{top_rated_review.review}}</p>
+  </div>
+  <br>
+
+  
+
+</article>
 
 </div>
 </div>
+
+
 
 
 

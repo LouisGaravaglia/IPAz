@@ -157,7 +157,12 @@ def profile_page():
     reviews = g.user.posts
     num_of_reviews = len(reviews)
     
-    return render_template("profile.html", user=user, num_of_favs=num_of_favs, num_of_reviews=num_of_reviews)
+    top_rated_review = Post.query.order_by(Post.rating.desc()).first()
+    top_rated_wine = Wine.query.get_or_404(top_rated_review.wine_id)
+    
+    favs = user.fav_wines
+    
+    return render_template("profile.html", user=user, num_of_favs=num_of_favs, num_of_reviews=num_of_reviews, top_rated_review=top_rated_review, top_rated_wine=top_rated_wine, favs=favs)
 
 
 # ===================================    EDIT PROFILE ROUTE   =====================================
