@@ -184,10 +184,10 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
 
   if (wine_results[0] == "No Results") {
     
-    message = `<section class="hero is-small is-light">
+    message = `<section class="hero is-small is-light mt-6 mx-6">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title has-text-grey-dark">
+      <h1 class="title has-text-info">
         No wines available.
       </h1>
     </div>

@@ -17,7 +17,15 @@
 
 <div class="columns my-5 mx-3 is-multiline" id="wine-results">
  {% if wine_reviews[0] == Undefined %}
-    <h3 class="title is-3 has-text-centered mt-6">No reviews.</h3>
+    <section class="hero is-small is-light mt-6 mx-6">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-info">
+        No reviews yet.
+      </h1>
+    </div>
+  </div>
+</section>
   {% else %}
 {% for wine in wine_reviews %}
  
