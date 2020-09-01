@@ -263,3 +263,17 @@ a {
   white-space: nowrap;
   color: #3198db
 }
+
+/* ================================  FORMS  ================================  */
+
+.label {
+  font-size: 1.2rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  white-space: nowrap;
+  color: #3198db
+}
+
+.form-container {
+  margin-top: 40px;
+}
