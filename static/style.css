@@ -356,3 +356,16 @@ flex: 50%;
   margin-bottom: -10px;
   margin-top: 8px;
 }
+
+.search-icon {
+  margin-top: 8px;
+}
+
+.fa-search {
+ color: #a5d4f4;
+}
+
+.magnify-glass {
+  pointer-events: all; 
+  cursor: pointer;
+}

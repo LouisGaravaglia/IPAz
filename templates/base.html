@@ -49,6 +49,9 @@
       <a href="/user" class="navbar-item">
         Profile
       </a>
+      <a href="/logout" class="navbar-item">
+        Logout
+      </a>
       {% endif %}
       <!-- <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
@@ -76,19 +79,21 @@
     <div class="navbar-end">
 <div class="field is-grouped">
 <form action="/search" id="search-form">
-  <p class="control has-icons-left has-icons-right">
-    <input class="input" type="text" placeholder="Search for a wine" id="search-bar" name="wine"> 
-    <span class="icon is-small is-left">
-      <i class="fas fa-search"></i>
+  <p class="control has-icons-right has-icons-right">
+    <span class="icon is-small is-right search-icon">
+      <i class="fas fa-search magnify-glass"></i>
     </span>
   </p>
+      <input class="input" type="text" placeholder="Search for a wine" id="search-bar" name="wine"> 
+
+   
   </form>
 </div>
 
 
-<div class="buttons">
- <button class="button is-white" form="search-form">Search</button>        
-</div>
+<!-- <div class="buttons">
+       <button class="button is-white hidden" id="search-button">Search</button> 
+</div> -->
 
 
 
@@ -102,10 +107,6 @@
           </a>
           <a href="/login" class="button is-light">
             Log in
-          </a>
-          {% else %}
-          <a href="/logout" class="button is-light">
-            Logout
           </a>
           {% endif %}
         </div>

@@ -597,13 +597,33 @@ $("#modal").on("click", ".toggle-off", async function() {
 //   // const wine_results = await axios.get(`/search/${search_term}`)
 // })
 
-// $("#search-button").on("click", async function() {
-//   // const search_term = document.getElementById('search-bar').value
-//   const search_term = $("#search-bar").val()
-//   console.log(search_term);
-//   const wine_results = await axios.get(`/search/${search_term}`)
-//   // location.href = 'http://127.0.0.1:5000/search';
-// })
+$("#search-form").on("click", ".magnify-glass", function() {
+  // const search_term = document.getElementById('search-bar').value
+  // const search_term = $("#search-bar").val()
+  // alert("jajaj")
+  // $("#search-button").keypress()
+  const event = new KeyboardEvent("keypress", {
+  view: window,
+  keyCode: 13,
+  bubbles: true,
+  cancelable: true
+});
+  document.querySelector("input").dispatchEvent(event);
+
+
+  // console.log(search_term);
+  // const wine_results = await axios.get(`/search/${search_term}`)
+  // location.href = 'http://127.0.0.1:5000/search';
+})
+
+
+
+
+// e = jQuery.Event("keypress")
+// e.which = 13 //choose the one you want
+//     $("#test").keypress(function(){
+//      alert('keypress triggered')
+//     }).trigger(e)
 
 
 function populateSearchResults(wine_results, favorites, reviews) {
