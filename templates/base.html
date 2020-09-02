@@ -74,8 +74,28 @@
     </div>
 
     <div class="navbar-end">
+<div class="field is-grouped">
+<form action="/search" id="search-form">
+  <p class="control has-icons-left has-icons-right">
+    <input class="input" type="text" placeholder="Search for a wine" id="search-bar" name="wine"> 
+    <span class="icon is-small is-left">
+      <i class="fas fa-search"></i>
+    </span>
+  </p>
+  </form>
+</div>
+
+
+<div class="buttons">
+ <button class="button is-white" form="search-form">Search</button>        
+</div>
+
+
+
       <div class="navbar-item">
+      
         <div class="buttons">
+        
         {% if not g.user %}
           <a href="/signup"class="button is-primary">
             <strong>Sign up</strong>

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %} SEARCH RESULTS {% endblock %}
+
+
+{% block content %}
+<div id="flash"></div>
+<!-- <h1 class="title is-1 has-text-grey has-text-centered mt-5 pb-2 new">MY FAVORITES</h1> -->
+
+<div class="has-text-centered mt-6">
+<h1 class="block-text">SEARCH RESULTS</h1>
+</div>
+
+    <!-- <div class="container is-fluid is-info">  
+    <hr>
+</div> -->
+
+<div class="columns my-5 mx-3 is-multiline" id="search-results">
+ {% if wine_results[0] == 'Please add a search value.' %}
+    <section class="hero is-small is-light mt-6 mx-6">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-info">
+        Please add a search value.
+      </h1>
+    </div>
+  </div>
+</section>
+  {% else %}
+{% for wine in wine_results %}
+ 
+
+<div class="column is-one-third">
+  <article class="message is-info">
+  
+  <div class="message-header">
+    <p>{{wine['Name']}}</p>
+  </div>
+
+  <div class="message-body">
+    <p><strong>NAME: </strong>{{wine['Name']}}</p>
+    <p><strong>WINERY: </strong>{{wine['Winery']}}</p>
+    <p><strong>COUNTRY: </strong>{{wine['Country']}}</p>
+    <p><strong>AREA: </strong>{{wine['Area']}}</p>
+    <p><strong>VINTAGE: </strong>{{wine['Vintage']}}</p>
+    <p><strong>VARIETAL: </strong>{{wine['Varietal']}}</p>
+    <p><strong>TYPE: </strong>{{wine['Type']}}</p>
+    <p><strong>RATING: </strong>{{wine['Rating']}}</p>
+  </div>
+
+    <div class="columns">
+    <div class="column is-half has-text-centered mx-0 my-0">
+      <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
+        <span class="icon">
+        {% if wine['ID'] in user_favorites %}
+        <i class="fas fa-star"></i>
+        {% else %}
+        <i class="far fa-star"></i>
+        {% endif %}
+        </span>
+      </button>
+      
+    </div>
+    <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
+      <a href="/user/review/{{wine['ID']}}" class="button is-text review-btn" data-id="{{wine['ID']}}">
+        <span class="icon review-btn">
+        {% if wine['ID'] in user_reviews %}
+                <i class="fas fa-edit review-btn"></i>
+            {% else %}
+                <i class="far fa-edit review-btn"></i>
+            {% endif %}
+        </span>
+      </a>
+    </div>
+  </div>
+
+</article>
+</div>
+
+  
+{% endfor %}
+{% endif %}
+</div>
+
+
+{% endblock %}

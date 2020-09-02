@@ -584,6 +584,156 @@ $("#modal").on("click", ".toggle-off", async function() {
 
 })
 
+// =================================================  SEARCH  ================================================
+
+// const searchBar = $("#search-bar")
+// const filteredWines = []
+// const search_term = ""
+
+
+// $("#search-bar").on("keyup", async function(e) {
+//   const search_term = e.target.value;
+//   console.log(search_term);
+//   // const wine_results = await axios.get(`/search/${search_term}`)
+// })
+
+// $("#search-button").on("click", async function() {
+//   // const search_term = document.getElementById('search-bar').value
+//   const search_term = $("#search-bar").val()
+//   console.log(search_term);
+//   const wine_results = await axios.get(`/search/${search_term}`)
+//   // location.href = 'http://127.0.0.1:5000/search';
+// })
+
+
+function populateSearchResults(wine_results, favorites, reviews) {
+  wineHtml = $("#search-results")
+  wineHtml.html("")
+
+
+  if (wine_results[0] == "No Results") {
+    
+    message = `<section class="hero is-small is-light mt-6 mx-6">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-info">
+        No wines available.
+      </h1>
+    </div>
+  </div>
+</section>`
+    // const html = '<h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>'
+    wineHtml.append(message)
+
+  } else {
+
+    for (wine of wine_results) { 
+
+    if (favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+        const favBtn = '<i class="fas fa-star"></i>';
+        const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
+        const reviewHTML = "";
+        const cardSize = 'is-one-third';
+        const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+        wineHtml.append(html)
+      } else if (favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+          const favBtn = '<i class="fas fa-star"></i>';
+          const reviewBtn = '<i class="far fa-edit review-btn"></i>';
+          const reviewHTML = "";
+          const cardSize = 'is-one-third';
+          const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+          wineHtml.append(html)
+      } else if (!favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+          const favBtn = '<i class="far fa-star"></i>';
+          const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
+          const reviewHTML = "";
+          const cardSize = 'is-one-third';
+          const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+          wineHtml.append(html)
+      } else if (!favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+          const favBtn = '<i class="far fa-star"></i>';
+          const reviewBtn = '<i class="far fa-edit review-btn"></i>';
+          const reviewHTML = "";
+          const cardSize = 'is-one-third';
+          const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+          wineHtml.append(html)
+      } 
+
+    }
+
+  }
+}
+
+
+
+const logSearchFav = async function(wineId) {
+  
+  const json = await axios.post(`/user/add_favorite/${wineId}`)
+  noUserObj = json.data
+
+  // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
+  if (Object.keys(noUserObj).length == 1) {
+    
+message = `<section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-grey-dark">
+        ${noUserObj.message}
+      </h1>
+    </div>
+  </div>
+</section>`
+
+    flashDiv = $("#flash")
+    flashDiv.html("");
+    flashDiv.prepend(message)
+    function hideMessage(){
+      flashDiv.html("");
+    }
+    setTimeout(hideMessage, 2000);
+
+  } else {
+      const wine_results = await axios.get(`/search/results`)
+      wines = wine_results.data.wine_results;
+      favs = wine_results.data.favs;
+      reviews = wine_results.data.reviews;
+      populateSearchResults(wines, favs, reviews)
+  }
+  
+  
+ 
+}
+
+
+ $("#search-results").on("click", ".favorite-button", async function(e) {
+
+    const target = e.target;
+
+    if (target.tagName == "BUTTON") {
+      let wineId = target.dataset.id;
+      logSearchFav(wineId);
+
+    } else if (target.tagName == "path") {
+      const button = target.parentElement.parentElement.parentElement;
+      let wineId = button.dataset.id;
+      logSearchFav(wineId);
+
+    } else if (target.tagName == "SPAN") {
+      const button = target.parentElement;
+      let wineId = button.dataset.id;
+      logSearchFav(wineId);
+
+    } else if (target.tagName == "svg") {
+      const button = target.parentElement.parentElement;
+      let wineId = button.dataset.id;
+      logSearchFav(wineId);
+
+    }
+
+  })
+
+
+
 
 // =================================================  CALLING API  ================================================
 

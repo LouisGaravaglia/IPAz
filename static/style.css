@@ -349,3 +349,10 @@ flex: 50%;
 .button-group {
  padding-bottom: 50px;
 }
+
+/* ================================  SEARCH BAR  ================================  */
+
+#search-bar {
+  margin-bottom: -10px;
+  margin-top: 8px;
+}

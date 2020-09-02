@@ -804,3 +804,91 @@ def show_results():
 
     return render_template("wine_results.html", wines=wine_results, user_favorites=user_favorites, user_reviews=user_reviews)
 
+# ===================================    SEARCH BAR   =====================================
+# @app.route('/search/<search_term>')
+# def set_search_results(search_term):
+    
+ 
+#     wine_results = get_wine.search_results(search_term)
+  
+    
+#     # import pdb
+#     # pdb.set_trace()
+    
+#     # if wine_results == []:
+#     #     wine_results = ['No Results']
+#     #     session['search_results'] = wine_results
+#     # else:
+#     session['search_results'] = wine_results
+        
+    
+
+ 
+
+#     return jsonify(wine_results=wine_results)
+
+
+
+@app.route('/search/results')
+def get_search_results():
+    
+ 
+    search_term = session['search_term']
+    wine_results = get_wine.search_results(search_term)
+  
+    
+    # import pdb
+    # pdb.set_trace()
+    
+        
+    
+    favs= []
+    reviews = []
+        
+    if g.user:
+        for wine in g.user.fav_wines:
+            favs.append(wine.id)
+    
+    if g.user:
+        for post in g.user.posts:
+            reviews.append(post.wine_id)
+ 
+
+    return jsonify(wine_results=wine_results, reviews=reviews, favs=favs)
+
+
+@app.route('/search')
+def show_search_results():
+    
+ 
+
+    search_term = request.args.get("wine")
+    session['search_term'] = search_term
+    
+    # import pdb
+    # pdb.set_trace()
+    
+    if search_term == '':
+        wine_results = ['Please add a search value.']
+    else:
+        wine_results = get_wine.search_results(search_term)
+
+    # wine_results = session['search_results']
+    
+    
+    
+    favs= []
+    reviews = []
+        
+    if g.user:
+        for wine in g.user.fav_wines:
+            favs.append(wine.id)
+    
+    if g.user:
+        for post in g.user.posts:
+            reviews.append(post.wine_id)
+        
+    
+    
+
+    return render_template("search_results.html", wine_results=wine_results, user_favorites=favs, user_reviews=reviews)
