@@ -1,7 +1,17 @@
 
+/**
+ * @namespace document
+ */
 
-// This function is here so that the user favorites get updated in the show_results route if the user
-// hits back from the favorties route after unfavoriting a wine.
+
+
+/**
+ * This function is here so that the user favorites get updated in the show_results route if the user
+ * hits back from the favorties route after unfavoriting a wine.
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 window.addEventListener( "pageshow", function ( event ) {
   const address = document.location.href;
 
@@ -16,6 +26,13 @@ window.addEventListener( "pageshow", function ( event ) {
 
 // =================================================  WINE TYPE / HOME PAGE  ================================================
 
+
+/**
+ * Click event that logs the wine type in the backend session.
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#wine-type").on("click", ".wine-type", async function(e) {
   const selected_button = e.target;
 
@@ -36,12 +53,22 @@ $("#wine-type").on("click", ".wine-type", async function(e) {
   
 })
 
+/**
+ * Function that sends wine type to the backend to log into session.
+ * @param {*} wine_type 
+ */
 async function sendWineType(wine_type) {
   const res = await axios.get(`/wine_type/${wine_type}`)
 }
 
 // =================================================  SORT BY / HOME PAGE ================================================
 
+/**
+ * This click event logs the sort by parameters in the backend session.
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#filter-by").on("click", ".filter-by", async function(e) {
   const selected_button = e.target;
 
@@ -54,11 +81,23 @@ $("#filter-by").on("click", ".filter-by", async function(e) {
   
 })
 
+/**
+ * function that sends the sort by parameter to backend to add to session.
+ * @param {string} filterBy 
+ */
 async function sendSortBy(filterBy) {
   const res = await axios.get(`/sort_by/${filterBy}`)
 }
 
 // =================================================  LOADING VARIETALS / HOME PAGE ================================================
+
+/**
+ * This function loops over the varietals that need to be displayed based on the
+ * wine types selected on the home page and will return a bold button
+ * if it is logged as a selected_varietals
+ * @param {array} varietal_array 
+ * @param {array} selected_varietals 
+ */
 function populateVarietals(varietal_array, selected_varietals) {
 
 for (varietal of varietal_array) {
@@ -78,7 +117,12 @@ for (varietal of varietal_array) {
 
 // =================================================  PICKING VARIETALS / HOME PAGE  ================================================
 
-
+/**
+ * Click event that will bold a varietal button if the user clicks
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#varietals").on("click", ".varietals", async function(e) {
   const selected_button = e.target;
 
@@ -90,7 +134,11 @@ $("#varietals").on("click", ".varietals", async function(e) {
 })
 
 
-
+/**
+ * Function that makes a request to the backend to log the varietal of which
+ * the button the user clicked.
+ * @param {string} varietal 
+ */
 async function sendVarietals(varietal) {
   const res = await axios.get(`/log_varietals/${varietal}`)
 }
@@ -102,6 +150,15 @@ async function sendVarietals(varietal) {
 
 // =================================================  POPULATE WINE RESULTS ================================================
 
+/**
+ * Function that returns an string of html elements that represent the wine card
+ * which holds an indivdual wine to be added using AJAX.
+ * @param {object} wine 
+ * @param {string} favBtn 
+ * @param {string} reviewBtn 
+ * @param {string} reviewHTML 
+ * @param {string} cardSize 
+ */
 const addWineCard = function(wine, favBtn, reviewBtn, reviewHTML, cardSize) {
 
   const html = `<div class="column ${cardSize}">
@@ -149,6 +206,11 @@ const addWineCard = function(wine, favBtn, reviewBtn, reviewHTML, cardSize) {
 
 }
 
+/**
+ * Function that will return a string of html elements that make up the review portion
+ * of the wine card
+ * @param {object} wine 
+ */
 const addReviewHTML = function(wine) {
 
   html = `<hr class="dropdown-divider"> 
@@ -175,7 +237,15 @@ const addReviewHTML = function(wine) {
 return html
 }
 
-
+/**
+ * Function that will use AJAX to replace the wine cards in the DOM depending on the
+ * url location address.
+ * @param {object} wine_results 
+ * @param {array} favorites 
+ * @param {array} reviews 
+ * @param {object} fav_wines 
+ * @param {object} wine_reviews 
+ */
 function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_reviews) {
   wineHtml = $("#wine-results")
   wineHtml.html("")
@@ -295,7 +365,11 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
 
 // =================================================  FAVORITE BUTTON ON RESULTS PAGE ================================================
 
-
+/**
+ * Uses AJAX to replace the wine cards in the DOM when a user favorites a wine, to 
+ * show that the favoirte star has been bolded.
+ * @param {integer} wineId 
+ */
 const getFavList = async function(wineId) {
   
   const json = await axios.post(`/user/add_favorite/${wineId}`)
@@ -338,48 +412,70 @@ message = `<section class="hero is-small is-light">
 
 
 
-  // ##### CLEARS ALL FLASH MESSAGES AFTER 2 SECONDS #####
+ 
 
-    $(document).ready(function(){ 
-      flashDiv = $("#messageContainer");
-        function hideMessage(){
-          flashDiv.html("");
-        }
-        setTimeout(hideMessage, 2000);
-    })
+/**
+ * Clears all the flash messages after 2 seconds
+ */
+const clearFlash = function(){ 
+  flashDiv = $("#messageContainer");
+    function hideMessage(){
+      flashDiv.html("");
+    }
+    setTimeout(hideMessage, 2000);
+}
+
+$(document).ready(clearFlash)
+
 
     
 
+/**
+ * Click function that will get a hold of the wine-id data set of the wine favorited
+ * and send that to log in the backend by way of getFavList()
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
+$("#wine-results").on("click", ".favorite-button", async function(e) {
 
-  $("#wine-results").on("click", ".favorite-button", async function(e) {
+  const target = e.target;
 
-    const target = e.target;
+  if (target.tagName == "BUTTON") {
+    let wineId = target.dataset.id;
+    getFavList(wineId);
 
-    if (target.tagName == "BUTTON") {
-      let wineId = target.dataset.id;
-      getFavList(wineId);
+  } else if (target.tagName == "path") {
+    const button = target.parentElement.parentElement.parentElement;
+    let wineId = button.dataset.id;
+    getFavList(wineId);
 
-    } else if (target.tagName == "path") {
-      const button = target.parentElement.parentElement.parentElement;
-      let wineId = button.dataset.id;
-      getFavList(wineId);
+  } else if (target.tagName == "SPAN") {
+    const button = target.parentElement;
+    let wineId = button.dataset.id;
+    getFavList(wineId);
 
-    } else if (target.tagName == "SPAN") {
-      const button = target.parentElement;
-      let wineId = button.dataset.id;
-      getFavList(wineId);
+  } else if (target.tagName == "svg") {
+    const button = target.parentElement.parentElement;
+    let wineId = button.dataset.id;
+    getFavList(wineId);
 
-    } else if (target.tagName == "svg") {
-      const button = target.parentElement.parentElement;
-      let wineId = button.dataset.id;
-      getFavList(wineId);
+  }
 
-    }
-
-  })
+})
 
 // =================================================  DELETE REVIEW / REVIEWS PAGE  ================================================
 
+
+/**
+ * This function listens for a click event on the delete button on the review portion 
+ * of the wine card. It then sends that associated wine ID to the backend to remove it
+ * from the users reviews, and then uses AJAX to remove the wine card from the DOM, by 
+ * way of populateWineResults()
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#wine-results").on("click", ".review-delete", async function(e) {
   const target = e.target;
 
@@ -435,21 +531,47 @@ $("#wine-results").on("click", ".review-delete", async function(e) {
 })
 
 
-// =================================================  TOGGLE OPEN SORT BY OPTIONS / RESULTS PAGE  ================================================
+// =================================================  TOGGLE OPEN SIDE BAR OPTIONS / RESULTS PAGE  ================================================
 
+/**
+ * Toggles open the wine type filters on the side bar of the results page.
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#choose-wine-type").on("click", function(e) {
   $("#wine-type-checkboxes").toggleClass("hidden")
 })
 
+/**
+ * Toggles open the wine style filters on the side bar of the results page.
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#choose-wine-style").on("click", function(e) {
   $("#wine-style-checkboxes").toggleClass("hidden")
 })
 
+/**
+ * Toggles open the sort by filters on the side bar of the results page.
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#choose-sort-by").on("click", function(e) {
   $("#sort-by-checkboxes").toggleClass("hidden")
 })
 // =================================================  CLICK EVENT FOR WINE OPTIONS / RESULTS PAGE  ================================================
 
+
+/**
+ * Click event that will replace wine cards with AJAX based off of the wine type
+ * selected by the user, by way of populateWineResults().
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
 
@@ -464,11 +586,16 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     favs = wine_results.data.user_favorites;
     reviews = wine_results.data.reviews;
     populateWineResults(wines, favs, reviews)
-
   }
-
 })
 
+/**
+ * Click event that will replace wine cards with AJAX based off of the wine style
+ * selected by the user, by way of populateWineResults().
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
 
@@ -481,14 +608,17 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     wines = wine_results.data.wine_results;
     favs = wine_results.data.user_favorites;
     reviews = wine_results.data.reviews;
-
     populateWineResults(wines, favs, reviews)
-
   }
-
 })
 
-
+/**
+ * Click event that will replace wine cards with AJAX based off of the sort by options
+ * selected by the user, by way of populateWineResults().
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
 
@@ -511,6 +641,13 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
 // =================================================  LOADING VARIETALS / RESULTS PAGE ================================================
 
 
+/**
+ * Opens the modal filled with varietals when the user clicks the varietals button
+ * on the side bar 
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#varietals-button").on("click", async function() {
   varietalDiv = $("#varietals")
   varietalDiv.html("")
@@ -523,11 +660,12 @@ $("#varietals-button").on("click", async function() {
 })
 
 
-$(".modal").on("click", ".delete", function() {
-  modal = $(".modal");
-  modal.toggleClass("is-active")
-})
 
+/**
+ * Adds a button to represent the varietal to the modal
+ * @param {array} varietal_array 
+ * @param {array} selected_varietals 
+ */
 function makeModal(varietal_array, selected_varietals) {
 
 for (varietal of varietal_array) {
@@ -547,7 +685,12 @@ for (varietal of varietal_array) {
 
 
 
-
+/**
+ * Click event that will load the varietal buttons by way of makeModal()
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#choose-varietals").on("click", async function() {
   varietalDiv = $("#varietals-modal")
   varietalDiv.html("")
@@ -560,7 +703,13 @@ $("#choose-varietals").on("click", async function() {
 })
 
 
-
+/**
+ * Click event that will replace the buttons with the bolded buttons when clicked
+ * and the send that varietal name to the backend to keep track of in session
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#varietals-modal").on("click", ".varietals", async function(e) {
   const target = e.target;
   const targetName = target.innerText;
@@ -572,6 +721,13 @@ $("#varietals-modal").on("click", ".varietals", async function(e) {
 })
 
 
+/**
+ * Populates the wine results page with wine cards based off of the varietals
+ * that had just been selected
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#modal").on("click", ".toggle-off", async function() {
   modal = $(".modal");
   modal.toggleClass("is-active")
@@ -586,46 +742,32 @@ $("#modal").on("click", ".toggle-off", async function() {
 
 // =================================================  SEARCH  ================================================
 
-// const searchBar = $("#search-bar")
-// const filteredWines = []
-// const search_term = ""
 
 
-// $("#search-bar").on("keyup", async function(e) {
-//   const search_term = e.target.value;
-//   console.log(search_term);
-//   // const wine_results = await axios.get(`/search/${search_term}`)
-// })
-
+/**
+ * Click event that will trigger a enter button keyboard event when the user
+ * clicks the search icon
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#search-form").on("click", ".magnify-glass", function() {
-  // const search_term = document.getElementById('search-bar').value
-  // const search_term = $("#search-bar").val()
-  // alert("jajaj")
-  // $("#search-button").keypress()
-  const event = new KeyboardEvent("keypress", {
-  view: window,
-  keyCode: 13,
-  bubbles: true,
-  cancelable: true
-});
+    const event = new KeyboardEvent("keypress", {
+      view: window,
+      keyCode: 13,
+      bubbles: true,
+      cancelable: true
+    });
   document.querySelector("input").dispatchEvent(event);
-
-
-  // console.log(search_term);
-  // const wine_results = await axios.get(`/search/${search_term}`)
-  // location.href = 'http://127.0.0.1:5000/search';
 })
 
 
-
-
-// e = jQuery.Event("keypress")
-// e.which = 13 //choose the one you want
-//     $("#test").keypress(function(){
-//      alert('keypress triggered')
-//     }).trigger(e)
-
-
+/**
+ * Adds wine cards to the DOM to the search results page.
+ * @param {object} wine_results 
+ * @param {array} favorites 
+ * @param {array} reviews 
+ */
 function populateSearchResults(wine_results, favorites, reviews) {
   wineHtml = $("#search-results")
   wineHtml.html("")
@@ -682,10 +824,15 @@ function populateSearchResults(wine_results, favorites, reviews) {
     }
 
   }
+
 }
 
 
-
+/**
+ * logs the wine id of the wine that the user favorited and then uses AJAX to re-populate
+ * the wine cards to the DOM with the wine that was just faved now showing a bold star
+ * @param {integer} wineId 
+ */
 const logSearchFav = async function(wineId) {
   
   const json = await axios.post(`/user/add_favorite/${wineId}`)
@@ -724,7 +871,13 @@ message = `<section class="hero is-small is-light">
  
 }
 
-
+/**
+ * Click event for the favorite star on the search result wine cards to then call
+ * logSearchFav() to eventually replace the wine card with the bolded favorite star
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
  $("#search-results").on("click", ".favorite-button", async function(e) {
 
     const target = e.target;
@@ -752,7 +905,23 @@ message = `<section class="hero is-small is-light">
 
   })
 
+// =================================================  NAVBAR  ================================================
 
+
+
+/**
+ * Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
+$(document).ready(
+  function() {
+  $(".navbar-burger").click(function() {
+      $(".navbar-burger").toggleClass("is-active");
+      $(".navbar-menu").toggleClass("is-active");
+  });
+});
 
 
 // =================================================  CALLING API  ================================================
