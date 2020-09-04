@@ -44,7 +44,7 @@ $("#wine-type").on("click", ".wine-type", async function(e) {
   varietalDiv.html("")
 
   await sendWineType(wine_type)
-
+  
   const items = await axios.get('/get_varietals')
   varietal_array = items.data.varietals;
   selected_varietals = items.data.selected_varietals;
@@ -365,50 +365,52 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
 
 // =================================================  FAVORITE BUTTON ON RESULTS PAGE ================================================
 
-/**
- * Uses AJAX to replace the wine cards in the DOM when a user favorites a wine, to 
- * show that the favoirte star has been bolded.
- * @param {integer} wineId 
- */
-const getFavList = async function(wineId) {
+// /**
+//  * Uses AJAX to replace the wine cards in the DOM when a user favorites a wine, to 
+//  * show that the favoirte star has been bolded.
+//  * @param {integer} wineId 
+//  */
+// const getFavList = async function(wineId) {
   
-  const json = await axios.post(`/user/add_favorite/${wineId}`)
-  noUserObj = json.data
+//   const json = await axios.post(`/user/add_favorite/${wineId}`)
+//   noUserObj = json.data
 
-  // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
-  if (Object.keys(noUserObj).length == 1) {
+//   // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
+//   if (Object.keys(noUserObj).length == 1) {
     
-message = `<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title has-text-grey-dark">
-        ${noUserObj.message}
-      </h1>
-    </div>
-  </div>
-</section>`
+// message = `<section class="hero is-small is-light">
+//   <div class="hero-body">
+//     <div class="container">
+//       <h1 class="title has-text-grey-dark">
+//         ${noUserObj.message}
+//       </h1>
+//     </div>
+//   </div>
+// </section>`
 
-    flashDiv = $("#flash")
-    flashDiv.html("");
-    flashDiv.prepend(message)
-    function hideMessage(){
-      flashDiv.html("");
-    }
-    setTimeout(hideMessage, 2000);
+//     flashDiv = $("#flash")
+//     flashDiv.html("");
+//     flashDiv.prepend(message)
+//     function hideMessage(){
+//       flashDiv.html("");
+//     }
+//     setTimeout(hideMessage, 2000);
 
-  } else {
-      const wine_results = await axios.get(`/wine_style/""`)
-      wines = wine_results.data.wine_results;
-      favs = json.data.fav_wine_list;
-      reviews = wine_results.data.reviews;
-      fav_wines = json.data.fav_wines;
-      wine_reviews = json.data.wine_reviews;
-      populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
-  }
+//   } else {
+//     $(".progress-bar-container").toggleClass("hidden")
+//       const wine_results = await axios.get(`/wine_style/""`)
+//       $(".progress-bar-container").toggleClass("hidden")
+//       wines = wine_results.data.wine_results;
+//       favs = json.data.fav_wine_list;
+//       reviews = wine_results.data.reviews;
+//       fav_wines = json.data.fav_wines;
+//       wine_reviews = json.data.wine_reviews;
+//       populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
+//   }
   
   
  
-}
+// }
 
 
 
@@ -437,32 +439,225 @@ $(document).ready(clearFlash)
  * @type {object}
  * @property {element} 
  */
+
+// $("#wine-results").on("click", ".favorite-button", function(e) {
+// // $(".fa-star").toggleClass("far fas");
+// console.log(e);
+
+//   })
+
+
 $("#wine-results").on("click", ".favorite-button", async function(e) {
 
   const target = e.target;
+  // console.log(target);
+  
 
   if (target.tagName == "BUTTON") {
-    let wineId = target.dataset.id;
-    getFavList(wineId);
+    let wineId = target.children[0].children[0].children[0].dataset.id;
+    const icon = $(`#fav-box-${wineId}`)
+
+    const json = await axios.post(`/user/add_favorite/${wineId}`)
+    noUserObj = json.data
+
+    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
+    if (Object.keys(noUserObj).length == 1) {
+      
+        message = `<section class="hero is-small is-light">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title has-text-grey-dark">
+                ${noUserObj.message}
+              </h1>
+            </div>
+          </div>
+        </section>`
+
+        flashDiv = $("#flash")
+        flashDiv.html("");
+        flashDiv.prepend(message)
+
+        function hideMessage(){
+          flashDiv.html("");
+        }
+
+        setTimeout(hideMessage, 2000);
+
+  } else {
+
+    if (icon.hasClass("myFas")) {
+      icon.removeClass("myFas")
+      icon.addClass("myFar")
+      icon.html(`<i class="far fa-star" data-id="${wineId}"></i>`)
+    } else {
+      icon.removeClass("myFar")
+      icon.addClass("myFas")
+      icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
+    }
+
+  } 
 
   } else if (target.tagName == "path") {
-    const button = target.parentElement.parentElement.parentElement;
-    let wineId = button.dataset.id;
-    getFavList(wineId);
+    const wineId = target.parentElement.dataset.id 
+    const icon = $(`#fav-box-${wineId}`)
 
-  } else if (target.tagName == "SPAN") {
-    const button = target.parentElement;
-    let wineId = button.dataset.id;
-    getFavList(wineId);
+        const json = await axios.post(`/user/add_favorite/${wineId}`)
+    noUserObj = json.data
 
-  } else if (target.tagName == "svg") {
-    const button = target.parentElement.parentElement;
-    let wineId = button.dataset.id;
-    getFavList(wineId);
+    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
+    if (Object.keys(noUserObj).length == 1) {
+      
+        message = `<section class="hero is-small is-light">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title has-text-grey-dark">
+                ${noUserObj.message}
+              </h1>
+            </div>
+          </div>
+        </section>`
+
+        flashDiv = $("#flash")
+        flashDiv.html("");
+        flashDiv.prepend(message)
+
+        function hideMessage(){
+          flashDiv.html("");
+        }
+
+        setTimeout(hideMessage, 2000);
+
+  } else {
+    
+    if (icon.hasClass("myFas")) {
+      icon.removeClass("myFas")
+      icon.addClass("myFar")
+      icon.html(`<i class="far fa-star" data-id="${wineId}"></i>`)
+    } else {
+      icon.removeClass("myFar")
+      icon.addClass("myFas")
+      icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
+    }
 
   }
 
+  } else if (target.tagName == "DIV") {
+    wineId = target.firstChild.dataset.id;
+    const icon = $(`#fav-box-${wineId}`)
+
+        const json = await axios.post(`/user/add_favorite/${wineId}`)
+    noUserObj = json.data
+
+    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
+    if (Object.keys(noUserObj).length == 1) {
+      
+        message = `<section class="hero is-small is-light">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title has-text-grey-dark">
+                ${noUserObj.message}
+              </h1>
+            </div>
+          </div>
+        </section>`
+
+        flashDiv = $("#flash")
+        flashDiv.html("");
+        flashDiv.prepend(message)
+
+        function hideMessage(){
+          flashDiv.html("");
+        }
+
+        setTimeout(hideMessage, 2000);
+
+  } else {
+    
+    if (icon.hasClass("myFas")) {
+      icon.removeClass("myFas")
+      icon.addClass("myFar")
+      icon.html(`<i class="far fa-star" data-id="${wineId}"></i>`)
+    } else {
+      icon.removeClass("myFar")
+      icon.addClass("myFas")
+      icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
+    }
+  } 
+
+  } else if (target.tagName == "svg") {
+    const wineId = target.parentElement.parentElement.parentElement.dataset.id;
+    const icon = $(`#fav-box-${wineId}`)
+
+        const json = await axios.post(`/user/add_favorite/${wineId}`)
+    noUserObj = json.data
+
+    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
+    if (Object.keys(noUserObj).length == 1) {
+      
+        message = `<section class="hero is-small is-light">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title has-text-grey-dark">
+                ${noUserObj.message}
+              </h1>
+            </div>
+          </div>
+        </section>`
+
+        flashDiv = $("#flash")
+        flashDiv.html("");
+        flashDiv.prepend(message)
+
+        function hideMessage(){
+          flashDiv.html("");
+        }
+
+        setTimeout(hideMessage, 2000);
+
+  } else {
+    
+    if (icon.hasClass("myFas")) {
+      icon.removeClass("myFas")
+      icon.addClass("myFar")
+      icon.html(`<i class="far fa-star" data-id="${wineId}"></i>`)
+    } else {
+      icon.removeClass("myFar")
+      icon.addClass("myFas")
+      icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
+    }
+  }
+  
+  }
+
 })
+
+
+// $("#wine-results").on("click", ".favorite-button", async function(e) {
+
+//   const target = e.target;
+
+//   if (target.tagName == "BUTTON") {
+//     let wineId = target.dataset.id;
+//     getFavList(wineId);
+
+//   } else if (target.tagName == "path") {
+//     const button = target.parentElement.parentElement.parentElement;
+//     let wineId = button.dataset.id;
+//     getFavList(wineId);
+
+//   } else if (target.tagName == "SPAN") {
+//     const button = target.parentElement;
+//     let wineId = button.dataset.id;
+//     getFavList(wineId);
+
+//   } else if (target.tagName == "svg") {
+//     const button = target.parentElement.parentElement;
+//     let wineId = button.dataset.id;
+//     getFavList(wineId);
+
+//   }
+
+// })
 
 // =================================================  DELETE REVIEW / REVIEWS PAGE  ================================================
 
@@ -580,8 +775,10 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     const targetInput = target.parentElement.firstElementChild;
     // $(targetInput).toggleClass("is-focused")
     $(targetInput).toggleClass("is-light")
+    $(".progress-bar-container").toggleClass("hidden")
     const res = await axios.get(`/wine_type/${filterName}`)
     const wine_results = await axios.get(`/wine_style/""`)
+    $(".progress-bar-container").toggleClass("hidden")
     wines = wine_results.data.wine_results;
     favs = wine_results.data.user_favorites;
     reviews = wine_results.data.reviews;
@@ -604,7 +801,9 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     const targetInput = target.parentElement.firstElementChild;
     // $(targetInput).toggleClass("is-focused")
     $(targetInput).toggleClass("is-light")
+    $(".progress-bar-container").toggleClass("hidden")
     const wine_results = await axios.get(`/wine_style/${filterName}`)
+    $(".progress-bar-container").toggleClass("hidden")
     wines = wine_results.data.wine_results;
     favs = wine_results.data.user_favorites;
     reviews = wine_results.data.reviews;
@@ -627,11 +826,13 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
     const targetInput = target.parentElement.firstElementChild;
     // $(targetInput).toggleClass("is-focused")
     $(targetInput).toggleClass("is-light")
+    $(".progress-bar-container").toggleClass("hidden")
     const res = await axios.get(`/sort_by/${filterName}`)
-    const wine_results = await axios.get(`/wine_style/""`)
-    wines = wine_results.data.wine_results;
-    favs = wine_results.data.user_favorites;
-    reviews = wine_results.data.reviews;
+    const response = await axios.get(`/wine_style/""`)
+    $(".progress-bar-container").toggleClass("hidden")
+    wines = response.data.wine_results;
+    favs = response.data.user_favorites;
+    reviews = response.data.reviews;
     populateWineResults(wines, favs, reviews)
 
   }
@@ -731,8 +932,9 @@ $("#varietals-modal").on("click", ".varietals", async function(e) {
 $("#modal").on("click", ".toggle-off", async function() {
   modal = $(".modal");
   modal.toggleClass("is-active")
-
+$(".progress-bar-container").toggleClass("hidden")
   const wine_results = await axios.get(`/wine_style/""`)
+  $(".progress-bar-container").toggleClass("hidden")
   wines = wine_results.data.wine_results;
   favs = wine_results.data.user_favorites;
   reviews = wine_results.data.reviews;
@@ -860,7 +1062,9 @@ message = `<section class="hero is-small is-light">
     setTimeout(hideMessage, 2000);
 
   } else {
+      $(".progress-bar-container").toggleClass("hidden")
       const wine_results = await axios.get(`/search/results`)
+      $(".progress-bar-container").toggleClass("hidden")
       wines = wine_results.data.wine_results;
       favs = wine_results.data.favs;
       reviews = wine_results.data.reviews;
@@ -922,6 +1126,22 @@ $(document).ready(
       $(".navbar-menu").toggleClass("is-active");
   });
 });
+
+// =================================================  PROGRESS BAR ================================================
+
+$(".results-button").on("click", function(){
+  $(".progress-bar-container").toggleClass("hidden")
+  
+})
+
+jQuery(document).ready(function() {
+    jQuery('.progress-bar-container').fadeOut(3000);
+});
+
+// =================================================  PAGINATION  ================================================
+
+
+// ############ FOR WINE RESULTS PAGE
 
 
 // =================================================  CALLING API  ================================================

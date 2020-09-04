@@ -607,6 +607,7 @@ def homepage():
     session['wine_type_options'] = ['Red', 'White', 'Rose']
     session['wine_style_options'] = ['Blends', 'Single Varietals']
     session['sort_by_options'] = ['Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
+    # session['wine_results'] = ['None']
     
     all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
 
@@ -675,6 +676,11 @@ def get_wine_style_choices(new_wine_style):
     session['wine_style'] = wine_style    
 
     wine_results = get_wine.wine_results(sort_by, varietals, wine_style, wine_type)
+    
+    sliced = slice(0,10)
+    wine_results = wine_results[sliced]
+    
+    # session['wine_results'] = wine_results
          
     if wine_results == []:
         wine_results = ['No Results']
@@ -718,12 +724,33 @@ def get_sort_by_choices(new_sort_by):
         sort_by = ['None']
         
     session['sort_by'] = sort_by
+    
+   
 
+    
+    
+    # print("###########  wine results ###############")
+    # print(session['wine_results'])
+
+    # if session['wine_results'] != ['None']:
+    # wine = session['wine_results']
+    # sorted_wine = get_wine.sort_results(sort_by, wine)
+    # import pdb
+    # pdb.set_trace()
+    
+    # return jsonify(wine_results=sorted_wine)
+        
+    # else:
+    return render_template("new_home.html")
     
     # import pdb
     # pdb.set_trace()
 
-    return render_template("new_home.html")
+    # return render_template("new_home.html")
+
+
+# ===================================    SORTING WINE RESULTS   =====================================
+
 
 # ===================================    SENDING VARIETAL OPTIONS   =====================================
 
@@ -779,6 +806,11 @@ def show_results():
 
    
     wine_results = get_wine.wine_results(sort_by, varietals, wine_style, wine_type)
+    
+    session['wine_results'] = wine_results
+
+    # sliced = slice(0,10)
+    # sliced_results = wine_results[sliced]
     
     # import pdb
     # pdb.set_trace()

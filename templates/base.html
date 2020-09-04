@@ -16,6 +16,13 @@
   <link rel="stylesheet" href="/static/style.css" type="text/css">
 </head>
 
+<!-- ================================= PROGRESS BAR ================================= -->
+
+<div class="progress-bar-container hidden">
+<div class="progress-bar-box">
+  <progress class="progress is-large is-info" max="100">60%</progress>
+</div>
+</div>
 <!-- ================================= NAVBAR ================================= -->
 
 
@@ -105,7 +112,7 @@
           <a href="/signup"class="button is-primary">
             <strong>Sign up</strong>
           </a>
-          <a href="/login" class="button is-light">
+          <a href="/login" class="button is-white has-text-info">
             Log in
           </a>
           {% endif %}
@@ -151,6 +158,11 @@
 {% endif %}
 {% endwith%}
 </div>
+
+
+
+
+
 {% block content %}{% endblock %}
 
  

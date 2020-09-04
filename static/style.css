@@ -369,3 +369,26 @@ flex: 50%;
   pointer-events: all; 
   cursor: pointer;
 }
+
+/* ================================  PROGRESS BAR  ================================  */
+
+.progress-bar-container {
+  position: fixed;
+  height: calc(100vh + 46px);
+  width: 100vw;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, .8)
+}
+
+
+.progress-bar-box { 
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+
+

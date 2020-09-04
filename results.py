@@ -185,9 +185,11 @@ class WineResults():
                     return e['Winery']
                 wine_results.sort(key=filter)
                 
+      
+        
+        # session['wine_results'] = wine_results
         # import pdb
-        # pdb.set_trace() 
-                      
+        # pdb.set_trace()        
         return wine_results
     
     
@@ -212,3 +214,50 @@ class WineResults():
             wine_results.append(wine)
             
         return wine_results
+    
+    
+    
+    def sort_results(self, sort_by, wine_results):
+        
+        # wine_results = session['wine_results']
+        
+        # import pdb
+        # pdb.set_trace()  
+        
+        if 'None' in sort_by:
+            return wine_results
+        
+        for key in sort_by:
+                         
+            if key == 'Rating (Highest)':                   
+                def filter(e):
+                    return e['Rating']
+                wine_results.sort(key=filter, reverse=True)
+            
+            if key == 'Rating (Lowest)':
+                def filter(e):
+                    return e['Rating']
+                wine_results.sort(key=filter)
+                    
+            if key == 'Vintage (Oldest)':
+                def filter(e):
+                    return e['Vintage']
+                wine_results.sort(key=filter)
+                    
+            if key == 'Vintage (Youngest)':
+                def filter(e):
+                    return e['Vintage']
+                wine_results.sort(key=filter, reverse=True)
+                              
+            if key == 'Winery (Alphabetically)':
+                def filter(e):
+                    return e['Winery']
+                wine_results.sort(key=filter)
+                
+        # import pdb
+        # pdb.set_trace() 
+        
+        # session['wine_results'] = wine_results
+                      
+        return wine_results
+        
