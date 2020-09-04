@@ -386,30 +386,49 @@ $(document).ready(clearFlash)
  * @param {object} noUserObj 
  */    
 const flashMessage = function(noUserObj) {
-    message = `<section class="hero is-small is-light">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title has-text-grey-dark">
-            ${noUserObj.message}
-          </h1>
-        </div>
+  message = `<section class="hero is-small is-light">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title has-text-grey-dark">
+          ${noUserObj.message}
+        </h1>
       </div>
-    </section>`
+    </div>
+  </section>`
 
-    flashDiv = $("#flash")
+  flashDiv = $("#flash")
+  flashDiv.html("");
+  flashDiv.prepend(message)
+
+  // ##### SCROLL BACK TO TOP OF PAGE TO RE CREATE THE SAME EFFECTS AS FLASH MESSAGING
+  $(document).ready(function(){
+    $(window).scrollTop(0);
+  });
+
+  function hideMessage(){
     flashDiv.html("");
-    flashDiv.prepend(message)
+  }
 
-    // ##### SCROLL BACK TO TOP OF PAGE TO RE CREATE THE SAME EFFECTS AS FLASH MESSAGING
-      $(document).ready(function(){
-      $(window).scrollTop(0);
-    });
+  setTimeout(hideMessage, 2000);
+}
 
-    function hideMessage(){
-      flashDiv.html("");
-    }
-
-    setTimeout(hideMessage, 2000);
+/**
+ * Replace HTML with opposite class for fa-star element. This is necessary because due
+ * to Bulma, it changes the html element during transpiling so I can't simply toggle
+ * the class.
+ * @param {HTMLelement} icon 
+ * @param {string} wineId 
+ */
+function toggleStar(icon, wineId){
+  if (icon.hasClass("myFas")) {
+    icon.removeClass("myFas")
+    icon.addClass("myFar")
+    icon.html(`<i class="far fa-star" data-id="${wineId}"></i>`)
+  } else {
+    icon.removeClass("myFar")
+    icon.addClass("myFas")
+    icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
+  }
 }
 
 
@@ -421,111 +440,70 @@ const flashMessage = function(noUserObj) {
  * @property {element} 
  */
 $("#wine-results").on("click", ".favorite-button", async function(e) {
-
   const target = e.target;
-  
 
   if (target.tagName == "BUTTON") {
     let wineId = target.children[0].children[0].children[0].dataset.id;
     const icon = $(`#fav-box-${wineId}`)
-
     const json = await axios.post(`/user/add_favorite/${wineId}`)
     noUserObj = json.data
-
-    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT A JS VERSION OF FLASH MESSAGING APPEARS #####
+    
     if (Object.keys(noUserObj).length == 1) {
 
-        flashMessage(noUserObj)
+      flashMessage(noUserObj)
   
-  } else {
-
-    if (icon.hasClass("myFas")) {
-      icon.removeClass("myFas")
-      icon.addClass("myFar")
-      icon.html(`<i class="far fa-star" data-id="${wineId}"></i>`)
     } else {
-      icon.removeClass("myFar")
-      icon.addClass("myFas")
-      icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
-    }
 
-  } 
+      toggleStar(icon, wineId)
+
+    } 
 
   } else if (target.tagName == "path") {
     const wineId = target.parentElement.dataset.id 
     const icon = $(`#fav-box-${wineId}`)
-
-        const json = await axios.post(`/user/add_favorite/${wineId}`)
+    const json = await axios.post(`/user/add_favorite/${wineId}`)
     noUserObj = json.data
 
     if (Object.keys(noUserObj).length == 1) {
       
-        flashMessage(noUserObj)
+      flashMessage(noUserObj)
        
-  } else {
-    
-    if (icon.hasClass("myFas")) {
-      icon.removeClass("myFas")
-      icon.addClass("myFar")
-      icon.html(`<i class="far fa-star" data-id="${wineId}"></i>`)
     } else {
-      icon.removeClass("myFar")
-      icon.addClass("myFas")
-      icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
-    }
+      
+      toggleStar(icon, wineId)
 
-  }
+    }
 
   } else if (target.tagName == "DIV") {
     wineId = target.firstChild.dataset.id;
     const icon = $(`#fav-box-${wineId}`)
-
-        const json = await axios.post(`/user/add_favorite/${wineId}`)
+    const json = await axios.post(`/user/add_favorite/${wineId}`)
     noUserObj = json.data
 
     if (Object.keys(noUserObj).length == 1) {
       
-        flashMessage(noUserObj)
+      flashMessage(noUserObj)
 
-  } else {
-    
-    if (icon.hasClass("myFas")) {
-      icon.removeClass("myFas")
-      icon.addClass("myFar")
-      icon.html(`<i class="far fa-star" data-id="${wineId}"></i>`)
     } else {
-      icon.removeClass("myFar")
-      icon.addClass("myFas")
-      icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
-    }
-  } 
+      
+      toggleStar(icon, wineId)
+    } 
 
   } else if (target.tagName == "svg") {
-    const wineId = target.parentElement.parentElement.parentElement.dataset.id;
-    const icon = $(`#fav-box-${wineId}`)
-
-        const json = await axios.post(`/user/add_favorite/${wineId}`)
-    noUserObj = json.data
+      const wineId = target.parentElement.parentElement.parentElement.dataset.id;
+      const icon = $(`#fav-box-${wineId}`)
+      const json = await axios.post(`/user/add_favorite/${wineId}`)
+      noUserObj = json.data
 
     if (Object.keys(noUserObj).length == 1) {
       
-        flashMessage(noUserObj)
+      flashMessage(noUserObj)
 
-  } else {
-    
-    if (icon.hasClass("myFas")) {
-      icon.removeClass("myFas")
-      icon.addClass("myFar")
-      icon.html(`<i class="far fa-star" data-id="${wineId}"></i>`)
     } else {
-      icon.removeClass("myFar")
-      icon.addClass("myFas")
-      icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
+      
+      toggleStar(icon, wineId)
     }
   }
-
-  }
-
 })
 
 
