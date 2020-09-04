@@ -365,56 +365,6 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
 
 // =================================================  FAVORITE BUTTON ON RESULTS PAGE ================================================
 
-// /**
-//  * Uses AJAX to replace the wine cards in the DOM when a user favorites a wine, to 
-//  * show that the favoirte star has been bolded.
-//  * @param {integer} wineId 
-//  */
-// const getFavList = async function(wineId) {
-  
-//   const json = await axios.post(`/user/add_favorite/${wineId}`)
-//   noUserObj = json.data
-
-//   // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
-//   if (Object.keys(noUserObj).length == 1) {
-    
-// message = `<section class="hero is-small is-light">
-//   <div class="hero-body">
-//     <div class="container">
-//       <h1 class="title has-text-grey-dark">
-//         ${noUserObj.message}
-//       </h1>
-//     </div>
-//   </div>
-// </section>`
-
-//     flashDiv = $("#flash")
-//     flashDiv.html("");
-//     flashDiv.prepend(message)
-//     function hideMessage(){
-//       flashDiv.html("");
-//     }
-//     setTimeout(hideMessage, 2000);
-
-//   } else {
-//     $(".progress-bar-container").toggleClass("hidden")
-//       const wine_results = await axios.get(`/wine_style/""`)
-//       $(".progress-bar-container").toggleClass("hidden")
-//       wines = wine_results.data.wine_results;
-//       favs = json.data.fav_wine_list;
-//       reviews = wine_results.data.reviews;
-//       fav_wines = json.data.fav_wines;
-//       wine_reviews = json.data.wine_reviews;
-//       populateWineResults(wines, favs, reviews, fav_wines, wine_reviews)
-//   }
-  
-  
- 
-// }
-
-
-
- 
 
 /**
  * Clears all the flash messages after 2 seconds
@@ -430,27 +380,49 @@ const clearFlash = function(){
 $(document).ready(clearFlash)
 
 
-    
+
+/**
+ * Appends HTML to the DOM to create a flash message to the user
+ * @param {object} noUserObj 
+ */    
+const flashMessage = function(noUserObj) {
+    message = `<section class="hero is-small is-light">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title has-text-grey-dark">
+            ${noUserObj.message}
+          </h1>
+        </div>
+      </div>
+    </section>`
+
+    flashDiv = $("#flash")
+    flashDiv.html("");
+    flashDiv.prepend(message)
+
+    // ##### SCROLL BACK TO TOP OF PAGE TO RE CREATE THE SAME EFFECTS AS FLASH MESSAGING
+      $(document).ready(function(){
+      $(window).scrollTop(0);
+    });
+
+    function hideMessage(){
+      flashDiv.html("");
+    }
+
+    setTimeout(hideMessage, 2000);
+}
+
 
 /**
  * Click function that will get a hold of the wine-id data set of the wine favorited
- * and send that to log in the backend by way of getFavList()
+ * and send that to log in the backend and toggle boldness of star
  * @event document#click
  * @type {object}
  * @property {element} 
  */
-
-// $("#wine-results").on("click", ".favorite-button", function(e) {
-// // $(".fa-star").toggleClass("far fas");
-// console.log(e);
-
-//   })
-
-
 $("#wine-results").on("click", ".favorite-button", async function(e) {
 
   const target = e.target;
-  // console.log(target);
   
 
   if (target.tagName == "BUTTON") {
@@ -460,29 +432,11 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
     const json = await axios.post(`/user/add_favorite/${wineId}`)
     noUserObj = json.data
 
-    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
+    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT A JS VERSION OF FLASH MESSAGING APPEARS #####
     if (Object.keys(noUserObj).length == 1) {
-      
-        message = `<section class="hero is-small is-light">
-          <div class="hero-body">
-            <div class="container">
-              <h1 class="title has-text-grey-dark">
-                ${noUserObj.message}
-              </h1>
-            </div>
-          </div>
-        </section>`
 
-        flashDiv = $("#flash")
-        flashDiv.html("");
-        flashDiv.prepend(message)
-
-        function hideMessage(){
-          flashDiv.html("");
-        }
-
-        setTimeout(hideMessage, 2000);
-
+        flashMessage(noUserObj)
+  
   } else {
 
     if (icon.hasClass("myFas")) {
@@ -504,29 +458,10 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
         const json = await axios.post(`/user/add_favorite/${wineId}`)
     noUserObj = json.data
 
-    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
     if (Object.keys(noUserObj).length == 1) {
       
-        message = `<section class="hero is-small is-light">
-          <div class="hero-body">
-            <div class="container">
-              <h1 class="title has-text-grey-dark">
-                ${noUserObj.message}
-              </h1>
-            </div>
-          </div>
-        </section>`
-
-        flashDiv = $("#flash")
-        flashDiv.html("");
-        flashDiv.prepend(message)
-
-        function hideMessage(){
-          flashDiv.html("");
-        }
-
-        setTimeout(hideMessage, 2000);
-
+        flashMessage(noUserObj)
+       
   } else {
     
     if (icon.hasClass("myFas")) {
@@ -548,28 +483,9 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
         const json = await axios.post(`/user/add_favorite/${wineId}`)
     noUserObj = json.data
 
-    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
     if (Object.keys(noUserObj).length == 1) {
       
-        message = `<section class="hero is-small is-light">
-          <div class="hero-body">
-            <div class="container">
-              <h1 class="title has-text-grey-dark">
-                ${noUserObj.message}
-              </h1>
-            </div>
-          </div>
-        </section>`
-
-        flashDiv = $("#flash")
-        flashDiv.html("");
-        flashDiv.prepend(message)
-
-        function hideMessage(){
-          flashDiv.html("");
-        }
-
-        setTimeout(hideMessage, 2000);
+        flashMessage(noUserObj)
 
   } else {
     
@@ -591,28 +507,9 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
         const json = await axios.post(`/user/add_favorite/${wineId}`)
     noUserObj = json.data
 
-    // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
     if (Object.keys(noUserObj).length == 1) {
       
-        message = `<section class="hero is-small is-light">
-          <div class="hero-body">
-            <div class="container">
-              <h1 class="title has-text-grey-dark">
-                ${noUserObj.message}
-              </h1>
-            </div>
-          </div>
-        </section>`
-
-        flashDiv = $("#flash")
-        flashDiv.html("");
-        flashDiv.prepend(message)
-
-        function hideMessage(){
-          flashDiv.html("");
-        }
-
-        setTimeout(hideMessage, 2000);
+        flashMessage(noUserObj)
 
   } else {
     
@@ -626,38 +523,12 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
       icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
     }
   }
-  
+
   }
 
 })
 
 
-// $("#wine-results").on("click", ".favorite-button", async function(e) {
-
-//   const target = e.target;
-
-//   if (target.tagName == "BUTTON") {
-//     let wineId = target.dataset.id;
-//     getFavList(wineId);
-
-//   } else if (target.tagName == "path") {
-//     const button = target.parentElement.parentElement.parentElement;
-//     let wineId = button.dataset.id;
-//     getFavList(wineId);
-
-//   } else if (target.tagName == "SPAN") {
-//     const button = target.parentElement;
-//     let wineId = button.dataset.id;
-//     getFavList(wineId);
-
-//   } else if (target.tagName == "svg") {
-//     const button = target.parentElement.parentElement;
-//     let wineId = button.dataset.id;
-//     getFavList(wineId);
-
-//   }
-
-// })
 
 // =================================================  DELETE REVIEW / REVIEWS PAGE  ================================================
 

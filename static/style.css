@@ -390,5 +390,12 @@ flex: 50%;
   z-index: 1;
 }
 
+/* ================================  PROGRESS BAR  ================================  */
+
+.flash-box{
+  position: fixed;
+  width: 100vw;
+}
+
 
 

@@ -245,6 +245,7 @@ def add_like(wine_id):
     # pdb.set_trace()
 
     if not g.user:
+        # flash("Please log in or sign up to favorite wine!", "error")
         return jsonify(message="Please log in or sign up to favorite wines!") 
 
 
