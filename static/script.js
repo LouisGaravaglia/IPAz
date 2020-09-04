@@ -819,116 +819,114 @@ $("#search-form").on("click", ".magnify-glass", function() {
 })
 
 
-/**
- * Adds wine cards to the DOM to the search results page.
- * @param {object} wine_results 
- * @param {array} favorites 
- * @param {array} reviews 
- */
-function populateSearchResults(wine_results, favorites, reviews) {
-  wineHtml = $("#search-results")
-  wineHtml.html("")
+// /**
+//  * Adds wine cards to the DOM to the search results page.
+//  * @param {object} wine_results 
+//  * @param {array} favorites 
+//  * @param {array} reviews 
+//  */
+// function populateSearchResults(wine_results, favorites, reviews) {
+//   wineHtml = $("#search-results")
+//   wineHtml.html("")
 
 
-  if (wine_results[0] == "No Results") {
+//   if (wine_results[0] == "No Results") {
     
-    message = `<section class="hero is-small is-light mt-6 mx-6">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title has-text-info">
-        No wines available.
-      </h1>
-    </div>
-  </div>
-</section>`
-    // const html = '<h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>'
-    wineHtml.append(message)
+//     message = `<section class="hero is-small is-light mt-6 mx-6">
+//   <div class="hero-body">
+//     <div class="container">
+//       <h1 class="title has-text-info">
+//         No wines available.
+//       </h1>
+//     </div>
+//   </div>
+// </section>`
+//     // const html = '<h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>'
+//     wineHtml.append(message)
 
-  } else {
+//   } else {
 
-    for (wine of wine_results) { 
+//     for (wine of wine_results) { 
 
-    if (favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
-        const favBtn = '<i class="fas fa-star"></i>';
-        const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
-        const reviewHTML = "";
-        const cardSize = 'is-one-third';
-        const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
-        wineHtml.append(html)
-      } else if (favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
-          const favBtn = '<i class="fas fa-star"></i>';
-          const reviewBtn = '<i class="far fa-edit review-btn"></i>';
-          const reviewHTML = "";
-          const cardSize = 'is-one-third';
-          const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
-          wineHtml.append(html)
-      } else if (!favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
-          const favBtn = '<i class="far fa-star"></i>';
-          const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
-          const reviewHTML = "";
-          const cardSize = 'is-one-third';
-          const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
-          wineHtml.append(html)
-      } else if (!favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
-          const favBtn = '<i class="far fa-star"></i>';
-          const reviewBtn = '<i class="far fa-edit review-btn"></i>';
-          const reviewHTML = "";
-          const cardSize = 'is-one-third';
-          const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
-          wineHtml.append(html)
-      } 
+//     if (favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+//         const favBtn = '<i class="fas fa-star"></i>';
+//         const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
+//         const reviewHTML = "";
+//         const cardSize = 'is-one-third';
+//         const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+//         wineHtml.append(html)
+//       } else if (favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+//           const favBtn = '<i class="fas fa-star"></i>';
+//           const reviewBtn = '<i class="far fa-edit review-btn"></i>';
+//           const reviewHTML = "";
+//           const cardSize = 'is-one-third';
+//           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+//           wineHtml.append(html)
+//       } else if (!favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+//           const favBtn = '<i class="far fa-star"></i>';
+//           const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
+//           const reviewHTML = "";
+//           const cardSize = 'is-one-third';
+//           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+//           wineHtml.append(html)
+//       } else if (!favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+//           const favBtn = '<i class="far fa-star"></i>';
+//           const reviewBtn = '<i class="far fa-edit review-btn"></i>';
+//           const reviewHTML = "";
+//           const cardSize = 'is-one-third';
+//           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+//           wineHtml.append(html)
+//       } 
 
-    }
+//     }
 
-  }
+//   }
 
-}
+// }
 
 
-/**
- * logs the wine id of the wine that the user favorited and then uses AJAX to re-populate
- * the wine cards to the DOM with the wine that was just faved now showing a bold star
- * @param {integer} wineId 
- */
-const logSearchFav = async function(wineId) {
+// /**
+//  * logs the wine id of the wine that the user favorited and then uses AJAX to re-populate
+//  * the wine cards to the DOM with the wine that was just faved now showing a bold star
+//  * @param {integer} wineId 
+//  */
+// const logSearchFav = async function(wineId) {
   
-  const json = await axios.post(`/user/add_favorite/${wineId}`)
-  noUserObj = json.data
+//   const json = await axios.post(`/user/add_favorite/${wineId}`)
+//   noUserObj = json.data
 
-  // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
-  if (Object.keys(noUserObj).length == 1) {
+//   // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
+//   if (Object.keys(noUserObj).length == 1) {
     
-message = `<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title has-text-grey-dark">
-        ${noUserObj.message}
-      </h1>
-    </div>
-  </div>
-</section>`
+// message = `<section class="hero is-small is-light">
+//   <div class="hero-body">
+//     <div class="container">
+//       <h1 class="title has-text-grey-dark">
+//         ${noUserObj.message}
+//       </h1>
+//     </div>
+//   </div>
+// </section>`
 
-    flashDiv = $("#flash")
-    flashDiv.html("");
-    flashDiv.prepend(message)
-    function hideMessage(){
-      flashDiv.html("");
-    }
-    setTimeout(hideMessage, 2000);
+//     flashDiv = $("#flash")
+//     flashDiv.html("");
+//     flashDiv.prepend(message)
+//     function hideMessage(){
+//       flashDiv.html("");
+//     }
+//     setTimeout(hideMessage, 2000);
 
-  } else {
-      $(".progress-bar-container").toggleClass("hidden")
-      const wine_results = await axios.get(`/search/results`)
-      $(".progress-bar-container").toggleClass("hidden")
-      wines = wine_results.data.wine_results;
-      favs = wine_results.data.favs;
-      reviews = wine_results.data.reviews;
-      populateSearchResults(wines, favs, reviews)
-  }
-  
-  
- 
-}
+//   } else {
+//       $(".progress-bar-container").toggleClass("hidden")
+//       const wine_results = await axios.get(`/search/results`)
+//       $(".progress-bar-container").toggleClass("hidden")
+//       wines = wine_results.data.wine_results;
+//       favs = wine_results.data.favs;
+//       reviews = wine_results.data.reviews;
+//       populateSearchResults(wines, favs, reviews)
+//   }
+// }
+
 
 /**
  * Click event for the favorite star on the search result wine cards to then call
@@ -942,27 +940,122 @@ message = `<section class="hero is-small is-light">
     const target = e.target;
 
     if (target.tagName == "BUTTON") {
-      let wineId = target.dataset.id;
-      logSearchFav(wineId);
+      // let wineId = target.dataset.id;
+      
+      let wineId = target.children[0].children[0].dataset.id;
+      // console.log(target.children[0].children[0].dataset.id);
+      const icon = $(`#fav-box-${wineId}`)
+      const json = await axios.post(`/user/add_favorite/${wineId}`)
+      noUserObj = json.data
+
+    if (Object.keys(noUserObj).length == 1) {
+      
+      flashMessage(noUserObj)
+       
+    } else {
+      
+      toggleStar(icon, wineId)
+
+    }
 
     } else if (target.tagName == "path") {
-      const button = target.parentElement.parentElement.parentElement;
-      let wineId = button.dataset.id;
-      logSearchFav(wineId);
+    //   const button = target.parentElement.parentElement.parentElement;
+          // console.log(target.parentElement.dataset.id);
+
+    //   // let wineId = button.dataset.id;
+    let wineId = target.parentElement.dataset.id;
+      const icon = $(`#fav-box-${wineId}`)
+      const json = await axios.post(`/user/add_favorite/${wineId}`)
+      noUserObj = json.data
+
+    if (Object.keys(noUserObj).length == 1) {
+      
+      flashMessage(noUserObj)
+       
+    } else {
+      
+      toggleStar(icon, wineId)
+
+    };
 
     } else if (target.tagName == "SPAN") {
-      const button = target.parentElement;
-      let wineId = button.dataset.id;
-      logSearchFav(wineId);
+    //   const button = target.parentElement;
+    //   // let wineId = button.dataset.id;
+      let wineId = target.parentElement.parentElement.dataset.id;
+          // console.log(target.parentElement.parentElement.dataset.id);
+
+      const icon = $(`#fav-box-${wineId}`)
+      const json = await axios.post(`/user/add_favorite/${wineId}`)
+      noUserObj = json.data
+
+    if (Object.keys(noUserObj).length == 1) {
+      
+      flashMessage(noUserObj)
+       
+    } else {
+      
+      toggleStar(icon, wineId)
+
+    }
 
     } else if (target.tagName == "svg") {
-      const button = target.parentElement.parentElement;
-      let wineId = button.dataset.id;
-      logSearchFav(wineId);
+    //   const button = target.parentElement.parentElement;
+    //   // let wineId = button.dataset.id;
+          // console.log(target.dataset.id);
+
+      let wineId = target.dataset.id;
+      const icon = $(`#fav-box-${wineId}`)
+      const json = await axios.post(`/user/add_favorite/${wineId}`)
+      noUserObj = json.data
+
+    if (Object.keys(noUserObj).length == 1) {
+      
+      flashMessage(noUserObj)
+       
+    } else {
+      
+      toggleStar(icon, wineId)
+
+    }
 
     }
 
   })
+
+
+// /**
+//  * Click event for the favorite star on the search result wine cards to then call
+//  * logSearchFav() to eventually replace the wine card with the bolded favorite star
+//  * @event document#click
+//  * @type {object}
+//  * @property {element} 
+//  */
+//  $("#search-results").on("click", ".favorite-button", async function(e) {
+
+//     const target = e.target;
+
+//     if (target.tagName == "BUTTON") {
+//       let wineId = target.dataset.id;
+//       logSearchFav(wineId);
+
+//     } else if (target.tagName == "path") {
+//       const button = target.parentElement.parentElement.parentElement;
+//       let wineId = button.dataset.id;
+//       logSearchFav(wineId);
+
+//     } else if (target.tagName == "SPAN") {
+//       const button = target.parentElement;
+//       let wineId = button.dataset.id;
+//       logSearchFav(wineId);
+
+//     } else if (target.tagName == "svg") {
+//       const button = target.parentElement.parentElement;
+//       let wineId = button.dataset.id;
+//       logSearchFav(wineId);
+
+//     }
+
+//   })
 
 // =================================================  NAVBAR  ================================================
 

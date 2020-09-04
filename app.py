@@ -879,8 +879,8 @@ def get_search_results():
     reviews = []
         
     if g.user:
-        for wine in g.user.fav_wines:
-            favs.append(wine.id)
+        for fav in g.user.fav_wines:
+            favs.append(fav.id)
     
     if g.user:
         for post in g.user.posts:
