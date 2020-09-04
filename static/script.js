@@ -363,21 +363,9 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
   }
 }
 
-// =================================================  FAVORITE BUTTON ON RESULTS PAGE ================================================
+// =================================================  FAVORITE BUTTON / RESULTS PAGE ================================================
 
 
-/**
- * Clears all the flash messages after 2 seconds
- */
-const clearFlash = function(){ 
-  flashDiv = $("#messageContainer");
-    function hideMessage(){
-      flashDiv.html("");
-    }
-    setTimeout(hideMessage, 2000);
-}
-
-$(document).ready(clearFlash)
 
 
 
@@ -412,6 +400,8 @@ const flashMessage = function(noUserObj) {
   setTimeout(hideMessage, 2000);
 }
 
+
+
 /**
  * Replace HTML with opposite class for fa-star element. This is necessary because due
  * to Bulma, it changes the html element during transpiling so I can't simply toggle
@@ -430,6 +420,7 @@ function toggleStar(icon, wineId){
     icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
   }
 }
+
 
 
 /**
@@ -508,7 +499,22 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
 
 
 
-// =================================================  DELETE REVIEW / REVIEWS PAGE  ================================================
+/**
+ * Clears all the flash messages after 2 seconds
+ */
+const clearFlash = function(){ 
+  flashDiv = $("#messageContainer");
+    function hideMessage(){
+      flashDiv.html("");
+    }
+    setTimeout(hideMessage, 2000);
+}
+
+$(document).ready(clearFlash)
+
+
+
+// =================================================  DELETE BUTTON / REVIEWS PAGE  ================================================
 
 
 /**
