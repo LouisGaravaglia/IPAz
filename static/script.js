@@ -271,14 +271,18 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
    for (wine of wine_reviews) { 
 
     if (favorites.includes(wine['ID'])) {
-        const favBtn = '<i class="fas fa-star"></i>';
+        const favBtn = `<div id="fav-box-${wine['ID']}" data-id="${wine['ID']}" class="myFas">
+                    <i class="fas fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
         const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
         const cardSize = 'is-one-third';
         const reviewHTML = addReviewHTML(wine)
         const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
         wineHtml.append(html)
       } else {
-        const favBtn = '<i class="far fa-star"></i>';
+        const favBtn = `<div id="fav-box-${wine['ID']}" class="myFar">
+                    <i class="far fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
         const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
         const cardSize = 'is-one-third';                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
         const reviewHTML = addReviewHTML(wine)
@@ -293,28 +297,36 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
     for (wine of fav_wines) { 
 
     if (favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
-        const favBtn = '<i class="fas fa-star"></i>';
+        const favBtn = `<div id="fav-box-${wine['ID']}" data-id="${wine['ID']}" class="myFas">
+                    <i class="fas fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
         const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
         const reviewHTML = "";
         const cardSize = 'is-one-third';
         const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
         wineHtml.append(html)
       } else if (favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
-          const favBtn = '<i class="fas fa-star"></i>';
+          const favBtn = `<div id="fav-box-${wine['ID']}" data-id="${wine['ID']}" class="myFas">
+                    <i class="fas fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
           const reviewBtn = '<i class="far fa-edit review-btn"></i>';
           const reviewHTML = "";
           const cardSize = 'is-one-third';
           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
           wineHtml.append(html)
       } else if (!favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
-          const favBtn = '<i class="far fa-star"></i>';
+          const favBtn = `<div id="fav-box-${wine['ID']}" class="myFar">
+                    <i class="far fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
           const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
           const reviewHTML = "";
           const cardSize = 'is-one-third';
           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
           wineHtml.append(html)
       } else if (!favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
-          const favBtn = '<i class="far fa-star"></i>';
+          const favBtn = `<div id="fav-box-${wine['ID']}" class="myFar">
+                    <i class="far fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
           const reviewBtn = '<i class="far fa-edit review-btn"></i>';
           const reviewHTML = "";
           const cardSize = 'is-one-third';
@@ -324,33 +336,85 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
 
     }
 
+  } else if (address.includes("/search")) {
+
+    for (wine of wine_results) { 
+
+    if (favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+        const favBtn = `<div id="fav-box-${wine['ID']}" data-id="${wine['ID']}" class="myFas">
+                    <i class="fas fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
+        const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
+        const reviewHTML = "";
+        const cardSize = 'is-one-third';
+        const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+        wineHtml.append(html)
+      } else if (favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+          const favBtn = `<div id="fav-box-${wine['ID']}" data-id="${wine['ID']}" class="myFas">
+                    <i class="fas fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
+          const reviewBtn = '<i class="far fa-edit review-btn"></i>';
+          const reviewHTML = "";
+          const cardSize = 'is-one-third';
+          const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+          wineHtml.append(html)
+      } else if (!favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
+          const favBtn = `<div id="fav-box-${wine['ID']}" class="myFar">
+                    <i class="far fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
+          const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
+          const reviewHTML = "";
+          const cardSize = 'is-one-third';
+          const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+          wineHtml.append(html)
+      } else if (!favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
+          const favBtn = `<div id="fav-box-${wine['ID']}" class="myFar">
+                    <i class="far fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
+          const reviewBtn = '<i class="far fa-edit review-btn"></i>';
+          const reviewHTML = "";
+          const cardSize = 'is-one-third';
+          const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
+          wineHtml.append(html)
+      } 
+
+    }
+  
   } else {
 
     for (wine of wine_results) { 
 
     if (favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
-        const favBtn = '<i class="fas fa-star"></i>';
+        const favBtn = `<div id="fav-box-${wine['ID']}" data-id="${wine['ID']}" class="myFas">
+                    <i class="fas fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
         const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
         const reviewHTML = "";
         const cardSize = 'is-half';
         const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
         wineHtml.append(html)
       } else if (favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
-          const favBtn = '<i class="fas fa-star"></i>';
+          const favBtn = `<div id="fav-box-${wine['ID']}" data-id="${wine['ID']}" class="myFas">
+                    <i class="fas fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
           const reviewBtn = '<i class="far fa-edit review-btn"></i>';
           const reviewHTML = "";
           const cardSize = 'is-half';
           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
           wineHtml.append(html)
       } else if (!favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
-          const favBtn = '<i class="far fa-star"></i>';
+          const favBtn = `<div id="fav-box-${wine['ID']}" class="myFar">
+                    <i class="far fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
           const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
           const reviewHTML = "";
           const cardSize = 'is-half';
           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
           wineHtml.append(html)
       } else if (!favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
-          const favBtn = '<i class="far fa-star"></i>';
+          const favBtn = `<div id="fav-box-${wine['ID']}" class="myFar">
+                    <i class="far fa-star" data-id="${wine['ID']}"></i>
+                    </div>`;
           const reviewBtn = '<i class="far fa-edit review-btn"></i>';
           const reviewHTML = "";
           const cardSize = 'is-half';
@@ -830,6 +894,54 @@ $("#search-form").on("click", ".magnify-glass", function() {
 //   wineHtml.html("")
 
 
+
+$("#search-bar-box").on("click", ".search-bar", function() {
+  searchValue = $("#search-bar").val()
+  sessionStorage.setItem('searchValue', searchValue);
+  console.log("lol");
+  window.location.assign("http://127.0.0.1:5000/search");
+  
+
+ 
+})
+
+$(document).ready(async function() {
+  const address = document.location.href;
+  if (address.includes("/search")) {
+      searchValue = sessionStorage.getItem('searchValue');
+      const res = await axios.get(`/search/${searchValue}`)
+      paginatedWines = res.data.paginated;
+      favs = res.data.favs;
+      reviews = res.data.reviews;
+
+      // window.location.assign("http://127.0.0.1:5000/search");
+      // window.location = "http://127.0.0.1:5000/search"
+
+      populateWineResults(paginatedWines[0], favs, reviews) 
+  }
+  
+});
+
+// $("#search-bar-box").on("click", ".search-bar", async function() {
+
+//   const searchValue = $("#search-bar").val()
+//   // console.log(searchValue);
+
+//   window.location = "http://127.0.0.1:5000/search"
+
+//   const res = await axios.get(`/search/${searchValue}`)
+//   paginatedWines = res.data.paginated;
+//   favs = res.data.favs;
+//   reviews = res.data.reviews;
+
+//   // window.location.assign("http://127.0.0.1:5000/search");
+//   // window.location = "http://127.0.0.1:5000/search"
+
+//   populateWineResults(paginatedWines[0], favs, reviews) 
+
+ 
+// })
+
 //   if (wine_results[0] == "No Results") {
     
 //     message = `<section class="hero is-small is-light mt-6 mx-6">
@@ -1086,10 +1198,28 @@ jQuery(document).ready(function() {
     jQuery('.progress-bar-container').fadeOut(3000);
 });
 
-// =================================================  PAGINATION  ================================================
+// =================================================  PAGINATION  / SEARCH PAGE ================================================
+var currentPage = 0;
 
+$("#search-pagination").on("click", ".pagination-next", async function() {
+  currentPage += 1;
+  // alert("haha")
+  const res = await axios.get(`/search/${currentPage}`)
+  
+  // console.log(res);
+})
 
-// ############ FOR WINE RESULTS PAGE
+$("#search-pagination").on("click", ".pagination-previous", async function(currentPage) {
+  if (currentPage >= 1) currentPage -= 1;
+  const res = await axios.get(`/search/${currentPage}`)
+})
+
+window.addEventListener("beforeunload", function(event) { 
+
+currentPage = 0;
+
+ });
+
 
 
 // =================================================  CALLING API  ================================================

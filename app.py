@@ -861,42 +861,8 @@ def show_results():
 #     return jsonify(wine_results=wine_results)
 
 
-
-@app.route('/search/results')
-def get_search_results():
-    
- 
-    search_term = session['search_term']
-    wine_results = get_wine.search_results(search_term)
-  
-    
-    # import pdb
-    # pdb.set_trace()
-    
-        
-    
-    favs= []
-    reviews = []
-        
-    if g.user:
-        for fav in g.user.fav_wines:
-            favs.append(fav.id)
-    
-    if g.user:
-        for post in g.user.posts:
-            reviews.append(post.wine_id)
- 
-
-    return jsonify(wine_results=wine_results, reviews=reviews, favs=favs)
-
-
-@app.route('/search')
-def show_search_results():
-    
- 
-
-    search_term = request.args.get("wine")
-    session['search_term'] = search_term
+@app.route('/search/<search_term>')
+def get_search_results(search_term):
     
     # import pdb
     # pdb.set_trace()
@@ -905,9 +871,8 @@ def show_search_results():
         wine_results = ['Please add a search value.']
     else:
         wine_results = get_wine.search_results(search_term)
-
-    # wine_results = session['search_results']
     
+    paginated = [wine_results[i:i+9] for i in range(0, len(wine_results), 9)]
     
     
     favs= []
@@ -920,8 +885,82 @@ def show_search_results():
     if g.user:
         for post in g.user.posts:
             reviews.append(post.wine_id)
+ 
+    # return render_template("search_results.html", wine_results=paginated_wine, user_favorites=favs, user_reviews=reviews)
+
+    return jsonify(paginated=paginated, favs=favs, reviews=reviews)
+
+
+# @app.route('/search/results')
+# def get_search_results():
+    
+ 
+#     search_term = session['search_term']
+#     wine_results = get_wine.search_results(search_term)
+  
+    
+#     # import pdb
+#     # pdb.set_trace()
+    
         
     
+#     favs= []
+#     reviews = []
+        
+#     if g.user:
+#         for fav in g.user.fav_wines:
+#             favs.append(fav.id)
+    
+#     if g.user:
+#         for post in g.user.posts:
+#             reviews.append(post.wine_id)
+ 
+
+#     return jsonify(wine_results=wine_results, reviews=reviews, favs=favs)
+
+
+@app.route('/search')
+def show_search_results():
+    
+ 
+
+    # search_term = request.args.get("wine")
+    # session['search_term'] = search_term
+    
+   
+    
+    # if search_term == '':
+    #     wine_results = ['Please add a search value.']
+    # else:
+    #     wine_results = get_wine.search_results(search_term)
+
+    # # wine_results = session['search_results']
+    
+    
+    
+    # favs= []
+    # reviews = []
+        
+    # if g.user:
+    #     for wine in g.user.fav_wines:
+    #         favs.append(wine.id)
+    
+    # if g.user:
+    #     for post in g.user.posts:
+    #         reviews.append(post.wine_id)
+            
+   
+    # # def getrows_byslice(seq, rowlen):
+    # #     for start in range(0, len(seq), rowlen):
+    # #         seq[start:start+rowlen]
+    #     #    mylist[i:i+4] 
+    # paginated = [wine_results[i:i+9] for i in range(0, len(wine_results), 9)]
+    # paginated_wine = paginated[0]
+    
+    # session['search_results'] = paginated
+    
+    # # import pdb
+    # # pdb.set_trace()
     
 
-    return render_template("search_results.html", wine_results=wine_results, user_favorites=favs, user_reviews=reviews)
+    return render_template("search_results.html")

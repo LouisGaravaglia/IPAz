@@ -60,35 +60,16 @@
         Logout
       </a>
       {% endif %}
-      <!-- <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More
-        </a>
-
-        <div class="navbar-dropdown">
-          <a class="navbar-item">
-            About
-          </a>
-          <a class="navbar-item">
-            Jobs
-          </a>
-          <a class="navbar-item">
-            Contact
-          </a>
-          <hr class="navbar-divider">
-          <a class="navbar-item">
-            Report an issue
-          </a>
-        </div>
-      </div> -->
+    
     </div>
+<!-- ================================= SEARCH BAR ================================= -->
 
     <div class="navbar-end">
-<div class="field is-grouped">
-<form action="/search" id="search-form">
+<div class="field is-grouped" id="search-bar-box">
+<form id="search-form" onsubmit="return false">
   <p class="control has-icons-right has-icons-right">
     <span class="icon is-small is-right search-icon">
-      <i class="fas fa-search magnify-glass"></i>
+      <i class="fas fa-search magnify-glass search-bar"></i>
     </span>
   </p>
       <input class="input" type="text" placeholder="Search for a wine" id="search-bar" name="wine"> 
@@ -97,12 +78,7 @@
   </form>
 </div>
 
-
-<!-- <div class="buttons">
-       <button class="button is-white hidden" id="search-button">Search</button> 
-</div> -->
-
-
+<!-- ================================= SIGN UP / LOGIN ================================= -->
 
       <div class="navbar-item">
       
