@@ -501,7 +501,12 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
     let wineId = target.children[0].children[0].children[0].dataset.id;
     const icon = $(`#fav-box-${wineId}`)
     const json = await axios.post(`/user/add_favorite/${wineId}`)
-    noUserObj = json.data
+    const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", JSON.stringify(favs))
+      sessionStorage.setItem("reviews", JSON.stringify(reviews))
+
     
     if (Object.keys(noUserObj).length == 1) {
 
@@ -517,7 +522,12 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
     const wineId = target.parentElement.dataset.id 
     const icon = $(`#fav-box-${wineId}`)
     const json = await axios.post(`/user/add_favorite/${wineId}`)
-    noUserObj = json.data
+    const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", JSON.stringify(favs))
+      sessionStorage.setItem("reviews", JSON.stringify(reviews))
+
 
     if (Object.keys(noUserObj).length == 1) {
       
@@ -530,10 +540,16 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
     }
 
   } else if (target.tagName == "DIV") {
-    wineId = target.firstChild.dataset.id;
+    // console.log(target.firstChild.dataset.id);
+    wineId = target.firstElementChild.dataset.id;
     const icon = $(`#fav-box-${wineId}`)
     const json = await axios.post(`/user/add_favorite/${wineId}`)
-    noUserObj = json.data
+    const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", JSON.stringify(favs))
+      sessionStorage.setItem("reviews", JSON.stringify(reviews))
+console.log(favs);
 
     if (Object.keys(noUserObj).length == 1) {
       
@@ -548,7 +564,12 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
       const wineId = target.parentElement.parentElement.parentElement.dataset.id;
       const icon = $(`#fav-box-${wineId}`)
       const json = await axios.post(`/user/add_favorite/${wineId}`)
-      noUserObj = json.data
+      const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", JSON.stringify(favs))
+      sessionStorage.setItem("reviews", JSON.stringify(reviews))
+
 
     if (Object.keys(noUserObj).length == 1) {
       
@@ -905,23 +926,101 @@ $("#search-bar-box").on("click", ".search-bar", function() {
  
 })
 
+function paginate(numToPage, wineResults){
+      const paginatedWine = []
+      let a, b
+      for (a = 0; a <= wineResults.length; a += numToPage) {
+          const wineGroup = [];
+          for (b = 0; b <= numToPage - 1; b++) {
+              wineGroup.push(wineResults[b+a])
+              if ( a+b >= wineResults.length - 1) {
+                  break
+              }
+          }
+          paginatedWine.push(wineGroup)
+      }
+  return paginatedWine
+}
+
+var searchPaginatedWine;
+
 $(document).ready(async function() {
   const address = document.location.href;
+
   if (address.includes("/search")) {
-      searchValue = sessionStorage.getItem('searchValue');
+      const searchValue = sessionStorage.getItem('searchValue');
       const res = await axios.get(`/search/${searchValue}`)
-      paginatedWines = res.data.paginated;
-      favs = res.data.favs;
-      reviews = res.data.reviews;
+      const wineResults = res.data.wine_results;
+      const favs = res.data.favs;
+      const reviews = res.data.reviews;
+      searchPaginatedWine = paginate(9, wineResults)
+      console.log(searchPaginatedWine);
+      // console.log(wineResults);
+  
+      sessionStorage.setItem("favs", JSON.stringify(favs))
+      sessionStorage.setItem("reviews", JSON.stringify(reviews))
+      sessionStorage.setItem("searchCurrentPage", 0)
 
-      // window.location.assign("http://127.0.0.1:5000/search");
-      // window.location = "http://127.0.0.1:5000/search"
-
-      populateWineResults(paginatedWines[0], favs, reviews) 
+      $(".search-pagination-previous").toggleClass("hidden")
+  
+      populateWineResults(searchPaginatedWine[0], favs, reviews) 
   }
   
 });
 
+
+
+
+$("#search-pagination").on("click", ".search-pagination-next", function() {
+  const currentPage = sessionStorage.getItem("searchCurrentPage");
+  const favs = JSON.parse(sessionStorage.getItem("favs"));
+  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
+  const nextPage = parseInt(currentPage) + 1;
+  sessionStorage.setItem("searchCurrentPage", nextPage)
+  console.log(searchPaginatedWine.length);
+
+  if (currentPage == 0) {
+    $(".search-pagination-previous").toggleClass("hidden")
+  }
+
+  if (currentPage == searchPaginatedWine.length - 2) {
+    $(".search-pagination-next").toggleClass("hidden")
+    console.log("i'm at the end");
+  }
+
+  populateWineResults(searchPaginatedWine[nextPage], favs, reviews) 
+
+   $(document).ready(function(){
+    $(window).scrollTop(0);
+  });
+
+})
+
+$("#search-pagination").on("click", ".search-pagination-previous", function() {
+  const currentPage = sessionStorage.getItem("searchCurrentPage");
+  const favs = JSON.parse(sessionStorage.getItem("favs"));
+  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
+  let previousPage = parseInt(currentPage) - 1;
+
+  if (previousPage <= 0) {
+    previousPage = 0;
+    $(".search-pagination-previous").toggleClass("hidden")
+  }
+
+  if (previousPage == searchPaginatedWine.length - 2) {
+    $(".search-pagination-next").toggleClass("hidden")
+    console.log("i'm at the end");
+  }
+
+  sessionStorage.setItem("searchCurrentPage", previousPage)
+
+  populateWineResults(searchPaginatedWine[previousPage], favs, reviews) 
+
+   $(document).ready(function(){
+    $(window).scrollTop(0);
+  });
+
+})
 // $("#search-bar-box").on("click", ".search-bar", async function() {
 
 //   const searchValue = $("#search-bar").val()
@@ -1058,7 +1157,14 @@ $(document).ready(async function() {
       // console.log(target.children[0].children[0].dataset.id);
       const icon = $(`#fav-box-${wineId}`)
       const json = await axios.post(`/user/add_favorite/${wineId}`)
-      noUserObj = json.data
+      const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", favs)
+      sessionStorage.setItem("reviews", reviews)
+      console.log(favs);
+      
+
 
     if (Object.keys(noUserObj).length == 1) {
       
@@ -1078,8 +1184,12 @@ $(document).ready(async function() {
     let wineId = target.parentElement.dataset.id;
       const icon = $(`#fav-box-${wineId}`)
       const json = await axios.post(`/user/add_favorite/${wineId}`)
-      noUserObj = json.data
-
+      const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", favs)
+      sessionStorage.setItem("reviews", reviews)
+console.log(favs);
     if (Object.keys(noUserObj).length == 1) {
       
       flashMessage(noUserObj)
@@ -1098,8 +1208,12 @@ $(document).ready(async function() {
 
       const icon = $(`#fav-box-${wineId}`)
       const json = await axios.post(`/user/add_favorite/${wineId}`)
-      noUserObj = json.data
-
+      const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", favs)
+      sessionStorage.setItem("reviews", reviews)
+console.log(favs);
     if (Object.keys(noUserObj).length == 1) {
       
       flashMessage(noUserObj)
@@ -1118,8 +1232,12 @@ $(document).ready(async function() {
       let wineId = target.dataset.id;
       const icon = $(`#fav-box-${wineId}`)
       const json = await axios.post(`/user/add_favorite/${wineId}`)
-      noUserObj = json.data
-
+      const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", favs)
+      sessionStorage.setItem("reviews", reviews)
+console.log(favs);
     if (Object.keys(noUserObj).length == 1) {
       
       flashMessage(noUserObj)
@@ -1199,26 +1317,26 @@ jQuery(document).ready(function() {
 });
 
 // =================================================  PAGINATION  / SEARCH PAGE ================================================
-var currentPage = 0;
+// var currentPage = 0;
 
-$("#search-pagination").on("click", ".pagination-next", async function() {
-  currentPage += 1;
-  // alert("haha")
-  const res = await axios.get(`/search/${currentPage}`)
+// $("#search-pagination").on("click", ".pagination-next", async function() {
+//   currentPage += 1;
+//   // alert("haha")
+//   const res = await axios.get(`/search/${currentPage}`)
   
-  // console.log(res);
-})
+//   // console.log(res);
+// })
 
-$("#search-pagination").on("click", ".pagination-previous", async function(currentPage) {
-  if (currentPage >= 1) currentPage -= 1;
-  const res = await axios.get(`/search/${currentPage}`)
-})
+// $("#search-pagination").on("click", ".pagination-previous", async function(currentPage) {
+//   if (currentPage >= 1) currentPage -= 1;
+//   const res = await axios.get(`/search/${currentPage}`)
+// })
 
-window.addEventListener("beforeunload", function(event) { 
+// window.addEventListener("beforeunload", function(event) { 
 
-currentPage = 0;
+// currentPage = 0;
 
- });
+//  });
 
 
 

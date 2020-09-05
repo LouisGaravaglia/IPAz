@@ -261,24 +261,38 @@ def add_like(wine_id):
         
     db.session.commit()
     
-    fav_ids = []
+    
     fav_wines = []
     wine_reviews = []
+    favs= []
+    reviews = []
+        
+    if g.user:
+        for wine in g.user.fav_wines:
+            favs.append(wine.id)
+            fav_wines.append({'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name})
 
     
-    for wine in g.user.fav_wines:
-        fav_ids.append(wine.id)
-        fav_wines.append({'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name})
+    if g.user:
+        for review in g.user.posts:
+            reviews.append(review.wine_id)
+            wine = Wine.query.get_or_404(review.wine_id)
+            post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
+            wine_reviews.append(post)
+
     
-    for review in g.user.posts:
-        wine = Wine.query.get_or_404(review.wine_id)
-        post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
-        wine_reviews.append(post)
+    # for wine in g.user.fav_wines:
+    #     fav_wines.append({'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name})
+    
+    # for review in g.user.posts:
+    #     wine = Wine.query.get_or_404(review.wine_id)
+    #     post = {'Post_id':review.id, 'Post_rating':review.rating, 'Post_review':review.review, 'ID':wine.id, 'Rating':wine.rating, 'Winery':wine.winery, 'Country':wine.country, 'Vintage':wine.vintage, 'Area':wine.area, 'Varietal':wine.varietal, 'Type':wine.type, 'Name':wine.name}                  
+    #     wine_reviews.append(post)
         
     # import pdb
     # pdb.set_trace()
 
-    return jsonify(fav_wine_list=fav_ids, fav_wines=fav_wines, wine_reviews=wine_reviews)
+    return jsonify(favs=favs, reviews=reviews, fav_wines=fav_wines, wine_reviews=wine_reviews)
 
 # ===================================    VIEWING FAVORITES   =====================================
 
@@ -872,8 +886,9 @@ def get_search_results(search_term):
     else:
         wine_results = get_wine.search_results(search_term)
     
-    paginated = [wine_results[i:i+9] for i in range(0, len(wine_results), 9)]
     
+    # import pdb
+    # pdb.set_trace()
     
     favs= []
     reviews = []
@@ -888,7 +903,7 @@ def get_search_results(search_term):
  
     # return render_template("search_results.html", wine_results=paginated_wine, user_favorites=favs, user_reviews=reviews)
 
-    return jsonify(paginated=paginated, favs=favs, reviews=reviews)
+    return jsonify(wine_results=wine_results, favs=favs, reviews=reviews)
 
 
 # @app.route('/search/results')

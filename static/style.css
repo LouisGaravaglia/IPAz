@@ -401,5 +401,12 @@ flex: 50%;
   width: 100vw;
 }
 
+/* ================================  Pagination  ================================  */
+
+.pagination-box {
+  display: block;
+  margin: 0 auto;
+}
+
 
 
