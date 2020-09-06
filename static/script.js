@@ -953,8 +953,14 @@ $(document).ready(async function() {
       const wineResults = res.data.wine_results;
       const favs = res.data.favs;
       const reviews = res.data.reviews;
+      console.log(wineResults);
+      if (wineResults.length == 0) {
+        const message = {"message":"No results"}
+        flashMessage(message)
+      }
+
       searchPaginatedWine = paginate(9, wineResults)
-      console.log(searchPaginatedWine);
+      // console.log(searchPaginatedWine);
       // console.log(wineResults);
   
       sessionStorage.setItem("favs", JSON.stringify(favs))
@@ -962,6 +968,10 @@ $(document).ready(async function() {
       sessionStorage.setItem("searchCurrentPage", 0)
 
       $(".search-pagination-previous").toggleClass("hidden")
+
+      if (searchPaginatedWine.length == 1) {
+    $(".search-pagination-next").toggleClass("hidden")
+  }
   
       populateWineResults(searchPaginatedWine[0], favs, reviews) 
   }
@@ -990,9 +1000,9 @@ $("#search-pagination").on("click", ".search-pagination-next", function() {
 
   populateWineResults(searchPaginatedWine[nextPage], favs, reviews) 
 
-   $(document).ready(function(){
-    $(window).scrollTop(0);
-  });
+  //  $(document).ready(function(){
+  //   $(window).scrollTop(0);
+  // });
 
 })
 
@@ -1009,16 +1019,15 @@ $("#search-pagination").on("click", ".search-pagination-previous", function() {
 
   if (previousPage == searchPaginatedWine.length - 2) {
     $(".search-pagination-next").toggleClass("hidden")
-    console.log("i'm at the end");
   }
 
   sessionStorage.setItem("searchCurrentPage", previousPage)
 
   populateWineResults(searchPaginatedWine[previousPage], favs, reviews) 
 
-   $(document).ready(function(){
-    $(window).scrollTop(0);
-  });
+  //  $(document).ready(function(){
+  //   $(window).scrollTop(0);
+  // });
 
 })
 // $("#search-bar-box").on("click", ".search-bar", async function() {
