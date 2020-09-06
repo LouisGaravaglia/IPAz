@@ -864,8 +864,12 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
       $(".main-pagination-previous").addClass("hidden")
     }
 
-    if (paginatedWine.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
+    if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
       $(".main-pagination-next").addClass("hidden")
+    }
+
+    if (wineResults.length > numToPage && $(".main-pagination-next").hasClass("hidden")) {
+      $(".main-pagination-next").removeClass("hidden")
     }
 
 
