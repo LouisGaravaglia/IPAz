@@ -427,9 +427,125 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
   }
 }
 
+
+
+// =================================================  PAGINATION / RESULTS PAGE ================================================
+
+
+// /**
+//  * Click event that will grab the value of the search input and redirect
+//  * the user to the search results page
+//  * @event document#click
+//  * @type {object}
+//  * @property {element} 
+//  */
+// $("#find-wine-btn").on("click", ".results-arrow", function() {
+//   searchValue = $("#search-bar").val()
+//   sessionStorage.setItem('searchValue', searchValue);
+//   window.location.assign("http://127.0.0.1:5000/search");
+// })
+
+
+var paginatedWine;
+
+
+/**
+ * When the search results page is loaded, a call to the backend is made for the wine results for the 
+ * input value the user had type in. Those wines are paginated and then appended to the DOM
+ */
+$(document).ready(async function() {
+  const address = document.location.href;
+
+  if (address.includes("/show_results")) {
+      const res = await axios.get(`/show_results/json`)
+      const wineResults = res.data.wines;
+      const favs = res.data.user_favorites;
+      const reviews = res.data.user_reviews;
+      console.log(wineResults);
+      
+      if (wineResults.length == 0) {
+        const message = {"message":"No results"}
+        flashMessage(message)
+      }
+
+      paginatedWine = paginate(10, wineResults)
+      console.log(paginatedWine);
+  
+      sessionStorage.setItem("favs", JSON.stringify(favs))
+      sessionStorage.setItem("reviews", JSON.stringify(reviews))
+      sessionStorage.setItem("currentPage", 0)
+
+      $(".main-pagination-previous").toggleClass("hidden")
+
+      if (paginatedWine.length == 1) {
+        $(".main-pagination-next").toggleClass("hidden")
+      }
+  
+      populateWineResults(paginatedWine[0], favs, reviews) 
+  }
+  
+});
+
+
+
+/**
+ * Click event for the next button on the pagination of the Search Results page. 
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
+$("#main-pagination").on("click", ".main-pagination-next", function() {
+  const currentPage = sessionStorage.getItem("currentPage");
+  const favs = JSON.parse(sessionStorage.getItem("favs"));
+  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
+  const nextPage = parseInt(currentPage) + 1;
+  sessionStorage.setItem("currentPage", nextPage)
+  console.log(paginatedWine.length);
+
+  if (currentPage == 0) {
+    $(".main-pagination-previous").toggleClass("hidden")
+  }
+
+  if (currentPage == paginatedWine.length - 2) {
+    $(".main-pagination-next").toggleClass("hidden")
+    console.log("i'm at the end");
+  }
+
+  populateWineResults(paginatedWine[nextPage], favs, reviews) 
+
+})
+
+
+/**
+ * Click event for the previous button on the pagination of the Search Results page. 
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
+$("#main-pagination").on("click", ".main-pagination-previous", function() {
+  const currentPage = sessionStorage.getItem("currentPage");
+  const favs = JSON.parse(sessionStorage.getItem("favs"));
+  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
+  let previousPage = parseInt(currentPage) - 1;
+
+  if (previousPage <= 0) {
+    previousPage = 0;
+    $(".main-pagination-previous").toggleClass("hidden")
+  }
+
+  if (previousPage == paginatedWine.length - 2) {
+    $(".main-pagination-next").toggleClass("hidden")
+  }
+
+  sessionStorage.setItem("currentPage", previousPage)
+
+  populateWineResults(paginatedWine[previousPage], favs, reviews) 
+
+})
+
+
+
 // =================================================  FAVORITE BUTTON / RESULTS PAGE ================================================
-
-
 
 
 

@@ -136,7 +136,7 @@
 
 <div class="column is-three-quarters">
 <div class="columns my-3 mx-3 is-multiline" id="wine-results">
-{% for wine in wines%}
+<!-- {% for wine in wines%}
   {% if wine == 'No Results' %}
   <section class="hero is-small is-light mt-6 mx-6">
   <div class="hero-body">
@@ -172,7 +172,6 @@
 
   <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0">
-      <!-- <form method="POST" action="/user/add_favorite/{{wine['ID']}}" id="review-form"> -->
             <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
               <span class="icon">
                 {% if wine['ID'] in user_favorites %}
@@ -186,11 +185,8 @@
                 {% endif %}
         </span>
       </button>
-      <!-- </form> -->
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-      <!-- <form method="POST" action="/user/review/{{wine['ID']}}" id="review-form"> -->
-      <!-- <button class="button is-text review-btn" data-id="{{wine['ID']}}"> -->
         <a href="/user/review/{{wine['ID']}}" class="button is-text review-btn" data-id="{{wine['ID']}}">
         <span class="icon review-btn">
             {% if wine['ID'] in user_reviews %}
@@ -201,8 +197,6 @@
         
         </span>
         </a>
-      <!-- </button> -->
-      <!-- </form> -->
     </div>
   </div>
 </article>
@@ -214,28 +208,21 @@
   
   
   {% endif %}
-{% endfor %}
+{% endfor %} -->
 </div>
 
 <!-- ===============================  PAGINATION  ===============================  -->
 
+<nav class="pagination" role="navigation" aria-label="pagination" id="main-pagination">
+  <div class="is-grouped pagination-box">
+<a class="main-pagination-previous button has-text-white is-info">Previous</a>
+  <a class="main-pagination-next button has-text-white is-info">Next</a>
 
-<nav class="pagination is-rounded" role="navigation" aria-label="pagination" id="pagination-container">
-  <a class="pagination-previous">Previous</a>
-  <a class="pagination-next">Next page</a>
-  <ul class="pagination-list">
-    <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-    <li><span class="pagination-ellipsis">&hellip;</span></li>
-    <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-    <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-    <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-    <li><span class="pagination-ellipsis">&hellip;</span></li>
-    <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-  </ul>
+  </div>
+  
 </nav>
 
-</div>
-</div>
+
 
 <!-- ===============================  MODAL FOR VARIETALS  ===============================  -->
 

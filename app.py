@@ -814,6 +814,14 @@ def log_varietal_choice(new_varietal):
 @app.route('/show_results')
 def show_results():
     
+
+    return render_template("wine_results.html")
+
+
+
+@app.route('/show_results/json')
+def send_results():
+    
     varietals = session['varietals']
     sort_by = session['sort_by']
     wine_style = session['wine_style']
@@ -822,34 +830,31 @@ def show_results():
    
     wine_results = get_wine.wine_results(sort_by, varietals, wine_style, wine_type)
     
-    session['wine_results'] = wine_results
+    # session['wine_results'] = wine_results
 
     # sliced = slice(0,10)
     # sliced_results = wine_results[sliced]
     
     # import pdb
     # pdb.set_trace()
+    user_reviews = []
+    user_favorites = []
     
     if g.user:
-        user_reviews = []
         for post in g.user.posts:
             user_reviews.append(post.wine_id)
-    else:
-        user_reviews = []
     
     if g.user:
-        user_favorites = []
         for fav in g.user.fav_wines:
             user_favorites.append(fav.id)
-    else:
-        user_favorites = []
     
     if wine_results == []:
         wine_results = ['No Results']
         
         
 
-    return render_template("wine_results.html", wines=wine_results, user_favorites=user_favorites, user_reviews=user_reviews)
+    return jsonify(wines=wine_results, user_favorites=user_favorites, user_reviews=user_reviews)
+
 
 # ===================================    SEARCH BAR   =====================================
 # @app.route('/search/<search_term>')
