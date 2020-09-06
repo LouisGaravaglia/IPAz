@@ -846,10 +846,9 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     $(".progress-bar-container").toggleClass("hidden")
     const res = await axios.get(`/wine_type/${filterName}`)
     const response = await axios.get(`/wine_style/""`)
-    $(".progress-bar-container").toggleClass("hidden")
-    wineResults = response.data.wine_results;
-    favs = response.data.user_favorites;
-    reviews = response.data.reviews;
+    const wineResults = response.data.wine_results;
+    const favs = response.data.user_favorites;
+    const reviews = response.data.reviews;
     const numToPage = 10;
     console.log(wineResults);
 
@@ -860,6 +859,7 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     sessionStorage.setItem("reviews", JSON.stringify(reviews))
     sessionStorage.setItem("currentPage", 0)
 
+    // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
     if (!$(".main-pagination-previous").hasClass("hidden")) {
       $(".main-pagination-previous").addClass("hidden")
     }
@@ -874,6 +874,7 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
 
 
     populateWineResults(paginatedWine[0], favs, reviews)
+    $(".progress-bar-container").toggleClass("hidden")
   }
 })
 
@@ -893,14 +894,86 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     // $(targetInput).toggleClass("is-focused")
     $(targetInput).toggleClass("is-light")
     $(".progress-bar-container").toggleClass("hidden")
-    const wine_results = await axios.get(`/wine_style/${filterName}`)
+    const response = await axios.get(`/wine_style/${filterName}`)
+    const wineResults = response.data.wine_results;
+    const favs = response.data.user_favorites;
+    const reviews = response.data.reviews;
+    const numToPage = 10;
+    console.log(wineResults);
+
+    paginatedWine = paginate(numToPage, wineResults)
+    // console.log(paginatedWine);
+
+    sessionStorage.setItem("favs", JSON.stringify(favs))
+    sessionStorage.setItem("reviews", JSON.stringify(reviews))
+    sessionStorage.setItem("currentPage", 0)
+
+    // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
+    if (!$(".main-pagination-previous").hasClass("hidden")) {
+      $(".main-pagination-previous").addClass("hidden")
+    }
+
+    if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
+      $(".main-pagination-next").addClass("hidden")
+    }
+
+    if (wineResults.length > numToPage && $(".main-pagination-next").hasClass("hidden")) {
+      $(".main-pagination-next").removeClass("hidden")
+    }
+
+
+    populateWineResults(paginatedWine[0], favs, reviews)
     $(".progress-bar-container").toggleClass("hidden")
-    wines = wine_results.data.wine_results;
-    favs = wine_results.data.user_favorites;
-    reviews = wine_results.data.reviews;
-    populateWineResults(wines, favs, reviews)
   }
 })
+
+
+function sortWine(wineResults, filters) {
+
+  for (filter of filters){
+
+    if (filter == 'Rating (Highest)'){
+      wineResults.sort(function(a,b) {
+        return b.Rating - a.Rating;
+      });
+    }                   
+      
+    if (filter == 'Rating (Lowest)') {
+      wineResults.sort(function(a,b) {
+        return a.Rating - b.Rating;
+      });
+    }
+
+    if (filter == 'Vintage (Oldest)'){
+      wineResults.sort(function(a, b) {
+        return a.Vintage.localeCompare(b.Vintage, undefined, {
+          numeric: true,
+          sensitivity: 'base'
+        });
+      });
+    }
+            
+    if (filter == 'Vintage (Youngest)'){
+      wineResults.sort(function(a, b) {
+        return b.Vintage.localeCompare(a.Vintage, undefined, {
+          numeric: true,
+          sensitivity: 'base'
+        });
+      });
+    }
+                    
+    if (filter == 'Winery (Alphabetically)'){
+      wineResults.sort(function(a,b) {
+        var x = a.Winery.toLowerCase();
+        var y = b.Winery.toLowerCase();
+        return x < y ? -1 : x > y ? 1 : 0;
+      });
+    }
+
+  }                                       
+  return wineResults
+}
+
 
 /**
  * Click event that will replace wine cards with AJAX based off of the sort by options
@@ -919,12 +992,39 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
     $(targetInput).toggleClass("is-light")
     $(".progress-bar-container").toggleClass("hidden")
     const res = await axios.get(`/sort_by/${filterName}`)
+    const sortFilters = res.data.sort_by;
+    console.log(sortFilters);
     const response = await axios.get(`/wine_style/""`)
+    const wineResults = response.data.wine_results;
+    const favs = response.data.user_favorites;
+    const reviews = response.data.reviews;
+    const numToPage = 10;
+    console.log(wineResults);
+    const sortedWine = sortWine(wineResults, sortFilters)
+
+    paginatedWine = paginate(numToPage, sortedWine)
+    // console.log(paginatedWine);
+
+    sessionStorage.setItem("favs", JSON.stringify(favs))
+    sessionStorage.setItem("reviews", JSON.stringify(reviews))
+    sessionStorage.setItem("currentPage", 0)
+
+    // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
+    if (!$(".main-pagination-previous").hasClass("hidden")) {
+      $(".main-pagination-previous").addClass("hidden")
+    }
+
+    if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
+      $(".main-pagination-next").addClass("hidden")
+    }
+
+    if (wineResults.length > numToPage && $(".main-pagination-next").hasClass("hidden")) {
+      $(".main-pagination-next").removeClass("hidden")
+    }
+
+
+    populateWineResults(paginatedWine[0], favs, reviews)
     $(".progress-bar-container").toggleClass("hidden")
-    wines = response.data.wine_results;
-    favs = response.data.user_favorites;
-    reviews = response.data.reviews;
-    populateWineResults(wines, favs, reviews)
 
   }
 

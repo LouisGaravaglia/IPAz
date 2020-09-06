@@ -1,60 +1,41 @@
-const wineResults = [{"key":"one"},{"key":"two"},{"key":"three"},{"key":"four"},{"key":"five"},{"key":"six"},{"key":"seven"},{"key":"eight"},{"key":"nine"},{"key":"ten"},{"key":"eleven"},{"key":"twelve"},{"key":"thirteen"},{"last":"one"}]
-// const paginated_wine = []
-// const wine_group = []
-// // console.log(wine_results);
+const wineResults = [{ Area: "Porto", Country: "Portugal", ID: 2163, Vintage: 2020 }, { Area: "Oporto", Country: "Portugal", ID: 1670, Vintage: 1983}, { Area: "Oporto", Country: "Portugal", ID: 2515, Vintage: 2002 }, { Area: "Eger", Country: "Hungary", ID: 1893, Vintage: 1990}, { Area: "Setbula Peninsula", Country: "Portugal", ID: 2371, Vintage: 1995}, { Area: "Oporto", Country: "Portugal", ID: 2030, Vintage: 2005 }, { Area: "Oporto", Country: "Portugal", ID: 2410, Vintage: 2011}]
+const filters = ['Vintage (Oldest)', 'Winery (Alphabetically)', 'Vintage (Youngest)']
+// sort by first Name
 
-// const wine_length = wine_results.length
+function sortWine() {
 
-// for (let i = 0; i < wine_length; i++) {
-    
-//     wine_group.push(wine_results[i]);
 
-//     // console.log(wine_group);
+var myArrayObjects = [{
+    "id": 1,
+    "name": "1 example"
+  },
+  {
+    "id": 5,
+    "name": "nv"
+  },
+  {
+    "id": 2,
+    "name": "100 example"
+  },
+  {
+    "id": 3,
+    "name": "nv"
+  },
+  {
+    "id": 4,
+    "name": "5 example"
+  },
 
-//     if (i == 9) {
-//         console.log(wine_group);
-//         paginated_wine.push(wine_group);
-//         wine_group.splice(0, wine_group.length);
-        
-//     }
-// }
+]
 
-// // test_array = [1, 2, 3, 4, 5, 6]
-// // console.log(test_array);
-// // test_array.splice(0, test_array.length);
-// // console.log(test_array);
+myArrayObjects = myArrayObjects.sort(function(a, b) {
+  return a.name.localeCompare(b.name, undefined, {
+    numeric: true,
+    sensitivity: 'base'
+  });
+});
 
-// // for (wine in wine_results) {
-// //         const wine_group = []
-      
-// //         wine_length = wine_results.length
-// //         wine_group.push(wine);
-    
-// //         if (i % 10 == 0 || i == wine_length) {
-// //           paginated_wine.push(wine_group);
-// //           wine_group.splice(0, wine_group.length);
-          
-// //         }
-// //         i++
-// //       }
-
-// // console.log(wine_group);
-// console.log(paginated_wine);
-
-let a, b
-let paginatedWine = []
-
-for (a = 0; a <= wineResults.length; a += 10) {
-    let wineGroup = [];
-    for (b = 0; b <= 9; b++) {
-        wineGroup.push(wineResults[b+a])
-        if ( a+b >= wineResults.length - 1) {
-            paginatedWine.push(wineGroup)
-            console.log(paginatedWine);
-            return
-        }
-    }
-    paginatedWine.push(wineGroup)
+console.log(myArrayObjects);
 }
 
-// console.log(paginatedWine);
+sortWine()

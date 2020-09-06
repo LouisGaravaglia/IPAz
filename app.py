@@ -756,7 +756,7 @@ def get_sort_by_choices(new_sort_by):
     # return jsonify(wine_results=sorted_wine)
         
     # else:
-    return render_template("new_home.html")
+    return jsonify(sort_by=sort_by)
     
     # import pdb
     # pdb.set_trace()
