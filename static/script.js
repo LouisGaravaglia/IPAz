@@ -457,6 +457,8 @@ $(document).ready(async function() {
   const address = document.location.href;
 
   if (address.includes("/show_results")) {
+      $(".progress-bar-container").toggleClass("hidden")
+
       const res = await axios.get(`/show_results/json`)
       const wineResults = res.data.wines;
       const favs = res.data.user_favorites;
@@ -482,6 +484,8 @@ $(document).ready(async function() {
       }
   
       populateWineResults(paginatedWine[0], favs, reviews) 
+      $(".progress-bar-container").toggleClass("hidden")
+
   }
   
 });
@@ -1457,14 +1461,14 @@ $(document).ready(
 
 // =================================================  PROGRESS BAR ================================================
 
-$(".results-button").on("click", function(){
-  $(".progress-bar-container").toggleClass("hidden")
+// $(".results-button").on("click", function(){
+//   // $(".progress-bar-container").toggleClass("hidden")
   
-})
+// })
 
-jQuery(document).ready(function() {
-    jQuery('.progress-bar-container').fadeOut(3000);
-});
+// jQuery(document).ready(function() {
+//     jQuery('.progress-bar-container').fadeOut(3000);
+// });
 
 
 
