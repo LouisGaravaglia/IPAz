@@ -885,7 +885,6 @@ $(".progress-bar-container").toggleClass("hidden")
 // =================================================  SEARCH  ================================================
 
 
-
 /**
  * Click event that will trigger a enter button keyboard event when the user
  * clicks the search icon
@@ -904,28 +903,31 @@ $("#search-form").on("click", ".magnify-glass", function() {
 })
 
 
-// /**
-//  * Adds wine cards to the DOM to the search results page.
-//  * @param {object} wine_results 
-//  * @param {array} favorites 
-//  * @param {array} reviews 
-//  */
-// function populateSearchResults(wine_results, favorites, reviews) {
-//   wineHtml = $("#search-results")
-//   wineHtml.html("")
-
-
-
+/**
+ * Click event that will grab the value of the search input and redirect
+ * the user to the search results page
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#search-bar-box").on("click", ".search-bar", function() {
   searchValue = $("#search-bar").val()
   sessionStorage.setItem('searchValue', searchValue);
-  console.log("lol");
   window.location.assign("http://127.0.0.1:5000/search");
-  
-
- 
 })
 
+
+
+// =================================================  PAGINATION  / SEARCH PAGE ================================================
+
+
+
+/**
+ * Creates arrays within an array to paginate the wine results in the amount deemed necessary
+ * per page, which is what numToPage represents
+ * @param {integer} numToPage 
+ * @param {array} wineResults 
+ */
 function paginate(numToPage, wineResults){
       const paginatedWine = []
       let a, b
@@ -942,8 +944,15 @@ function paginate(numToPage, wineResults){
   return paginatedWine
 }
 
+
+
 var searchPaginatedWine;
 
+
+/**
+ * When the search results page is loaded, a call to the backend is made for the wine results for the 
+ * input value the user had type in. Those wines are paginated and then appended to the DOM
+ */
 $(document).ready(async function() {
   const address = document.location.href;
 
@@ -953,15 +962,13 @@ $(document).ready(async function() {
       const wineResults = res.data.wine_results;
       const favs = res.data.favs;
       const reviews = res.data.reviews;
-      console.log(wineResults);
+      
       if (wineResults.length == 0) {
         const message = {"message":"No results"}
         flashMessage(message)
       }
 
       searchPaginatedWine = paginate(9, wineResults)
-      // console.log(searchPaginatedWine);
-      // console.log(wineResults);
   
       sessionStorage.setItem("favs", JSON.stringify(favs))
       sessionStorage.setItem("reviews", JSON.stringify(reviews))
@@ -970,8 +977,8 @@ $(document).ready(async function() {
       $(".search-pagination-previous").toggleClass("hidden")
 
       if (searchPaginatedWine.length == 1) {
-    $(".search-pagination-next").toggleClass("hidden")
-  }
+        $(".search-pagination-next").toggleClass("hidden")
+      }
   
       populateWineResults(searchPaginatedWine[0], favs, reviews) 
   }
@@ -980,7 +987,12 @@ $(document).ready(async function() {
 
 
 
-
+/**
+ * Click event for the next button on the pagination of the Search Results page. 
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#search-pagination").on("click", ".search-pagination-next", function() {
   const currentPage = sessionStorage.getItem("searchCurrentPage");
   const favs = JSON.parse(sessionStorage.getItem("favs"));
@@ -1000,12 +1012,15 @@ $("#search-pagination").on("click", ".search-pagination-next", function() {
 
   populateWineResults(searchPaginatedWine[nextPage], favs, reviews) 
 
-  //  $(document).ready(function(){
-  //   $(window).scrollTop(0);
-  // });
-
 })
 
+
+/**
+ * Click event for the previous button on the pagination of the Search Results page. 
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
 $("#search-pagination").on("click", ".search-pagination-previous", function() {
   const currentPage = sessionStorage.getItem("searchCurrentPage");
   const favs = JSON.parse(sessionStorage.getItem("favs"));
@@ -1025,11 +1040,114 @@ $("#search-pagination").on("click", ".search-pagination-previous", function() {
 
   populateWineResults(searchPaginatedWine[previousPage], favs, reviews) 
 
-  //  $(document).ready(function(){
-  //   $(window).scrollTop(0);
-  // });
-
 })
+
+
+
+// =================================================  FAVORITE BUTTON / SEARCH RESULTS PAGE  ================================================
+
+
+
+/**
+ * Click event for the favorite star on the search result wine cards to then call
+ * logSearchFav() to eventually replace the wine card with the bolded favorite star
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
+ $("#search-results").on("click", ".favorite-button", async function(e) {
+
+    const target = e.target;
+
+    if (target.tagName == "BUTTON") {
+      let wineId = target.children[0].children[0].dataset.id;
+      const icon = $(`#fav-box-${wineId}`)
+      const json = await axios.post(`/user/add_favorite/${wineId}`)
+      const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", favs)
+      sessionStorage.setItem("reviews", reviews)
+
+    if (Object.keys(noUserObj).length == 1) {
+      
+      flashMessage(noUserObj)
+       
+    } else {
+      
+      toggleStar(icon, wineId)
+
+    }
+
+    } else if (target.tagName == "path") {
+    let wineId = target.parentElement.dataset.id;
+      const icon = $(`#fav-box-${wineId}`)
+      const json = await axios.post(`/user/add_favorite/${wineId}`)
+      const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", favs)
+      sessionStorage.setItem("reviews", reviews)
+
+    if (Object.keys(noUserObj).length == 1) {
+      
+      flashMessage(noUserObj)
+       
+    } else {
+      
+      toggleStar(icon, wineId)
+
+    };
+
+    } else if (target.tagName == "SPAN") {
+      let wineId = target.parentElement.parentElement.dataset.id;
+      const icon = $(`#fav-box-${wineId}`)
+      const json = await axios.post(`/user/add_favorite/${wineId}`)
+      const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", favs)
+      sessionStorage.setItem("reviews", reviews)
+
+    if (Object.keys(noUserObj).length == 1) {
+      
+      flashMessage(noUserObj)
+       
+    } else {
+      
+      toggleStar(icon, wineId)
+
+    }
+
+    } else if (target.tagName == "svg") {
+      let wineId = target.dataset.id;
+      const icon = $(`#fav-box-${wineId}`)
+      const json = await axios.post(`/user/add_favorite/${wineId}`)
+      const noUserObj = json.data
+      const favs = json.data.favs
+      const reviews = json.data.reviews
+      sessionStorage.setItem("favs", favs)
+      sessionStorage.setItem("reviews", reviews)
+
+    if (Object.keys(noUserObj).length == 1) {
+      
+      flashMessage(noUserObj)
+       
+    } else {
+      
+      toggleStar(icon, wineId)
+
+    }
+
+    }
+
+  })
+
+
+
+// =================================================  EVENTUALLY DELETE  ================================================
+
+
 // $("#search-bar-box").on("click", ".search-bar", async function() {
 
 //   const searchValue = $("#search-bar").val()
@@ -1148,120 +1266,6 @@ $("#search-pagination").on("click", ".search-pagination-previous", function() {
 // }
 
 
-/**
- * Click event for the favorite star on the search result wine cards to then call
- * logSearchFav() to eventually replace the wine card with the bolded favorite star
- * @event document#click
- * @type {object}
- * @property {element} 
- */
- $("#search-results").on("click", ".favorite-button", async function(e) {
-
-    const target = e.target;
-
-    if (target.tagName == "BUTTON") {
-      // let wineId = target.dataset.id;
-      
-      let wineId = target.children[0].children[0].dataset.id;
-      // console.log(target.children[0].children[0].dataset.id);
-      const icon = $(`#fav-box-${wineId}`)
-      const json = await axios.post(`/user/add_favorite/${wineId}`)
-      const noUserObj = json.data
-      const favs = json.data.favs
-      const reviews = json.data.reviews
-      sessionStorage.setItem("favs", favs)
-      sessionStorage.setItem("reviews", reviews)
-      console.log(favs);
-      
-
-
-    if (Object.keys(noUserObj).length == 1) {
-      
-      flashMessage(noUserObj)
-       
-    } else {
-      
-      toggleStar(icon, wineId)
-
-    }
-
-    } else if (target.tagName == "path") {
-    //   const button = target.parentElement.parentElement.parentElement;
-          // console.log(target.parentElement.dataset.id);
-
-    //   // let wineId = button.dataset.id;
-    let wineId = target.parentElement.dataset.id;
-      const icon = $(`#fav-box-${wineId}`)
-      const json = await axios.post(`/user/add_favorite/${wineId}`)
-      const noUserObj = json.data
-      const favs = json.data.favs
-      const reviews = json.data.reviews
-      sessionStorage.setItem("favs", favs)
-      sessionStorage.setItem("reviews", reviews)
-console.log(favs);
-    if (Object.keys(noUserObj).length == 1) {
-      
-      flashMessage(noUserObj)
-       
-    } else {
-      
-      toggleStar(icon, wineId)
-
-    };
-
-    } else if (target.tagName == "SPAN") {
-    //   const button = target.parentElement;
-    //   // let wineId = button.dataset.id;
-      let wineId = target.parentElement.parentElement.dataset.id;
-          // console.log(target.parentElement.parentElement.dataset.id);
-
-      const icon = $(`#fav-box-${wineId}`)
-      const json = await axios.post(`/user/add_favorite/${wineId}`)
-      const noUserObj = json.data
-      const favs = json.data.favs
-      const reviews = json.data.reviews
-      sessionStorage.setItem("favs", favs)
-      sessionStorage.setItem("reviews", reviews)
-console.log(favs);
-    if (Object.keys(noUserObj).length == 1) {
-      
-      flashMessage(noUserObj)
-       
-    } else {
-      
-      toggleStar(icon, wineId)
-
-    }
-
-    } else if (target.tagName == "svg") {
-    //   const button = target.parentElement.parentElement;
-    //   // let wineId = button.dataset.id;
-          // console.log(target.dataset.id);
-
-      let wineId = target.dataset.id;
-      const icon = $(`#fav-box-${wineId}`)
-      const json = await axios.post(`/user/add_favorite/${wineId}`)
-      const noUserObj = json.data
-      const favs = json.data.favs
-      const reviews = json.data.reviews
-      sessionStorage.setItem("favs", favs)
-      sessionStorage.setItem("reviews", reviews)
-console.log(favs);
-    if (Object.keys(noUserObj).length == 1) {
-      
-      flashMessage(noUserObj)
-       
-    } else {
-      
-      toggleStar(icon, wineId)
-
-    }
-
-    }
-
-  })
-
-
 // /**
 //  * Click event for the favorite star on the search result wine cards to then call
 //  * logSearchFav() to eventually replace the wine card with the bolded favorite star
@@ -1296,6 +1300,27 @@ console.log(favs);
 
 //   })
 
+// var currentPage = 0;
+
+// $("#search-pagination").on("click", ".pagination-next", async function() {
+//   currentPage += 1;
+//   // alert("haha")
+//   const res = await axios.get(`/search/${currentPage}`)
+  
+//   // console.log(res);
+// })
+
+// $("#search-pagination").on("click", ".pagination-previous", async function(currentPage) {
+//   if (currentPage >= 1) currentPage -= 1;
+//   const res = await axios.get(`/search/${currentPage}`)
+// })
+
+// window.addEventListener("beforeunload", function(event) { 
+
+// currentPage = 0;
+
+//  });
+
 // =================================================  NAVBAR  ================================================
 
 
@@ -1325,27 +1350,7 @@ jQuery(document).ready(function() {
     jQuery('.progress-bar-container').fadeOut(3000);
 });
 
-// =================================================  PAGINATION  / SEARCH PAGE ================================================
-// var currentPage = 0;
 
-// $("#search-pagination").on("click", ".pagination-next", async function() {
-//   currentPage += 1;
-//   // alert("haha")
-//   const res = await axios.get(`/search/${currentPage}`)
-  
-//   // console.log(res);
-// })
-
-// $("#search-pagination").on("click", ".pagination-previous", async function(currentPage) {
-//   if (currentPage >= 1) currentPage -= 1;
-//   const res = await axios.get(`/search/${currentPage}`)
-// })
-
-// window.addEventListener("beforeunload", function(event) { 
-
-// currentPage = 0;
-
-//  });
 
 
 
