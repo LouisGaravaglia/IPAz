@@ -465,10 +465,10 @@ $(document).ready(async function() {
       const reviews = res.data.user_reviews;
       console.log(wineResults);
       
-      if (wineResults.length == 0) {
-        const message = {"message":"No results"}
-        flashMessage(message)
-      }
+      // if (wineResults.length == 0) {
+      //   const message = {"message":"No results"}
+      //   flashMessage(message)
+      // }
 
       paginatedWine = paginate(10, wineResults)
       console.log(paginatedWine);
@@ -837,12 +837,27 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     $(targetInput).toggleClass("is-light")
     $(".progress-bar-container").toggleClass("hidden")
     const res = await axios.get(`/wine_type/${filterName}`)
-    const wine_results = await axios.get(`/wine_style/""`)
+    const response = await axios.get(`/wine_style/""`)
     $(".progress-bar-container").toggleClass("hidden")
-    wines = wine_results.data.wine_results;
-    favs = wine_results.data.user_favorites;
-    reviews = wine_results.data.reviews;
-    populateWineResults(wines, favs, reviews)
+    wineResults = response.data.wine_results;
+    favs = response.data.user_favorites;
+    reviews = response.data.reviews;
+    console.log(wineResults);
+
+    paginatedWine = paginate(10, wineResults)
+    console.log(paginatedWine);
+
+    sessionStorage.setItem("favs", JSON.stringify(favs))
+    sessionStorage.setItem("reviews", JSON.stringify(reviews))
+    sessionStorage.setItem("currentPage", 0)
+
+    if (!$(".main-pagination-previous").hasClass("hidden")) {
+      $(".main-pagination-previous").toggleClass("hidden")
+    }
+
+
+
+    populateWineResults(paginatedWine[0], favs, reviews)
   }
 })
 
@@ -1051,7 +1066,7 @@ $("#search-bar-box").on("click", ".search-bar", function() {
 function paginate(numToPage, wineResults){
       const paginatedWine = []
       let a, b
-      for (a = 0; a <= wineResults.length; a += numToPage) {
+      for (a = 0; a < wineResults.length; a += numToPage) {
           const wineGroup = [];
           for (b = 0; b <= numToPage - 1; b++) {
               wineGroup.push(wineResults[b+a])
