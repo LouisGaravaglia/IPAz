@@ -825,7 +825,44 @@ $("#choose-wine-style").on("click", function(e) {
 $("#choose-sort-by").on("click", function(e) {
   $("#sort-by-checkboxes").toggleClass("hidden")
 })
+
+
+
 // =================================================  CLICK EVENT FOR WINE OPTIONS / RESULTS PAGE  ================================================
+
+
+/**
+ * Function that paginates the wine results, appends the results to the DOM, and runs conditionals
+ * to see which pagination buttons need to be present based on the amount of results and which page
+ * the user is currently on
+ * @param {integer} numToPage 
+ * @param {array} wineResults 
+ * @param {array} favs 
+ * @param {array} reviews 
+ */
+function paginateAndPopulate(numToPage, wineResults, favs, reviews){
+  paginatedWine = paginate(numToPage, wineResults)
+
+  sessionStorage.setItem("favs", JSON.stringify(favs))
+  sessionStorage.setItem("reviews", JSON.stringify(reviews))
+  sessionStorage.setItem("currentPage", 0)
+
+  // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
+  if (!$(".main-pagination-previous").hasClass("hidden")) {
+    $(".main-pagination-previous").addClass("hidden")
+  }
+
+  if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
+    $(".main-pagination-next").addClass("hidden")
+  }
+
+  if (wineResults.length > numToPage && $(".main-pagination-next").hasClass("hidden")) {
+    $(".main-pagination-next").removeClass("hidden")
+  }
+
+  populateWineResults(paginatedWine[0], favs, reviews)
+  $(".progress-bar-container").toggleClass("hidden")
+}
 
 
 /**
@@ -841,7 +878,6 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
   if (target.tagName == "INPUT") {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
-    // $(targetInput).toggleClass("is-focused")
     $(targetInput).toggleClass("is-light")
     $(".progress-bar-container").toggleClass("hidden")
     const res = await axios.get(`/wine_type/${filterName}`)
@@ -850,33 +886,12 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     const favs = response.data.user_favorites;
     const reviews = response.data.reviews;
     const numToPage = 10;
-    console.log(wineResults);
-
-    paginatedWine = paginate(numToPage, wineResults)
-    // console.log(paginatedWine);
-
-    sessionStorage.setItem("favs", JSON.stringify(favs))
-    sessionStorage.setItem("reviews", JSON.stringify(reviews))
-    sessionStorage.setItem("currentPage", 0)
-
-    // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
-    if (!$(".main-pagination-previous").hasClass("hidden")) {
-      $(".main-pagination-previous").addClass("hidden")
-    }
-
-    if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
-      $(".main-pagination-next").addClass("hidden")
-    }
-
-    if (wineResults.length > numToPage && $(".main-pagination-next").hasClass("hidden")) {
-      $(".main-pagination-next").removeClass("hidden")
-    }
-
-
-    populateWineResults(paginatedWine[0], favs, reviews)
-    $(".progress-bar-container").toggleClass("hidden")
+    
+    paginateAndPopulate(numToPage, wineResults, favs, reviews)
+    
   }
 })
+
 
 /**
  * Click event that will replace wine cards with AJAX based off of the wine style
@@ -891,7 +906,6 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
   if (target.tagName == "INPUT") {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
-    // $(targetInput).toggleClass("is-focused")
     $(targetInput).toggleClass("is-light")
     $(".progress-bar-container").toggleClass("hidden")
     const response = await axios.get(`/wine_style/${filterName}`)
@@ -899,35 +913,16 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     const favs = response.data.user_favorites;
     const reviews = response.data.reviews;
     const numToPage = 10;
-    console.log(wineResults);
 
-    paginatedWine = paginate(numToPage, wineResults)
-    // console.log(paginatedWine);
-
-    sessionStorage.setItem("favs", JSON.stringify(favs))
-    sessionStorage.setItem("reviews", JSON.stringify(reviews))
-    sessionStorage.setItem("currentPage", 0)
-
-    // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
-    if (!$(".main-pagination-previous").hasClass("hidden")) {
-      $(".main-pagination-previous").addClass("hidden")
-    }
-
-    if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
-      $(".main-pagination-next").addClass("hidden")
-    }
-
-    if (wineResults.length > numToPage && $(".main-pagination-next").hasClass("hidden")) {
-      $(".main-pagination-next").removeClass("hidden")
-    }
-
-
-    populateWineResults(paginatedWine[0], favs, reviews)
-    $(".progress-bar-container").toggleClass("hidden")
+    paginateAndPopulate(numToPage, wineResults, favs, reviews)
   }
 })
 
-
+/**
+ * Function that will sort the wine results based off of the filters in the filters array
+ * @param {array} wineResults 
+ * @param {array} filters 
+ */
 function sortWine(wineResults, filters) {
 
   for (filter of filters){
@@ -988,43 +983,19 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
   if (target.tagName == "INPUT") {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
-    // $(targetInput).toggleClass("is-focused")
     $(targetInput).toggleClass("is-light")
     $(".progress-bar-container").toggleClass("hidden")
     const res = await axios.get(`/sort_by/${filterName}`)
     const sortFilters = res.data.sort_by;
-    console.log(sortFilters);
     const response = await axios.get(`/wine_style/""`)
     const wineResults = response.data.wine_results;
     const favs = response.data.user_favorites;
     const reviews = response.data.reviews;
     const numToPage = 10;
-    console.log(wineResults);
+
     const sortedWine = sortWine(wineResults, sortFilters)
 
-    paginatedWine = paginate(numToPage, sortedWine)
-    // console.log(paginatedWine);
-
-    sessionStorage.setItem("favs", JSON.stringify(favs))
-    sessionStorage.setItem("reviews", JSON.stringify(reviews))
-    sessionStorage.setItem("currentPage", 0)
-
-    // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
-    if (!$(".main-pagination-previous").hasClass("hidden")) {
-      $(".main-pagination-previous").addClass("hidden")
-    }
-
-    if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
-      $(".main-pagination-next").addClass("hidden")
-    }
-
-    if (wineResults.length > numToPage && $(".main-pagination-next").hasClass("hidden")) {
-      $(".main-pagination-next").removeClass("hidden")
-    }
-
-
-    populateWineResults(paginatedWine[0], favs, reviews)
-    $(".progress-bar-container").toggleClass("hidden")
+    paginateAndPopulate(numToPage, sortedWine, favs, reviews)
 
   }
 
