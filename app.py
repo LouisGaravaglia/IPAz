@@ -692,8 +692,8 @@ def get_wine_style_choices(new_wine_style):
 
     wine_results = get_wine.wine_results(sort_by, varietals, wine_style, wine_type)
     
-    sliced = slice(0,10)
-    wine_results = wine_results[sliced]
+    # sliced = slice(0,10)
+    # wine_results = wine_results[sliced]
     
     # session['wine_results'] = wine_results
          

@@ -463,6 +463,7 @@ $(document).ready(async function() {
       const wineResults = res.data.wines;
       const favs = res.data.user_favorites;
       const reviews = res.data.user_reviews;
+      const numToPage = 10;
       console.log(wineResults);
       
       // if (wineResults.length == 0) {
@@ -470,17 +471,21 @@ $(document).ready(async function() {
       //   flashMessage(message)
       // }
 
-      paginatedWine = paginate(10, wineResults)
-      console.log(paginatedWine);
+      paginatedWine = paginate(numToPage, wineResults)
+      // console.log(paginatedWine);
   
       sessionStorage.setItem("favs", JSON.stringify(favs))
       sessionStorage.setItem("reviews", JSON.stringify(reviews))
       sessionStorage.setItem("currentPage", 0)
 
-      $(".main-pagination-previous").toggleClass("hidden")
+      
 
-      if (paginatedWine.length == 1) {
-        $(".main-pagination-next").toggleClass("hidden")
+      if (!$(".main-pagination-previous").hasClass("hidden")) {
+        $(".main-pagination-previous").addClass("hidden")
+      }
+
+      if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
+        $(".main-pagination-next").addClass("hidden")
       }
   
       populateWineResults(paginatedWine[0], favs, reviews) 
@@ -506,13 +511,12 @@ $("#main-pagination").on("click", ".main-pagination-next", function() {
   sessionStorage.setItem("currentPage", nextPage)
   console.log(paginatedWine.length);
 
-  if (currentPage == 0) {
-    $(".main-pagination-previous").toggleClass("hidden")
+  if (nextPage > 0 && $(".main-pagination-previous").hasClass("hidden")) {
+    $(".main-pagination-previous").removeClass("hidden")
   }
 
-  if (currentPage == paginatedWine.length - 2) {
-    $(".main-pagination-next").toggleClass("hidden")
-    console.log("i'm at the end");
+  if (currentPage == paginatedWine.length - 2 && !$(".main-pagination-next").hasClass("hidden")) {
+    $(".main-pagination-next").addClass("hidden")
   }
 
   populateWineResults(paginatedWine[nextPage], favs, reviews) 
@@ -534,11 +538,15 @@ $("#main-pagination").on("click", ".main-pagination-previous", function() {
 
   if (previousPage <= 0) {
     previousPage = 0;
-    $(".main-pagination-previous").toggleClass("hidden")
+    if (!$(".main-pagination-previous").hasClass("hidden")) {
+      $(".main-pagination-previous").addClass("hidden")
+    }
+    
   }
 
-  if (previousPage == paginatedWine.length - 2) {
-    $(".main-pagination-next").toggleClass("hidden")
+
+  if (previousPage == paginatedWine.length - 2 && $(".main-pagination-next").hasClass("hidden")) {
+    $(".main-pagination-next").removeClass("hidden")
   }
 
   sessionStorage.setItem("currentPage", previousPage)
@@ -842,19 +850,23 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     wineResults = response.data.wine_results;
     favs = response.data.user_favorites;
     reviews = response.data.reviews;
+    const numToPage = 10;
     console.log(wineResults);
 
-    paginatedWine = paginate(10, wineResults)
-    console.log(paginatedWine);
+    paginatedWine = paginate(numToPage, wineResults)
+    // console.log(paginatedWine);
 
     sessionStorage.setItem("favs", JSON.stringify(favs))
     sessionStorage.setItem("reviews", JSON.stringify(reviews))
     sessionStorage.setItem("currentPage", 0)
 
     if (!$(".main-pagination-previous").hasClass("hidden")) {
-      $(".main-pagination-previous").toggleClass("hidden")
+      $(".main-pagination-previous").addClass("hidden")
     }
 
+    if (paginatedWine.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
+      $(".main-pagination-next").addClass("hidden")
+    }
 
 
     populateWineResults(paginatedWine[0], favs, reviews)
