@@ -333,7 +333,7 @@ def review(wine_id):
     
     if not g.user:
         flash("Please log in or sign up to review wines!", "error")
-        return redirect("/show_results")
+        return redirect("/")
     
     user_reviews = []
     for post in g.user.posts:

@@ -11,6 +11,7 @@
 
 var paginatedWine;
 var unPaginatedWine;
+var searchPaginatedWine;
 
 
 /**
@@ -364,6 +365,13 @@ function paginateAndPopulate(numToPage, wineResults, favs, reviews){
 }
 
 
+
+// =================================================  DOWN ARROW HOME PAGE  ================================================
+
+
+$("#landing-down-arrow").on("mouseover", function(){
+
+})
 
 
 // =================================================  WINE TYPE / HOME PAGE  ================================================
@@ -1289,7 +1297,7 @@ function paginate(numToPage, wineResults){
 
 
 
-var searchPaginatedWine;
+
 
 
 /**
