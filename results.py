@@ -27,11 +27,7 @@ class WineResults():
         
         if varietals == ['All']:
             varietals = varietal_cls.get_all_varietals(wine_type_list)
-                    
-        
-        # import pdb
-        # pdb.set_trace()
-        
+
         for wine_type in wine_type_list:
         
             ################# GETTING RESULTS FOR RED WINE TYPE #################
@@ -148,54 +144,13 @@ class WineResults():
                 
         ################# REMOVING DUPLICATES #################
         
-        # import pdb
-        # pdb.set_trace()
-         
         wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
-        
-        ################# SORTING #################
-        
-        # if 'None' in sort_by:
-        #     return wine_results
-        
-        # for key in sort_by:
-                         
-        #     if key == 'Rating (Highest)':                   
-        #         def filter(e):
-        #             return e['Rating']
-        #         wine_results.sort(key=filter, reverse=True)
-            
-        #     if key == 'Rating (Lowest)':
-        #         def filter(e):
-        #             return e['Rating']
-        #         wine_results.sort(key=filter)
-                    
-        #     if key == 'Vintage (Oldest)':
-        #         def filter(e):
-        #             return e['Vintage']
-        #         wine_results.sort(key=filter)
-                    
-        #     if key == 'Vintage (Youngest)':
-        #         def filter(e):
-        #             return e['Vintage']
-        #         wine_results.sort(key=filter, reverse=True)
-                              
-        #     if key == 'Winery (Alphabetically)':
-        #         def filter(e):
-        #             return e['Winery']
-        #         wine_results.sort(key=filter)
-                
-      
-        
-        # session['wine_results'] = wine_results
-        # import pdb
-        # pdb.set_trace()        
+    
         return wine_results
     
     
+    
     def search_results(self, search_term):
-        
-        
         
         results = [] 
         wine_results = []
@@ -208,62 +163,16 @@ class WineResults():
         type_results = Wine.query.filter((Wine.type.ilike(f'%{search_term}%'))).all()
         name_results = Wine.query.filter((Wine.name.ilike(f'%{search_term}%'))).all()
         
-
         results = results + winery_results + country_results + area_results + vintage_results + varietal_results + type_results + name_results
         
         for result in results:
             rating = round(result.rating, 2)
             wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
             wine_results.append(wine)
-            
-        
+          
         wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
             
         return wine_results
     
     
-    
-    # def sort_results(self, sort_by, wine_results):
-        
-    #     # wine_results = session['wine_results']
-        
-    #     # import pdb
-    #     # pdb.set_trace()  
-        
-    #     if 'None' in sort_by:
-    #         return wine_results
-        
-    #     for key in sort_by:
-                         
-    #         if key == 'Rating (Highest)':                   
-    #             def filter(e):
-    #                 return e['Rating']
-    #             wine_results.sort(key=filter, reverse=True)
-            
-    #         if key == 'Rating (Lowest)':
-    #             def filter(e):
-    #                 return e['Rating']
-    #             wine_results.sort(key=filter)
-                    
-    #         if key == 'Vintage (Oldest)':
-    #             def filter(e):
-    #                 return e['Vintage']
-    #             wine_results.sort(key=filter)
-                    
-    #         if key == 'Vintage (Youngest)':
-    #             def filter(e):
-    #                 return e['Vintage']
-    #             wine_results.sort(key=filter, reverse=True)
-                              
-    #         if key == 'Winery (Alphabetically)':
-    #             def filter(e):
-    #                 return e['Winery']
-    #             wine_results.sort(key=filter)
-                
-    #     # import pdb
-    #     # pdb.set_trace() 
-        
-    #     # session['wine_results'] = wine_results
-                      
-    #     return wine_results
-        
+  

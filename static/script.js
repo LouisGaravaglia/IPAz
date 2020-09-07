@@ -5,6 +5,14 @@
 
 
 
+// =================================================  GLOBAL VARIABLES  ================================================
+
+
+
+var paginatedWine;
+var unPaginatedWine;
+
+
 /**
  * This function is here so that the user favorites get updated in the show_results route if the user
  * hits back from the favorties route after unfavoriting a wine.
@@ -15,16 +23,19 @@
 window.addEventListener( "pageshow", function ( event ) {
   const address = document.location.href;
 
-  // if (address.includes("show_results") ) {
-      var historyTraversal = event.persisted || 
-            ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
-      if ( historyTraversal ) {
-        window.location.reload();
-      }
-  // }
+    var historyTraversal = event.persisted || 
+          ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
+    if ( historyTraversal ) {
+      window.location.reload();
+    }
+
 });
 
+
+
 // =================================================  CLEARING SESSION STORAGE / SORT BY  ================================================
+
+
 
 $(document).ready(function() {
 const address = document.location.href;
@@ -38,140 +49,9 @@ const address = document.location.href;
 
 
 
-// =================================================  WINE TYPE / HOME PAGE  ================================================
-
-
-/**
- * Click event that logs the wine type in the backend session.
- * @event document#click
- * @type {object}
- * @property {element} 
- */
-$("#wine-type").on("click", ".wine-type", async function(e) {
-  const selected_button = e.target;
-
-  // selected_button.classList.toggle("is-focused")
-  $(selected_button).toggleClass("is-light")
-
-  wine_type = selected_button.innerText
-  varietalDiv = $("#varietals")
-  varietalDiv.html("")
-
-  await sendWineType(wine_type)
-  
-  const items = await axios.get('/get_varietals')
-  varietal_array = items.data.varietals;
-  selected_varietals = items.data.selected_varietals;
-
-  populateVarietals(varietal_array, selected_varietals)
-  
-})
-
-/**
- * Function that sends wine type to the backend to log into session.
- * @param {*} wine_type 
- */
-async function sendWineType(wine_type) {
-  const res = await axios.get(`/wine_type/${wine_type}`)
-}
-
-// =================================================  SORT BY / HOME PAGE ================================================
-
-/**
- * This click event logs the sort by parameters in the backend session.
- * @event document#click
- * @type {object}
- * @property {element} 
- */
-$("#filter-by").on("click", ".filter-by", async function(e) {
-  const selected_button = e.target;
-
-  // selected_button.classList.toggle("is-focused")
-  $(selected_button).toggleClass("is-light")
-
-  filterBy = selected_button.innerText
-
-  if (sessionStorage["sortBy"]) {
-    const sortByArray = JSON.parse(sessionStorage.getItem("sortBy"))
-    sortByArray.push(filterBy)
-    sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
-  } else {
-    const sortByArray = [filterBy]
-    sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
-  }
-  
-  // await sendSortBy(filterBy)
-  
-})
-
-/**
- * function that sends the sort by parameter to backend to add to session.
- * @param {string} filterBy 
- */
-async function sendSortBy(filterBy) {
-  const res = await axios.get(`/sort_by/${filterBy}`)
-}
-
-// =================================================  LOADING VARIETALS / HOME PAGE ================================================
-
-/**
- * This function loops over the varietals that need to be displayed based on the
- * wine types selected on the home page and will return a bold button
- * if it is logged as a selected_varietals
- * @param {array} varietal_array 
- * @param {array} selected_varietals 
- */
-function populateVarietals(varietal_array, selected_varietals) {
-
-for (varietal of varietal_array) {
-  if (selected_varietals.includes(varietal)) {
-    html = `<button class="button is-info is-rounded mt-3 mb-2 mx-2 varietals">${varietal}</button>`
-    varietalDiv.append(html);
-  } else {
-    html = `<button class="button is-info is-light is-rounded mt-3 mb-2 mx-2 varietals">${varietal}</button>`
-    varietalDiv.append(html);
-  }
-
-}
-}
-
-
-
-
-// =================================================  PICKING VARIETALS / HOME PAGE  ================================================
-
-/**
- * Click event that will bold a varietal button if the user clicks
- * @event document#click
- * @type {object}
- * @property {element} 
- */
-$("#varietals").on("click", ".varietals", async function(e) {
-  const selected_button = e.target;
-
-  // selected_button.classList.toggle("is-focused")
-  $(selected_button).toggleClass("is-light")
-
-  varietal = selected_button.innerText
-  await sendVarietals(varietal)
-})
-
-
-/**
- * Function that makes a request to the backend to log the varietal of which
- * the button the user clicked.
- * @param {string} varietal 
- */
-async function sendVarietals(varietal) {
-  const res = await axios.get(`/log_varietals/${varietal}`)
-}
-
-
-
-
-
-
 // =================================================  POPULATE WINE RESULTS ================================================
+
+
 
 /**
  * Function that returns an string of html elements that represent the wine card
@@ -278,15 +158,15 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
   if (wine_results[0] == "No Results") {
     
     message = `<section class="hero is-small is-light mt-6 mx-6">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title has-text-info">
-        No wines available.
-      </h1>
-    </div>
-  </div>
-</section>`
-    // const html = '<h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>'
+                <div class="hero-body">
+                  <div class="container">
+                    <h1 class="title has-text-info">
+                      No wines available.
+                    </h1>
+                  </div>
+                </div>
+              </section>`
+
     wineHtml.append(message)
 
   } else if (address.includes("user/review")) {
@@ -451,26 +331,162 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
 }
 
 
+/**
+ * Function that paginates the wine results, appends the results to the DOM, and runs conditionals
+ * to see which pagination buttons need to be present based on the amount of results and which page
+ * the user is currently on
+ * @param {integer} numToPage 
+ * @param {array} wineResults 
+ * @param {array} favs 
+ * @param {array} reviews 
+ */
+function paginateAndPopulate(numToPage, wineResults, favs, reviews){
+  paginatedWine = paginate(numToPage, wineResults)
+
+  sessionStorage.setItem("favs", JSON.stringify(favs))
+  sessionStorage.setItem("reviews", JSON.stringify(reviews))
+  sessionStorage.setItem("currentPage", 0)
+
+  // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
+  if (!$(".main-pagination-previous").hasClass("hidden")) {
+    $(".main-pagination-previous").addClass("hidden")
+  }
+
+  if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
+    $(".main-pagination-next").addClass("hidden")
+  }
+
+  if (wineResults.length > numToPage && $(".main-pagination-next").hasClass("hidden")) {
+    $(".main-pagination-next").removeClass("hidden")
+  }
+
+  populateWineResults(paginatedWine[0], favs, reviews)
+}
+
+
+
+
+// =================================================  WINE TYPE / HOME PAGE  ================================================
+
+
+/**
+ * Click event that logs the wine type in the backend session.
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
+$("#wine-type").on("click", ".wine-type", async function(e) {
+  const selected_button = e.target;
+
+  $(selected_button).toggleClass("is-light")
+
+  wine_type = selected_button.innerText
+  varietalDiv = $("#varietals")
+  varietalDiv.html("")
+
+  await sendWineType(wine_type)
+  
+  const items = await axios.get('/get_varietals')
+  varietal_array = items.data.varietals;
+  selected_varietals = items.data.selected_varietals;
+
+  populateVarietals(varietal_array, selected_varietals)
+  
+})
+
+/**
+ * Function that sends wine type to the backend to log into session.
+ * @param {*} wine_type 
+ */
+async function sendWineType(wine_type) {
+  const res = await axios.get(`/wine_type/${wine_type}`)
+}
+
+// =================================================  SORT BY / HOME PAGE ================================================
+
+/**
+ * This click event logs the sort by parameters in the backend session.
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
+$("#filter-by").on("click", ".filter-by", async function(e) {
+  const selected_button = e.target;
+
+  $(selected_button).toggleClass("is-light")
+
+  filterBy = selected_button.innerText
+
+  if (sessionStorage["sortBy"]) {
+    const sortByArray = JSON.parse(sessionStorage.getItem("sortBy"))
+    sortByArray.push(filterBy)
+    sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+  } else {
+    const sortByArray = [filterBy]
+    sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+  }
+  
+})
+
+
+
+// =================================================  LOADING VARIETALS / HOME PAGE ================================================
+
+/**
+ * This function loops over the varietals that need to be displayed based on the
+ * wine types selected on the home page and will return a bold button
+ * if it is logged as a selected_varietals
+ * @param {array} varietal_array 
+ * @param {array} selected_varietals 
+ */
+function populateVarietals(varietal_array, selected_varietals) {
+
+  for (varietal of varietal_array) {
+    if (selected_varietals.includes(varietal)) {
+      html = `<button class="button is-info is-rounded mt-3 mb-2 mx-2 varietals">${varietal}</button>`
+      varietalDiv.append(html);
+    } else {
+      html = `<button class="button is-info is-light is-rounded mt-3 mb-2 mx-2 varietals">${varietal}</button>`
+      varietalDiv.append(html);
+    }
+
+  }
+}
+
+
+
+
+// =================================================  PICKING VARIETALS / HOME PAGE  ================================================
+
+/**
+ * Click event that will bold a varietal button if the user clicks
+ * @event document#click
+ * @type {object}
+ * @property {element} 
+ */
+$("#varietals").on("click", ".varietals", async function(e) {
+  const selected_button = e.target;
+
+  $(selected_button).toggleClass("is-light")
+
+  varietal = selected_button.innerText
+  await sendVarietals(varietal)
+})
+
+
+/**
+ * Function that makes a request to the backend to log the varietal of which
+ * the button the user clicked.
+ * @param {string} varietal 
+ */
+async function sendVarietals(varietal) {
+  const res = await axios.get(`/log_varietals/${varietal}`)
+}
+
+
 
 // =================================================  PAGINATION / RESULTS PAGE ================================================
 
-
-// /**
-//  * Click event that will grab the value of the search input and redirect
-//  * the user to the search results page
-//  * @event document#click
-//  * @type {object}
-//  * @property {element} 
-//  */
-// $("#find-wine-btn").on("click", ".results-arrow", function() {
-//   searchValue = $("#search-bar").val()
-//   sessionStorage.setItem('searchValue', searchValue);
-//   window.location.assign("http://127.0.0.1:5000/search");
-// })
-
-
-var paginatedWine;
-var unPaginatedWine;
 
 
 /**
@@ -482,32 +498,20 @@ $(document).ready(async function() {
 
   if (address.includes("/show_results")) {
       $(".progress-bar-container").toggleClass("hidden")
-
       const res = await axios.get(`/show_results/json`)
       const wineResults = res.data.wines;
       unPaginatedWine = wineResults;
-      // const favs = res.data.user_favorites;
-      // const reviews = res.data.user_reviews;
       const favs = JSON.parse(sessionStorage.getItem("favs"));
       const reviews = JSON.parse(sessionStorage.getItem("reviews"));
       const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
       const sortedWine = sortWine(wineResults, sortByFilters)
       const numToPage = 10;
-      console.log(wineResults.length);
-      
-      // if (wineResults.length == 0) {
-      //   const message = {"message":"No results"}
-      //   flashMessage(message)
-      // }
 
       paginatedWine = paginate(numToPage, sortedWine)
-      // console.log(paginatedWine);
-  
+
       sessionStorage.setItem("favs", JSON.stringify(favs))
       sessionStorage.setItem("reviews", JSON.stringify(reviews))
       sessionStorage.setItem("currentPage", 0)
-
-      
 
       if (!$(".main-pagination-previous").hasClass("hidden")) {
         $(".main-pagination-previous").addClass("hidden")
@@ -697,7 +701,6 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
     }
 
   } else if (target.tagName == "DIV") {
-    // console.log(target.firstChild.dataset.id);
     wineId = target.firstElementChild.dataset.id;
     const icon = $(`#fav-box-${wineId}`)
     const json = await axios.post(`/user/add_favorite/${wineId}`)
@@ -857,42 +860,6 @@ $("#choose-sort-by").on("click", function(e) {
 
 
 
-// =================================================  CLICK EVENT FOR WINE OPTIONS / RESULTS PAGE  ================================================
-
-
-/**
- * Function that paginates the wine results, appends the results to the DOM, and runs conditionals
- * to see which pagination buttons need to be present based on the amount of results and which page
- * the user is currently on
- * @param {integer} numToPage 
- * @param {array} wineResults 
- * @param {array} favs 
- * @param {array} reviews 
- */
-function paginateAndPopulate(numToPage, wineResults, favs, reviews){
-  paginatedWine = paginate(numToPage, wineResults)
-
-  sessionStorage.setItem("favs", JSON.stringify(favs))
-  sessionStorage.setItem("reviews", JSON.stringify(reviews))
-  sessionStorage.setItem("currentPage", 0)
-
-  // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
-  if (!$(".main-pagination-previous").hasClass("hidden")) {
-    $(".main-pagination-previous").addClass("hidden")
-  }
-
-  if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
-    $(".main-pagination-next").addClass("hidden")
-  }
-
-  if (wineResults.length > numToPage && $(".main-pagination-next").hasClass("hidden")) {
-    $(".main-pagination-next").removeClass("hidden")
-  }
-
-  populateWineResults(paginatedWine[0], favs, reviews)
-  // $(".progress-bar-container").toggleClass("hidden")
-}
-
 
 
 // =================================================  WINE TYPE / RESULTS PAGE  ================================================
@@ -913,7 +880,6 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
     $(targetInput).toggleClass("is-light")
-    // $(".progress-bar-container").toggleClass("hidden")
     const res = await axios.get(`/wine_type/${filterName}`)
     const response = await axios.get(`/wine_style/""`)
     const wineResults = response.data.wine_results;
@@ -950,7 +916,6 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
     $(targetInput).toggleClass("is-light")
-    // $(".progress-bar-container").toggleClass("hidden")
     const response = await axios.get(`/wine_style/${filterName}`)
     const wineResults = response.data.wine_results;
     unPaginatedWine = wineResults;
@@ -1086,8 +1051,6 @@ function setSortBy(target){
 }
 
 function toggleOpposites(target){
-
-  // $(".progress-bar-container").toggleClass("hidden")
   const filterBy = target.nextSibling.data;
     
   if (filterBy == 'Rating (Highest)') {
@@ -1098,7 +1061,6 @@ function toggleOpposites(target){
           const index = sortByArray.indexOf("Rating (Lowest)")
           sortByArray.splice(index, 1)
           sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
-          // const res = await axios.get(`/sort_by/Rating (Lowest)`)
       }
     } else if (filterBy == 'Rating (Lowest)') {
         ratingHighest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
@@ -1108,7 +1070,6 @@ function toggleOpposites(target){
           const index = sortByArray.indexOf('Rating (Highest)')
           sortByArray.splice(index, 1)
           sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
-          //  const res = await axios.get(`/sort_by/Rating (Highest)`)
         }
     } else if (filterBy == 'Vintage (Oldest)') {
         vintageYoungest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
@@ -1118,7 +1079,6 @@ function toggleOpposites(target){
           const index = sortByArray.indexOf('Vintage (Youngest)')
           sortByArray.splice(index, 1)
           sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
-          //  const res = await axios.get(`/sort_by/Vintage (Youngest)`)
         }
     } else if (filterBy == 'Vintage (Youngest)') {
         vintageOldest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
@@ -1128,7 +1088,6 @@ function toggleOpposites(target){
           const index = sortByArray.indexOf('Vintage (Oldest)')
           sortByArray.splice(index, 1)
           sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
-          //  const res = await axios.get(`/sort_by/Vintage (Oldest)`)
         }
     } 
 
@@ -1145,33 +1104,18 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
 
   if (target.tagName == "INPUT") {
-
-
     setSortBy(target)
     toggleOpposites(target)
     const sortFilters = JSON.parse(sessionStorage.getItem("sortBy"))
-    // const response = await axios.get(`/wine_style/""`)
-    // const wineResults = response.data.wine_results;
     const wineResults = unPaginatedWine;
     const favs = JSON.parse(sessionStorage.getItem("favs"));
     const reviews = JSON.parse(sessionStorage.getItem("reviews"));
-              // $(".progress-bar-container").toggleClass("hidden")
-
-    // const favs = response.data.user_favorites;
-    // const reviews = response.data.reviews;
     const numToPage = 10;
     const sortedWine = sortWine(wineResults, sortFilters)
     console.log(wineResults.length);
 
-    // if (wineResults.length > 1000) {
-    //   $(".progress-bar-container").toggleClass("hidden")
-    // }
-
     paginateAndPopulate(numToPage, sortedWine, favs, reviews)
 
-    // if (wineResults.length > 1000) {
-    //   $(".progress-bar-container").toggleClass("hidden")
-    // }
   }
 
 })
@@ -1251,10 +1195,7 @@ $("#choose-varietals").on("click", async function() {
 $("#varietals-modal").on("click", ".varietals", async function(e) {
   const target = e.target;
   const targetName = target.innerText;
-
-  // target.classList.toggle("is-focused")
   target.classList.toggle("is-light")
-
   await sendVarietals(targetName)
 })
 
@@ -1279,10 +1220,8 @@ $(".progress-bar-container").toggleClass("hidden")
   const favs = JSON.parse(sessionStorage.getItem("favs"));
   const reviews = JSON.parse(sessionStorage.getItem("reviews"));
   const numToPage = 10;
-  // favs = response.data.user_favorites;
-  // reviews = response.data.reviews;
+
   paginateAndPopulate(numToPage, sortedWine, favs, reviews)
-  // populateWineResults(sortedWine, favs, reviews)
 
 })
 
@@ -1548,183 +1487,6 @@ $("#search-pagination").on("click", ".search-pagination-previous", function() {
   })
 
 
-
-// =================================================  EVENTUALLY DELETE  ================================================
-
-
-// $("#search-bar-box").on("click", ".search-bar", async function() {
-
-//   const searchValue = $("#search-bar").val()
-//   // console.log(searchValue);
-
-//   window.location = "http://127.0.0.1:5000/search"
-
-//   const res = await axios.get(`/search/${searchValue}`)
-//   paginatedWines = res.data.paginated;
-//   favs = res.data.favs;
-//   reviews = res.data.reviews;
-
-//   // window.location.assign("http://127.0.0.1:5000/search");
-//   // window.location = "http://127.0.0.1:5000/search"
-
-//   populateWineResults(paginatedWines[0], favs, reviews) 
-
- 
-// })
-
-//   if (wine_results[0] == "No Results") {
-    
-//     message = `<section class="hero is-small is-light mt-6 mx-6">
-//   <div class="hero-body">
-//     <div class="container">
-//       <h1 class="title has-text-info">
-//         No wines available.
-//       </h1>
-//     </div>
-//   </div>
-// </section>`
-//     // const html = '<h3 class="title is-3 has-text-centered mt-6">No wines available.</h3>'
-//     wineHtml.append(message)
-
-//   } else {
-
-//     for (wine of wine_results) { 
-
-//     if (favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
-//         const favBtn = '<i class="fas fa-star"></i>';
-//         const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
-//         const reviewHTML = "";
-//         const cardSize = 'is-one-third';
-//         const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
-//         wineHtml.append(html)
-//       } else if (favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
-//           const favBtn = '<i class="fas fa-star"></i>';
-//           const reviewBtn = '<i class="far fa-edit review-btn"></i>';
-//           const reviewHTML = "";
-//           const cardSize = 'is-one-third';
-//           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
-//           wineHtml.append(html)
-//       } else if (!favorites.includes(wine['ID']) && reviews.includes(wine['ID'])) {
-//           const favBtn = '<i class="far fa-star"></i>';
-//           const reviewBtn = '<i class="fas fa-edit review-btn"></i>';
-//           const reviewHTML = "";
-//           const cardSize = 'is-one-third';
-//           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
-//           wineHtml.append(html)
-//       } else if (!favorites.includes(wine['ID']) && !reviews.includes(wine['ID'])) {
-//           const favBtn = '<i class="far fa-star"></i>';
-//           const reviewBtn = '<i class="far fa-edit review-btn"></i>';
-//           const reviewHTML = "";
-//           const cardSize = 'is-one-third';
-//           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
-//           wineHtml.append(html)
-//       } 
-
-//     }
-
-//   }
-
-// }
-
-
-// /**
-//  * logs the wine id of the wine that the user favorited and then uses AJAX to re-populate
-//  * the wine cards to the DOM with the wine that was just faved now showing a bold star
-//  * @param {integer} wineId 
-//  */
-// const logSearchFav = async function(wineId) {
-  
-//   const json = await axios.post(`/user/add_favorite/${wineId}`)
-//   noUserObj = json.data
-
-//   // ##### CONDITIONAL TO CHECK TO SEE IF USER IS LOGGED IN IF NOT AN ERROR MESSAGE APPEARS #####
-//   if (Object.keys(noUserObj).length == 1) {
-    
-// message = `<section class="hero is-small is-light">
-//   <div class="hero-body">
-//     <div class="container">
-//       <h1 class="title has-text-grey-dark">
-//         ${noUserObj.message}
-//       </h1>
-//     </div>
-//   </div>
-// </section>`
-
-//     flashDiv = $("#flash")
-//     flashDiv.html("");
-//     flashDiv.prepend(message)
-//     function hideMessage(){
-//       flashDiv.html("");
-//     }
-//     setTimeout(hideMessage, 2000);
-
-//   } else {
-//       $(".progress-bar-container").toggleClass("hidden")
-//       const wine_results = await axios.get(`/search/results`)
-//       $(".progress-bar-container").toggleClass("hidden")
-//       wines = wine_results.data.wine_results;
-//       favs = wine_results.data.favs;
-//       reviews = wine_results.data.reviews;
-//       populateSearchResults(wines, favs, reviews)
-//   }
-// }
-
-
-// /**
-//  * Click event for the favorite star on the search result wine cards to then call
-//  * logSearchFav() to eventually replace the wine card with the bolded favorite star
-//  * @event document#click
-//  * @type {object}
-//  * @property {element} 
-//  */
-//  $("#search-results").on("click", ".favorite-button", async function(e) {
-
-//     const target = e.target;
-
-//     if (target.tagName == "BUTTON") {
-//       let wineId = target.dataset.id;
-//       logSearchFav(wineId);
-
-//     } else if (target.tagName == "path") {
-//       const button = target.parentElement.parentElement.parentElement;
-//       let wineId = button.dataset.id;
-//       logSearchFav(wineId);
-
-//     } else if (target.tagName == "SPAN") {
-//       const button = target.parentElement;
-//       let wineId = button.dataset.id;
-//       logSearchFav(wineId);
-
-//     } else if (target.tagName == "svg") {
-//       const button = target.parentElement.parentElement;
-//       let wineId = button.dataset.id;
-//       logSearchFav(wineId);
-
-//     }
-
-//   })
-
-// var currentPage = 0;
-
-// $("#search-pagination").on("click", ".pagination-next", async function() {
-//   currentPage += 1;
-//   // alert("haha")
-//   const res = await axios.get(`/search/${currentPage}`)
-  
-//   // console.log(res);
-// })
-
-// $("#search-pagination").on("click", ".pagination-previous", async function(currentPage) {
-//   if (currentPage >= 1) currentPage -= 1;
-//   const res = await axios.get(`/search/${currentPage}`)
-// })
-
-// window.addEventListener("beforeunload", function(event) { 
-
-// currentPage = 0;
-
-//  });
-
 // =================================================  NAVBAR  ================================================
 
 
@@ -1742,19 +1504,6 @@ $(document).ready(
       $(".navbar-menu").toggleClass("is-active");
   });
 });
-
-// =================================================  PROGRESS BAR ================================================
-
-// $(".results-button").on("click", function(){
-//   // $(".progress-bar-container").toggleClass("hidden")
-  
-// })
-
-// jQuery(document).ready(function() {
-//     jQuery('.progress-bar-container').fadeOut(3000);
-// });
-
-
 
 
 
