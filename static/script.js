@@ -486,12 +486,14 @@ $(document).ready(async function() {
       const res = await axios.get(`/show_results/json`)
       const wineResults = res.data.wines;
       unPaginatedWine = wineResults;
-      const favs = res.data.user_favorites;
-      const reviews = res.data.user_reviews;
+      // const favs = res.data.user_favorites;
+      // const reviews = res.data.user_reviews;
+      const favs = JSON.parse(sessionStorage.getItem("favs"));
+      const reviews = JSON.parse(sessionStorage.getItem("reviews"));
       const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
       const sortedWine = sortWine(wineResults, sortByFilters)
       const numToPage = 10;
-      // console.log(wineResults);
+      console.log(wineResults.length);
       
       // if (wineResults.length == 0) {
       //   const message = {"message":"No results"}
@@ -916,11 +918,13 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     const response = await axios.get(`/wine_style/""`)
     const wineResults = response.data.wine_results;
     unPaginatedWine = wineResults;
+    const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
+    const sortedWine = sortWine(wineResults, sortByFilters)
     const favs = response.data.user_favorites;
     const reviews = response.data.reviews;
     const numToPage = 10;
     
-    paginateAndPopulate(numToPage, wineResults, favs, reviews)
+    paginateAndPopulate(numToPage, sortedWine, favs, reviews)
     
   }
 })
@@ -946,15 +950,17 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
     $(targetInput).toggleClass("is-light")
-    $(".progress-bar-container").toggleClass("hidden")
+    // $(".progress-bar-container").toggleClass("hidden")
     const response = await axios.get(`/wine_style/${filterName}`)
     const wineResults = response.data.wine_results;
     unPaginatedWine = wineResults;
+    const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
+    const sortedWine = sortWine(wineResults, sortByFilters)
     const favs = response.data.user_favorites;
     const reviews = response.data.reviews;
     const numToPage = 10;
 
-    paginateAndPopulate(numToPage, wineResults, favs, reviews)
+    paginateAndPopulate(numToPage, sortedWine, favs, reviews)
   }
 })
 
@@ -1264,12 +1270,19 @@ $("#modal").on("click", ".toggle-off", async function() {
   modal = $(".modal");
   modal.toggleClass("is-active")
 $(".progress-bar-container").toggleClass("hidden")
-  const wine_results = await axios.get(`/wine_style/""`)
+  const response = await axios.get(`/wine_style/""`)
   $(".progress-bar-container").toggleClass("hidden")
-  wines = wine_results.data.wine_results;
-  favs = wine_results.data.user_favorites;
-  reviews = wine_results.data.reviews;
-  populateWineResults(wines, favs, reviews)
+  wineResults = response.data.wine_results;
+  unPaginatedWine = wineResults;
+  const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
+  const sortedWine = sortWine(wineResults, sortByFilters)
+  const favs = JSON.parse(sessionStorage.getItem("favs"));
+  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
+  const numToPage = 10;
+  // favs = response.data.user_favorites;
+  // reviews = response.data.reviews;
+  paginateAndPopulate(numToPage, sortedWine, favs, reviews)
+  // populateWineResults(sortedWine, favs, reviews)
 
 })
 
