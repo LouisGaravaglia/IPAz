@@ -53,7 +53,9 @@
     <div class="column is-half has-text-centered mx-0 my-0">
       <button class="button is-text fav-button favorite-button" data-id="{{wine.id}}" type="submit">
         <span class="icon">
-        <i class="fas fa-star"></i>
+        <div id="fav-box-{{wine.id}}" data-id="{{wine.id}}" class="myFas">
+                    <i class="fas fa-star" data-id="{{wine.id}}"></i>
+                    </div>
         </span>
       </button>
       

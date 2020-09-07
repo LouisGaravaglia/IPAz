@@ -55,9 +55,13 @@
       <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
         <span class="icon is-small">
         {% if wine['ID'] in user_favorites %}
-            <i class="fas fa-star"></i>
+            <div id="fav-box-{{wine['ID']}}" data-id="{{wine['ID']}}" class="myFas">
+                    <i class="fas fa-star" data-id="{{wine['ID']}}"></i>
+                    </div>
         {% else %}
-            <i class="far fa-star"></i>
+            <div id="fav-box-{{wine['ID']}}" class="myFar">
+                    <i class="far fa-star" data-id="{{wine['ID']}}"></i>
+                    </div>
         {% endif %}
         </span>
       </button>
@@ -65,7 +69,7 @@
     </div>
 
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-    <a href="/user/review/${wine['ID']}" class="button is-text review-btn" data-id="${wine['ID']}">
+    <a href="/user/review/{{wine['ID']}}" class="button is-text review-btn" data-id="{{wine['ID']}}">
         <span class="icon review-btn">
         <i class="fas fa-edit review-btn"></i>
         </span>
