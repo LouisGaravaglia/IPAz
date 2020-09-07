@@ -2,40 +2,45 @@ const wineResults = [{ Area: "Porto", Country: "Portugal", ID: 2163, Vintage: 20
 const filters = ['Vintage (Oldest)', 'Winery (Alphabetically)', 'Vintage (Youngest)']
 // sort by first Name
 
-function sortWine() {
+const index = filters.indexOf("Vintage (Youngest)")
+filters.splice(index, 1)
+
+console.log(filters);
+
+// function sortWine() {
 
 
-var myArrayObjects = [{
-    "id": 1,
-    "name": "1 example"
-  },
-  {
-    "id": 5,
-    "name": "nv"
-  },
-  {
-    "id": 2,
-    "name": "100 example"
-  },
-  {
-    "id": 3,
-    "name": "nv"
-  },
-  {
-    "id": 4,
-    "name": "5 example"
-  },
+// var myArrayObjects = [{
+//     "id": 1,
+//     "name": "1 example"
+//   },
+//   {
+//     "id": 5,
+//     "name": "nv"
+//   },
+//   {
+//     "id": 2,
+//     "name": "100 example"
+//   },
+//   {
+//     "id": 3,
+//     "name": "nv"
+//   },
+//   {
+//     "id": 4,
+//     // "name": "5 example"
+//   },
 
-]
+// ]
 
-myArrayObjects = myArrayObjects.sort(function(a, b) {
-  return a.name.localeCompare(b.name, undefined, {
-    numeric: true,
-    sensitivity: 'base'
-  });
-});
+// myArrayObjects = myArrayObjects.sort(function(a, b) {
+//   return a.name.localeCompare(b.name, undefined, {
+//     numeric: true,
+//     sensitivity: 'base'
+//   });
+// });
 
-console.log(myArrayObjects);
-}
+// console.log(myArrayObjects);
+// }
 
-sortWine()
+// sortWine()

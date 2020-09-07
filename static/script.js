@@ -24,6 +24,20 @@ window.addEventListener( "pageshow", function ( event ) {
   // }
 });
 
+// =================================================  CLEARING SESSION STORAGE / SORT BY  ================================================
+
+$(document).ready(function() {
+const address = document.location.href;
+
+  if (!address.includes("/search") && !address.includes("/show_results") && !address.includes("/favorites") && !address.includes("/reviews") && !address.includes("/user") && !address.includes("/signup") && !address.includes("/login")) {
+   const sortByArray = []
+   sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+  }
+  
+});
+
+
+
 // =================================================  WINE TYPE / HOME PAGE  ================================================
 
 
@@ -76,8 +90,17 @@ $("#filter-by").on("click", ".filter-by", async function(e) {
   $(selected_button).toggleClass("is-light")
 
   filterBy = selected_button.innerText
+
+  if (sessionStorage["sortBy"]) {
+    const sortByArray = JSON.parse(sessionStorage.getItem("sortBy"))
+    sortByArray.push(filterBy)
+    sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+  } else {
+    const sortByArray = [filterBy]
+    sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+  }
   
-  await sendSortBy(filterBy)
+  // await sendSortBy(filterBy)
   
 })
 
@@ -463,15 +486,17 @@ $(document).ready(async function() {
       const wineResults = res.data.wines;
       const favs = res.data.user_favorites;
       const reviews = res.data.user_reviews;
+      const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
+      const sortedWine = sortWine(wineResults, sortByFilters)
       const numToPage = 10;
-      console.log(wineResults);
+      // console.log(wineResults);
       
       // if (wineResults.length == 0) {
       //   const message = {"message":"No results"}
       //   flashMessage(message)
       // }
 
-      paginatedWine = paginate(numToPage, wineResults)
+      paginatedWine = paginate(numToPage, sortedWine)
       // console.log(paginatedWine);
   
       sessionStorage.setItem("favs", JSON.stringify(favs))
@@ -861,8 +886,13 @@ function paginateAndPopulate(numToPage, wineResults, favs, reviews){
   }
 
   populateWineResults(paginatedWine[0], favs, reviews)
-  $(".progress-bar-container").toggleClass("hidden")
+  // $(".progress-bar-container").toggleClass("hidden")
 }
+
+
+
+// =================================================  WINE TYPE / RESULTS PAGE  ================================================
+
 
 
 /**
@@ -879,7 +909,7 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     const filterName = target.nextSibling.data;
     const targetInput = target.parentElement.firstElementChild;
     $(targetInput).toggleClass("is-light")
-    $(".progress-bar-container").toggleClass("hidden")
+    // $(".progress-bar-container").toggleClass("hidden")
     const res = await axios.get(`/wine_type/${filterName}`)
     const response = await axios.get(`/wine_style/""`)
     const wineResults = response.data.wine_results;
@@ -891,6 +921,12 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     
   }
 })
+
+
+
+// =================================================  WINE STYLE / RESULTS PAGE  ================================================
+
+
 
 
 /**
@@ -917,6 +953,55 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     paginateAndPopulate(numToPage, wineResults, favs, reviews)
   }
 })
+
+
+
+// =================================================  SORT BY / RESULTS PAGE  ================================================
+
+
+
+$(document).ready(async function() {
+  const address = document.location.href;
+
+  if (address.includes("/show_results")) {
+      const sortByArray = JSON.parse(sessionStorage.getItem("sortBy"))
+      const sortBySidebar = $("#sort-by-checkboxes")
+      const ratingHighestText = sortBySidebar[0].firstElementChild.firstElementChild.innerText;
+      const ratingHighest = sortBySidebar[0].firstElementChild.firstElementChild.firstElementChild;
+      const ratingLowestText = sortBySidebar[0].firstElementChild.nextElementSibling.firstElementChild.innerText;
+      const ratingLowest = sortBySidebar[0].firstElementChild.nextElementSibling.firstElementChild.firstElementChild;
+      const vintageOldestText = sortBySidebar[0].firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.innerText;
+      const vintageOldest = sortBySidebar[0].firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
+      const vintageYoungestText = sortBySidebar[0].firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.innerText;
+      const vintageYoungest = sortBySidebar[0].firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
+      const wineryAlphabeticalText = sortBySidebar[0].firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.innerText;
+      const wineryAlphabetical = sortBySidebar[0].firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
+
+      for (filter of sortByArray) {
+
+        if (filter == ratingHighestText) {
+          ratingHighest.classList.remove("is-light")
+
+        } else if (filter == ratingLowestText) {
+          ratingLowest.classList.remove("is-light")
+
+        } else if (filter == vintageOldestText) {
+          vintageOldest.classList.remove("is-light")
+
+        } else if (filter == vintageYoungestText) {
+          vintageYoungest.classList.remove("is-light")
+
+        } else if (filter == wineryAlphabeticalText) {
+          wineryAlphabetical.classList.remove("is-light")
+
+        }
+      }
+  }
+  
+});
+
+
+
 
 /**
  * Function that will sort the wine results based off of the filters in the filters array
@@ -969,6 +1054,75 @@ function sortWine(wineResults, filters) {
   return wineResults
 }
 
+function setSortBy(target){
+  const filterBy = target.nextSibling.data;
+  const targetInput = target.parentElement.firstElementChild;
+  $(targetInput).toggleClass("is-light")
+
+  if (sessionStorage["sortBy"]) {
+    const sortByArray = JSON.parse(sessionStorage.getItem("sortBy"))
+    if (sortByArray.includes(filterBy)){
+      const index = sortByArray.indexOf(filterBy)
+      sortByArray.splice(index, 1)
+      sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+    } else {
+      sortByArray.push(filterBy)
+      sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+    } 
+  } else {
+    const sortByArray = [filterBy]
+    sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+  }
+}
+
+function toggleOpposites(target){
+
+  // $(".progress-bar-container").toggleClass("hidden")
+  const filterBy = target.nextSibling.data;
+    
+  if (filterBy == 'Rating (Highest)') {
+      ratingLowest = target.nextSibling.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+      if (!ratingLowest.classList.contains("is-light")) {
+          ratingLowest.classList.add("is-light")
+          const sortByArray = JSON.parse(sessionStorage.getItem("sortBy"))
+          const index = sortByArray.indexOf("Rating (Lowest)")
+          sortByArray.splice(index, 1)
+          sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+          // const res = await axios.get(`/sort_by/Rating (Lowest)`)
+      }
+    } else if (filterBy == 'Rating (Lowest)') {
+        ratingHighest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
+        if (!ratingHighest.classList.contains("is-light")) {
+           ratingHighest.classList.add("is-light")
+           const sortByArray = JSON.parse(sessionStorage.getItem("sortBy"))
+          const index = sortByArray.indexOf('Rating (Highest)')
+          sortByArray.splice(index, 1)
+          sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+          //  const res = await axios.get(`/sort_by/Rating (Highest)`)
+        }
+    } else if (filterBy == 'Vintage (Oldest)') {
+        vintageYoungest = target.parentElement.parentElement.nextElementSibling.firstElementChild.firstElementChild;
+        if (!vintageYoungest.classList.contains("is-light")) {
+           vintageYoungest.classList.add("is-light")
+           const sortByArray = JSON.parse(sessionStorage.getItem("sortBy"))
+          const index = sortByArray.indexOf('Vintage (Youngest)')
+          sortByArray.splice(index, 1)
+          sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+          //  const res = await axios.get(`/sort_by/Vintage (Youngest)`)
+        }
+    } else if (filterBy == 'Vintage (Youngest)') {
+        vintageOldest = target.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild;
+        if (!vintageOldest.classList.contains("is-light")) {
+           vintageOldest.classList.add("is-light")
+           const sortByArray = JSON.parse(sessionStorage.getItem("sortBy"))
+          const index = sortByArray.indexOf('Vintage (Oldest)')
+          sortByArray.splice(index, 1)
+          sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
+          //  const res = await axios.get(`/sort_by/Vintage (Oldest)`)
+        }
+    } 
+
+}
 
 /**
  * Click event that will replace wine cards with AJAX based off of the sort by options
@@ -981,12 +1135,14 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
 
   if (target.tagName == "INPUT") {
-    const filterName = target.nextSibling.data;
-    const targetInput = target.parentElement.firstElementChild;
-    $(targetInput).toggleClass("is-light")
-    $(".progress-bar-container").toggleClass("hidden")
-    const res = await axios.get(`/sort_by/${filterName}`)
-    const sortFilters = res.data.sort_by;
+    // console.log(target);
+    // const filterName = target.nextSibling.data;
+    // const res = await axios.get(`/sort_by/${filterName}`)
+    // const sortFilters = res.data.sort_by;
+    // $(".progress-bar-container").toggleClass("hidden")
+    setSortBy(target)
+    toggleOpposites(target)
+    const sortFilters = JSON.parse(sessionStorage.getItem("sortBy"))
     const response = await axios.get(`/wine_style/""`)
     const wineResults = response.data.wine_results;
     const favs = response.data.user_favorites;
@@ -996,6 +1152,7 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
     const sortedWine = sortWine(wineResults, sortFilters)
 
     paginateAndPopulate(numToPage, sortedWine, favs, reviews)
+
 
   }
 

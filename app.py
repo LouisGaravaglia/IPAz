@@ -726,6 +726,9 @@ def get_wine_style_choices(new_wine_style):
 @app.route('/sort_by/<new_sort_by>')
 def get_sort_by_choices(new_sort_by):
 
+    # import pdb
+    # pdb.set_trace()
+    
     sort_by = session['sort_by']
     
     if new_sort_by in sort_by:
