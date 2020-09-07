@@ -470,6 +470,7 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
 
 
 var paginatedWine;
+var unPaginatedWine;
 
 
 /**
@@ -484,6 +485,7 @@ $(document).ready(async function() {
 
       const res = await axios.get(`/show_results/json`)
       const wineResults = res.data.wines;
+      unPaginatedWine = wineResults;
       const favs = res.data.user_favorites;
       const reviews = res.data.user_reviews;
       const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
@@ -913,6 +915,7 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     const res = await axios.get(`/wine_type/${filterName}`)
     const response = await axios.get(`/wine_style/""`)
     const wineResults = response.data.wine_results;
+    unPaginatedWine = wineResults;
     const favs = response.data.user_favorites;
     const reviews = response.data.reviews;
     const numToPage = 10;
@@ -946,6 +949,7 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     $(".progress-bar-container").toggleClass("hidden")
     const response = await axios.get(`/wine_style/${filterName}`)
     const wineResults = response.data.wine_results;
+    unPaginatedWine = wineResults;
     const favs = response.data.user_favorites;
     const reviews = response.data.reviews;
     const numToPage = 10;
@@ -1135,25 +1139,33 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
   const target = e.target;
 
   if (target.tagName == "INPUT") {
-    // console.log(target);
-    // const filterName = target.nextSibling.data;
-    // const res = await axios.get(`/sort_by/${filterName}`)
-    // const sortFilters = res.data.sort_by;
-    // $(".progress-bar-container").toggleClass("hidden")
+
+
     setSortBy(target)
     toggleOpposites(target)
     const sortFilters = JSON.parse(sessionStorage.getItem("sortBy"))
-    const response = await axios.get(`/wine_style/""`)
-    const wineResults = response.data.wine_results;
-    const favs = response.data.user_favorites;
-    const reviews = response.data.reviews;
-    const numToPage = 10;
+    // const response = await axios.get(`/wine_style/""`)
+    // const wineResults = response.data.wine_results;
+    const wineResults = unPaginatedWine;
+    const favs = JSON.parse(sessionStorage.getItem("favs"));
+    const reviews = JSON.parse(sessionStorage.getItem("reviews"));
+              // $(".progress-bar-container").toggleClass("hidden")
 
+    // const favs = response.data.user_favorites;
+    // const reviews = response.data.reviews;
+    const numToPage = 10;
     const sortedWine = sortWine(wineResults, sortFilters)
+    console.log(wineResults.length);
+
+    // if (wineResults.length > 1000) {
+    //   $(".progress-bar-container").toggleClass("hidden")
+    // }
 
     paginateAndPopulate(numToPage, sortedWine, favs, reviews)
 
-
+    // if (wineResults.length > 1000) {
+    //   $(".progress-bar-container").toggleClass("hidden")
+    // }
   }
 
 })
