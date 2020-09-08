@@ -12,6 +12,9 @@ from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm, EditReviewFo
 from models import db, connect_db, User, Post, Wine, Favorite
 from results import WineResults
 from get_varietals import Varietals
+import asyncio
+from contextlib import suppress
+
 
 CURR_USER_KEY = "curr_user"
 
@@ -505,107 +508,107 @@ def add_header(req):
 
 # ===================================    API CALLS    =====================================
 
-@app.route('/api/get_red_wines')
-def get_red_wines():
-    """Get all top rated red wines from the API"""  
+# @app.route('/api/get_red_wines')
+# def get_red_wines():
+#     """Get all top rated red wines from the API"""  
     
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/tre/4000/1000"
-    headers = {'authorization': API_KEY}
+#     baseURL = "https://quiniwine.com/api/pub/wineCategory/tre/4000/1000"
+#     headers = {'authorization': API_KEY}
     
-    result = requests.get(f"{baseURL}", headers=headers)
-    data = result.json()
-    wine_array = data["items"]
+#     result = requests.get(f"{baseURL}", headers=headers)
+#     data = result.json()
+#     wine_array = data["items"]
     
-    if result.status_code != 200:
-       return jsonify(message="There was an issue making an request for red wines to the API.") 
+#     if result.status_code != 200:
+#        return jsonify(message="There was an issue making an request for red wines to the API.") 
    
 
-    for wine in wine_array:
-        new_wine = Wine(
-            wine_id = wine["_id"],
-            winery = wine["Winery"],
-            country = wine["Country"],
-            area = wine["Area"],
-            vintage = wine["vintage"],
-            varietal = wine["Varietal"],
-            type = wine["Type"],
-            name = wine["Name"],
-            rating = wine["rating"]
-        )
+#     for wine in wine_array:
+#         new_wine = Wine(
+#             wine_id = wine["_id"],
+#             winery = wine["Winery"],
+#             country = wine["Country"],
+#             area = wine["Area"],
+#             vintage = wine["vintage"],
+#             varietal = wine["Varietal"],
+#             type = wine["Type"],
+#             name = wine["Name"],
+#             rating = wine["rating"]
+#         )
         
-        db.session.add(new_wine)
-        db.session.commit()
+#         db.session.add(new_wine)
+#         db.session.commit()
  
-    return jsonify(message="Successful request. All red wines imported into database.")
+#     return jsonify(message="Successful request. All red wines imported into database.")
 
 
-@app.route('/api/get_white_wines')
-def get_white_wines():
-    """Get all top rated white wines from the API"""  
+# @app.route('/api/get_white_wines')
+# def get_white_wines():
+#     """Get all top rated white wines from the API"""  
 
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/twh/5000/1000"
-    headers = {'authorization': API_KEY}
+#     baseURL = "https://quiniwine.com/api/pub/wineCategory/twh/5000/1000"
+#     headers = {'authorization': API_KEY}
     
-    result = requests.get(f"{baseURL}", headers=headers)
-    data = result.json()
-    wine_array = data["items"]
+#     result = requests.get(f"{baseURL}", headers=headers)
+#     data = result.json()
+#     wine_array = data["items"]
     
-    if result.status_code != 200:
-       return jsonify(message="There was an issue making an request for white wines to the API.") 
+#     if result.status_code != 200:
+#        return jsonify(message="There was an issue making an request for white wines to the API.") 
 
-    for wine in wine_array:
-        new_wine = Wine(
-            wine_id = wine["_id"],
-            winery = wine["Winery"],
-            country = wine["Country"],
-            area = wine["Area"],
-            vintage = wine["vintage"],
-            varietal = wine["Varietal"],
-            type = wine["Type"],
-            name = wine["Name"],
-            rating = wine["rating"]
-        )
+#     for wine in wine_array:
+#         new_wine = Wine(
+#             wine_id = wine["_id"],
+#             winery = wine["Winery"],
+#             country = wine["Country"],
+#             area = wine["Area"],
+#             vintage = wine["vintage"],
+#             varietal = wine["Varietal"],
+#             type = wine["Type"],
+#             name = wine["Name"],
+#             rating = wine["rating"]
+#         )
         
-        db.session.add(new_wine)
-        db.session.commit()
+#         db.session.add(new_wine)
+#         db.session.commit()
  
-    return jsonify(message="Successful request. All white wines imported into database.")
+#     return jsonify(message="Successful request. All white wines imported into database.")
 
 
-@app.route('/api/get_rose_wines')
-def get_rose_wines():
-    """Get all top rated rose wines from the API"""  
+# @app.route('/api/get_rose_wines')
+# def get_rose_wines():
+#     """Get all top rated rose wines from the API"""  
 
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/tro/5000/1000"
-    headers = {'authorization': API_KEY}
+#     baseURL = "https://quiniwine.com/api/pub/wineCategory/tro/5000/1000"
+#     headers = {'authorization': API_KEY}
     
-    result = requests.get(f"{baseURL}", headers=headers)
-    data = result.json()
-    wine_array = data["items"]
+#     result = requests.get(f"{baseURL}", headers=headers)
+#     data = result.json()
+#     wine_array = data["items"]
     
-    # import pdb
-    # pdb.set_trace()
-    if result.status_code != 200:
-       return jsonify(message="There was an issue making an request for rose wines to the API.") 
+#     # import pdb
+#     # pdb.set_trace()
+#     if result.status_code != 200:
+#        return jsonify(message="There was an issue making an request for rose wines to the API.") 
     
 
-    for wine in wine_array:
-        new_wine = Wine(
-            wine_id = wine["_id"],
-            winery = wine["Winery"],
-            country = wine["Country"],
-            area = wine["Area"],
-            vintage = wine["vintage"],
-            varietal = wine["Varietal"],
-            type = wine["Type"],
-            name = wine["Name"],
-            rating = wine["rating"]
-        )
+#     for wine in wine_array:
+#         new_wine = Wine(
+#             wine_id = wine["_id"],
+#             winery = wine["Winery"],
+#             country = wine["Country"],
+#             area = wine["Area"],
+#             vintage = wine["vintage"],
+#             varietal = wine["Varietal"],
+#             type = wine["Type"],
+#             name = wine["Name"],
+#             rating = wine["rating"]
+#         )
         
-        db.session.add(new_wine)
-        db.session.commit()
+#         db.session.add(new_wine)
+#         db.session.commit()
  
-    return jsonify(message="Successful request. All rose wines imported into database.")
+#     return jsonify(message="Successful request. All rose wines imported into database.")
 
 
 # ===================================    HOME    =====================================
@@ -987,3 +990,149 @@ def show_search_results():
     
 
     return render_template("search_results.html")
+
+
+
+# async def main():
+#     print('hello')
+#     await asyncio.sleep(1)
+#     print('world')
+    
+
+# asyncio.run(main())
+
+
+# red = 7574
+# white = 4598
+# rose = 631
+    
+# ===================================    API CALLS    =====================================
+
+def get_red_wines(amount, skip, remainder):
+    """Get all top rated red wines from the API"""  
+    
+    count = 0
+    while count <= 7:
+        count = count + 1
+        
+        if skip < 7000:
+            baseURL = f"https://quiniwine.com/api/pub/wineCategory/tre/{skip}/{amount}"
+        else:
+            baseURL = f"https://quiniwine.com/api/pub/wineCategory/tre/{skip}/{remainder}"
+        
+        skip = skip + 1000
+        
+       
+        headers = {'authorization': API_KEY}
+        
+        result = requests.get(f"{baseURL}", headers=headers)
+        data = result.json()
+        wine_array = data["items"]
+        
+        if result.status_code != 200:
+            print ("There was an issue making an request for red wines to the API.") 
+    
+
+        for wine in wine_array:
+            new_wine = Wine(
+                wine_id = wine["_id"],
+                winery = wine["Winery"],
+                country = wine["Country"],
+                area = wine["Area"],
+                vintage = wine["vintage"],
+                varietal = wine["Varietal"],
+                type = wine["Type"],
+                name = wine["Name"],
+                rating = wine["rating"]
+            )
+            
+            db.session.add(new_wine)
+            db.session.commit()
+            
+    print ("All red wines have been pulled")
+        
+
+def get_white_wines(amount, skip, remainder):
+    """Get all top rated red wines from the API"""  
+    
+    count = 0
+    while count <= 4:
+        count = count + 1
+        
+        if skip < 4000:
+            baseURL = f"https://quiniwine.com/api/pub/wineCategory/twh/{skip}/{amount}"
+        else:
+            baseURL = f"https://quiniwine.com/api/pub/wineCategory/twh/{skip}/{remainder}"
+        
+        skip = skip + 1000
+        
+       
+        headers = {'authorization': API_KEY}
+        
+        result = requests.get(f"{baseURL}", headers=headers)
+        data = result.json()
+        wine_array = data["items"]
+        
+        if result.status_code != 200:
+            print ("There was an issue making an request for red wines to the API.") 
+    
+
+        for wine in wine_array:
+            new_wine = Wine(
+                wine_id = wine["_id"],
+                winery = wine["Winery"],
+                country = wine["Country"],
+                area = wine["Area"],
+                vintage = wine["vintage"],
+                varietal = wine["Varietal"],
+                type = wine["Type"],
+                name = wine["Name"],
+                rating = wine["rating"]
+            )
+            
+            db.session.add(new_wine)
+            db.session.commit()
+    
+    print ("All white wines have been pulled")
+
+def get_rose_wines(amount, skip):
+    """Get all top rated red wines from the API"""  
+    
+
+    baseURL = f"https://quiniwine.com/api/pub/wineCategory/tro/{skip}/{amount}"
+    
+    headers = {'authorization': API_KEY}
+    
+    result = requests.get(f"{baseURL}", headers=headers)
+    data = result.json()
+    wine_array = data["items"]
+    
+    if result.status_code != 200:
+        print ("There was an issue making an request for red wines to the API.") 
+
+
+    for wine in wine_array:
+        new_wine = Wine(
+            wine_id = wine["_id"],
+            winery = wine["Winery"],
+            country = wine["Country"],
+            area = wine["Area"],
+            vintage = wine["vintage"],
+            varietal = wine["Varietal"],
+            type = wine["Type"],
+            name = wine["Name"],
+            rating = wine["rating"]
+        )
+        
+        db.session.add(new_wine)
+        db.session.commit()
+        
+    print ("All rose wines have been pulled")
+
+        
+# get_red_wines(1000, 0, 574)
+# get_white_wines(1000, 0, 598)
+# get_rose_wines(631, 0)
+
+
+# asyncio.run(get_wines())

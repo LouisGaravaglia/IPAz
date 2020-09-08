@@ -14,25 +14,24 @@ var unPaginatedWine;
 var searchPaginatedWine;
 
 
-/**
- * This function is here so that the user favorites get updated in the show_results route if the user
- * hits back from the favorties route after unfavoriting a wine.
- * @event document#click
- * @type {object}
- * @property {element} 
- */
-window.addEventListener( "pageshow", function ( event ) {
-  const address = document.location.href;
+// /**
+//  * This function is here so that the search parameters are cleared when the user backspaces to the landing page.
+//  * @event document#click
+//  * @type {object}
+//  * @property {element} 
+//  */
+// window.addEventListener( "pageshow", function ( event ) {
+//   const address = document.location.href;
 
-  if (!address.includes("/search") && !address.includes("/show_results") && !address.includes("/favorites") && !address.includes("/reviews") && !address.includes("/user") && !address.includes("/signup") && !address.includes("/login")) {
+//   if (!address.includes("/search") && !address.includes("/show_results") && !address.includes("/favorites") && !address.includes("/reviews") && !address.includes("/user") && !address.includes("/signup") && !address.includes("/login")) {
 
-    var historyTraversal = event.persisted || 
-          ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
-    if ( historyTraversal ) {
-      window.location.reload();
-    }
-  }
-});
+//     var historyTraversal = event.persisted || 
+//           ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
+//     if ( historyTraversal ) {
+//       window.location.reload();
+//     }
+//   }
+// });
 
 
 
@@ -1135,15 +1134,16 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
 // =================================================  LOADING VARIETALS / RESULTS PAGE ================================================
 
 
+
 /**
- * Opens the modal filled with varietals when the user clicks the varietals button
- * on the side bar 
+ * Click event that will load the varietal buttons by way of makeModal()
  * @event document#click
  * @type {object}
  * @property {element} 
  */
-$("#varietals-button").on("click", async function() {
-  varietalDiv = $("#varietals")
+$("#choose-varietals").on("click", async function() {
+  $(".progress-bar-container").toggleClass("hidden")
+  varietalDiv = $("#varietals-modal")
   varietalDiv.html("")
   const items = await axios.get('/get_varietals')
   varietal_array = items.data.varietals;
@@ -1152,7 +1152,6 @@ $("#varietals-button").on("click", async function() {
   modal = $(".modal");
   modal.toggleClass("is-active")
 })
-
 
 
 /**
@@ -1175,26 +1174,9 @@ for (varietal of varietal_array) {
 }
 
 
+
 // =================================================  PICKING VARIETALS / RESULTS PAGE  ================================================
 
-
-
-/**
- * Click event that will load the varietal buttons by way of makeModal()
- * @event document#click
- * @type {object}
- * @property {element} 
- */
-$("#choose-varietals").on("click", async function() {
-  varietalDiv = $("#varietals-modal")
-  varietalDiv.html("")
-  const items = await axios.get('/get_varietals')
-  varietal_array = items.data.varietals;
-  selected_varietals = items.data.selected_varietals;
-  makeModal(varietal_array, selected_varietals)
-  modal = $(".modal");
-  modal.toggleClass("is-active")
-})
 
 
 /**
@@ -1221,10 +1203,9 @@ $("#varietals-modal").on("click", ".varietals", async function(e) {
  */
 $("#modal").on("click", ".toggle-off", async function() {
   modal = $(".modal");
-  modal.toggleClass("is-active")
-$(".progress-bar-container").toggleClass("hidden")
   const response = await axios.get(`/wine_style/""`)
   $(".progress-bar-container").toggleClass("hidden")
+  modal.toggleClass("is-active")
   wineResults = response.data.wine_results;
   unPaginatedWine = wineResults;
   const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
@@ -1232,12 +1213,13 @@ $(".progress-bar-container").toggleClass("hidden")
   const favs = JSON.parse(sessionStorage.getItem("favs"));
   const reviews = JSON.parse(sessionStorage.getItem("reviews"));
   const numToPage = 10;
-
   paginateAndPopulate(numToPage, sortedWine, favs, reviews)
-
 })
 
+
+
 // =================================================  SEARCH  ================================================
+
 
 
 /**
@@ -1521,27 +1503,27 @@ $(document).ready(
 
 // =================================================  CALLING API  ================================================
 
-async function makeAPIcall() {
-  await axios.get("/api/get_red_wines")
-  await axios.get("/api/get_white_wines")
-  await axios.get("/api/get_rose_wines")
+// async function makeAPIcall() {
+//   await axios.get("/api/get_red_wines")
+//   await axios.get("/api/get_white_wines")
+//   await axios.get("/api/get_rose_wines")
 
-}
-async function getReds() {
-  await axios.get("/api/get_red_wines")
+// }
+// async function getReds() {
+//   await axios.get("/api/get_red_wines")
 
 
-}
+// }
 
-async function getWhites() {
-  await axios.get("/api/get_white_wines")
+// async function getWhites() {
+//   await axios.get("/api/get_white_wines")
 
-}
+// }
 
-async function getRose() {
-  await axios.get("/api/get_rose_wines")
+// async function getRose() {
+//   await axios.get("/api/get_rose_wines")
 
-}
+// }
 
 
 
