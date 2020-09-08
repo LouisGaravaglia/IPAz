@@ -509,7 +509,7 @@ def add_header(req):
 def get_red_wines():
     """Get all top rated red wines from the API"""  
     
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/tre/0/1000"
+    baseURL = "https://quiniwine.com/api/pub/wineCategory/tre/4000/1000"
     headers = {'authorization': API_KEY}
     
     result = requests.get(f"{baseURL}", headers=headers)
@@ -543,7 +543,7 @@ def get_red_wines():
 def get_white_wines():
     """Get all top rated white wines from the API"""  
 
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/twh/0/1000"
+    baseURL = "https://quiniwine.com/api/pub/wineCategory/twh/5000/1000"
     headers = {'authorization': API_KEY}
     
     result = requests.get(f"{baseURL}", headers=headers)
@@ -576,7 +576,7 @@ def get_white_wines():
 def get_rose_wines():
     """Get all top rated rose wines from the API"""  
 
-    baseURL = "https://quiniwine.com/api/pub/wineCategory/tro/0/1000"
+    baseURL = "https://quiniwine.com/api/pub/wineCategory/tro/5000/1000"
     headers = {'authorization': API_KEY}
     
     result = requests.get(f"{baseURL}", headers=headers)

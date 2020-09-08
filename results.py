@@ -21,6 +21,10 @@ class WineResults():
         
         to then be returned based of the varietals chosen.
         """     
+        
+        # import pdb
+        # pdb.set_trace()
+        
         varietal_cls = Varietals()
         
         wine_results = []

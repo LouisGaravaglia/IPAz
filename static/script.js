@@ -24,12 +24,14 @@ var searchPaginatedWine;
 window.addEventListener( "pageshow", function ( event ) {
   const address = document.location.href;
 
+  if (!address.includes("/search") && !address.includes("/show_results") && !address.includes("/favorites") && !address.includes("/reviews") && !address.includes("/user") && !address.includes("/signup") && !address.includes("/login")) {
+
     var historyTraversal = event.persisted || 
           ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
     if ( historyTraversal ) {
       window.location.reload();
     }
-
+  }
 });
 
 
@@ -508,18 +510,20 @@ $(document).ready(async function() {
       $(".progress-bar-container").toggleClass("hidden")
       const res = await axios.get(`/show_results/json`)
       const wineResults = res.data.wines;
+      const favs = res.data.user_favorites;
+      const reviews = res.data.user_reviews;
       unPaginatedWine = wineResults;
-      const favs = JSON.parse(sessionStorage.getItem("favs"));
-      const reviews = JSON.parse(sessionStorage.getItem("reviews"));
-      const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
-      const sortedWine = sortWine(wineResults, sortByFilters)
-      const numToPage = 10;
-
-      paginatedWine = paginate(numToPage, sortedWine)
-
       sessionStorage.setItem("favs", JSON.stringify(favs))
       sessionStorage.setItem("reviews", JSON.stringify(reviews))
       sessionStorage.setItem("currentPage", 0)
+      const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
+      const sortedWine = sortWine(wineResults, sortByFilters)
+      const numToPage = 10;
+      console.log(wineResults.length);
+
+      paginatedWine = paginate(numToPage, sortedWine)
+
+      
 
       if (!$(".main-pagination-previous").hasClass("hidden")) {
         $(".main-pagination-previous").addClass("hidden")
