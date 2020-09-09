@@ -14,24 +14,28 @@ var unPaginatedWine;
 var searchPaginatedWine;
 
 
-// /**
-//  * This function is here so that the search parameters are cleared when the user backspaces to the landing page.
-//  * @event document#click
-//  * @type {object}
-//  * @property {element} 
-//  */
-// window.addEventListener( "pageshow", function ( event ) {
-//   const address = document.location.href;
+// =================================================  REFRESH HOME PAGE WITH BACKSPACE  ================================================
 
-//   if (!address.includes("/search") && !address.includes("/show_results") && !address.includes("/favorites") && !address.includes("/reviews") && !address.includes("/user") && !address.includes("/signup") && !address.includes("/login")) {
 
-//     var historyTraversal = event.persisted || 
-//           ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
-//     if ( historyTraversal ) {
-//       window.location.reload();
-//     }
-//   }
-// });
+
+/**
+ * This function is here so that the search parameters are cleared when the user backspaces to the landing page.
+ * @event document#pageshow
+ * @type {object}
+ * @property {element} 
+ */
+window.addEventListener( "pageshow", function ( event ) {
+  const address = document.location.href;
+
+  if (!address.includes("/search") && !address.includes("/show_results") && !address.includes("/favorites") && !address.includes("/reviews") && !address.includes("/user") && !address.includes("/signup") && !address.includes("/login")) {
+
+    var historyTraversal = event.persisted || 
+          ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
+    if ( historyTraversal ) {
+      window.location.reload();
+    }
+  }
+});
 
 
 
@@ -39,6 +43,13 @@ var searchPaginatedWine;
 
 
 
+/**
+ * Resets the sortByArray to be empty when the user navigates back to the home page, 
+ * in order to prevent the filters to be carried over from previous searches
+ * @event document#ready
+ * @type {object}
+ * @property {element} 
+ */
 $(document).ready(function() {
 const address = document.location.href;
 
@@ -367,15 +378,8 @@ function paginateAndPopulate(numToPage, wineResults, favs, reviews){
 
 
 
-// =================================================  DOWN ARROW HOME PAGE  ================================================
-
-
-$("#landing-down-arrow").on("mouseover", function(){
-
-})
-
-
 // =================================================  WINE TYPE / HOME PAGE  ================================================
+
 
 
 /**
@@ -411,7 +415,11 @@ async function sendWineType(wine_type) {
   const res = await axios.get(`/wine_type/${wine_type}`)
 }
 
+
+
 // =================================================  SORT BY / HOME PAGE ================================================
+
+
 
 /**
  * This click event logs the sort by parameters in the backend session.
@@ -441,6 +449,8 @@ $("#filter-by").on("click", ".filter-by", async function(e) {
 
 // =================================================  LOADING VARIETALS / HOME PAGE ================================================
 
+
+
 /**
  * This function loops over the varietals that need to be displayed based on the
  * wine types selected on the home page and will return a bold button
@@ -464,8 +474,9 @@ function populateVarietals(varietal_array, selected_varietals) {
 
 
 
-
 // =================================================  PICKING VARIETALS / HOME PAGE  ================================================
+
+
 
 /**
  * Click event that will bold a varietal button if the user clicks
@@ -538,7 +549,6 @@ $(document).ready(async function() {
   }
   
 });
-
 
 
 /**
@@ -637,7 +647,6 @@ const flashMessage = function(noUserObj) {
 }
 
 
-
 /**
  * Replace HTML with opposite class for fa-star element. This is necessary because due
  * to Bulma, it changes the html element during transpiling so I can't simply toggle
@@ -656,7 +665,6 @@ function toggleStar(icon, wineId){
     icon.html(`<i class="fas fa-star" data-id="${wineId}"></i>`)
   }
 }
-
 
 
 /**
@@ -754,7 +762,6 @@ console.log(favs);
 })
 
 
-
 /**
  * Clears all the flash messages after 2 seconds
  */
@@ -771,6 +778,7 @@ $(document).ready(clearFlash)
 
 
 // =================================================  DELETE BUTTON / REVIEWS PAGE  ================================================
+
 
 
 /**
@@ -837,7 +845,10 @@ $("#wine-results").on("click", ".review-delete", async function(e) {
 })
 
 
+
 // =================================================  TOGGLE OPEN SIDE BAR OPTIONS / RESULTS PAGE  ================================================
+
+
 
 /**
  * Toggles open the wine type filters on the side bar of the results page.
@@ -849,6 +860,7 @@ $("#choose-wine-type").on("click", function(e) {
   $("#wine-type-checkboxes").toggleClass("hidden")
 })
 
+
 /**
  * Toggles open the wine style filters on the side bar of the results page.
  * @event document#click
@@ -859,6 +871,7 @@ $("#choose-wine-style").on("click", function(e) {
   $("#wine-style-checkboxes").toggleClass("hidden")
 })
 
+
 /**
  * Toggles open the sort by filters on the side bar of the results page.
  * @event document#click
@@ -868,8 +881,6 @@ $("#choose-wine-style").on("click", function(e) {
 $("#choose-sort-by").on("click", function(e) {
   $("#sort-by-checkboxes").toggleClass("hidden")
 })
-
-
 
 
 
@@ -912,7 +923,6 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
 
 
 
-
 /**
  * Click event that will replace wine cards with AJAX based off of the wine style
  * selected by the user, by way of populateWineResults().
@@ -945,7 +955,12 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
 // =================================================  SORT BY / RESULTS PAGE  ================================================
 
 
-
+/**
+ * Toggles on the sorting buttons based on which filters the user has chosen
+ * @event document#ready
+ * @type {object}
+ * @property {element} 
+ */
 $(document).ready(async function() {
   const address = document.location.href;
 
@@ -985,8 +1000,6 @@ $(document).ready(async function() {
   }
   
 });
-
-
 
 
 /**
@@ -1040,6 +1053,11 @@ function sortWine(wineResults, filters) {
   return wineResults
 }
 
+
+/**
+ * Adds the chosen sort by filter to sessionStorage
+ * @param {HTMLelement} target 
+ */
 function setSortBy(target){
   const filterBy = target.nextSibling.data;
   const targetInput = target.parentElement.firstElementChild;
@@ -1061,6 +1079,11 @@ function setSortBy(target){
   }
 }
 
+/**
+ * Certain sortBy filters are opposites. Rating Highest vs Rating lowest, etc. If one is 
+ * selected, the other is then deselected with this function
+ * @param {HTMLelement} target 
+ */
 function toggleOpposites(target){
   const filterBy = target.nextSibling.data;
     
@@ -1104,6 +1127,7 @@ function toggleOpposites(target){
 
 }
 
+
 /**
  * Click event that will replace wine cards with AJAX based off of the sort by options
  * selected by the user, by way of populateWineResults().
@@ -1130,6 +1154,8 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
   }
 
 })
+
+
 
 // =================================================  LOADING VARIETALS / RESULTS PAGE ================================================
 
@@ -1282,10 +1308,6 @@ function paginate(numToPage, wineResults){
 }
 
 
-
-
-
-
 /**
  * When the search results page is loaded, a call to the backend is made for the wine results for the 
  * input value the user had type in. Those wines are paginated and then appended to the DOM
@@ -1321,7 +1343,6 @@ $(document).ready(async function() {
   }
   
 });
-
 
 
 /**
@@ -1498,37 +1519,4 @@ $(document).ready(
       $(".navbar-menu").toggleClass("is-active");
   });
 });
-
-
-
-// =================================================  CALLING API  ================================================
-
-// async function makeAPIcall() {
-//   await axios.get("/api/get_red_wines")
-//   await axios.get("/api/get_white_wines")
-//   await axios.get("/api/get_rose_wines")
-
-// }
-// async function getReds() {
-//   await axios.get("/api/get_red_wines")
-
-
-// }
-
-// async function getWhites() {
-//   await axios.get("/api/get_white_wines")
-
-// }
-
-// async function getRose() {
-//   await axios.get("/api/get_rose_wines")
-
-// }
-
-
-
-
-
-  
-    
 
