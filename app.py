@@ -12,8 +12,7 @@ from forms import ReviewForm, UserAddForm, LoginForm, UserEditForm, EditReviewFo
 from models import db, connect_db, User, Post, Wine, Favorite
 from results import WineResults
 from get_varietals import Varietals
-import asyncio
-from contextlib import suppress
+
 
 
 CURR_USER_KEY = "curr_user"
@@ -497,119 +496,6 @@ def add_header(req):
     req.headers['Cache-Control'] = 'public, max-age=0'
     return req
 
-# ===================================    PICK TYPE OF WINE    =====================================
-
-
-# @app.route('/wine_types')
-# def show_wine_types():
-#     """Show options for wine types to choose from"""
-    
-#     return render_template("wine_types.html")
-
-# ===================================    API CALLS    =====================================
-
-# @app.route('/api/get_red_wines')
-# def get_red_wines():
-#     """Get all top rated red wines from the API"""  
-    
-#     baseURL = "https://quiniwine.com/api/pub/wineCategory/tre/4000/1000"
-#     headers = {'authorization': API_KEY}
-    
-#     result = requests.get(f"{baseURL}", headers=headers)
-#     data = result.json()
-#     wine_array = data["items"]
-    
-#     if result.status_code != 200:
-#        return jsonify(message="There was an issue making an request for red wines to the API.") 
-   
-
-#     for wine in wine_array:
-#         new_wine = Wine(
-#             wine_id = wine["_id"],
-#             winery = wine["Winery"],
-#             country = wine["Country"],
-#             area = wine["Area"],
-#             vintage = wine["vintage"],
-#             varietal = wine["Varietal"],
-#             type = wine["Type"],
-#             name = wine["Name"],
-#             rating = wine["rating"]
-#         )
-        
-#         db.session.add(new_wine)
-#         db.session.commit()
- 
-#     return jsonify(message="Successful request. All red wines imported into database.")
-
-
-# @app.route('/api/get_white_wines')
-# def get_white_wines():
-#     """Get all top rated white wines from the API"""  
-
-#     baseURL = "https://quiniwine.com/api/pub/wineCategory/twh/5000/1000"
-#     headers = {'authorization': API_KEY}
-    
-#     result = requests.get(f"{baseURL}", headers=headers)
-#     data = result.json()
-#     wine_array = data["items"]
-    
-#     if result.status_code != 200:
-#        return jsonify(message="There was an issue making an request for white wines to the API.") 
-
-#     for wine in wine_array:
-#         new_wine = Wine(
-#             wine_id = wine["_id"],
-#             winery = wine["Winery"],
-#             country = wine["Country"],
-#             area = wine["Area"],
-#             vintage = wine["vintage"],
-#             varietal = wine["Varietal"],
-#             type = wine["Type"],
-#             name = wine["Name"],
-#             rating = wine["rating"]
-#         )
-        
-#         db.session.add(new_wine)
-#         db.session.commit()
- 
-#     return jsonify(message="Successful request. All white wines imported into database.")
-
-
-# @app.route('/api/get_rose_wines')
-# def get_rose_wines():
-#     """Get all top rated rose wines from the API"""  
-
-#     baseURL = "https://quiniwine.com/api/pub/wineCategory/tro/5000/1000"
-#     headers = {'authorization': API_KEY}
-    
-#     result = requests.get(f"{baseURL}", headers=headers)
-#     data = result.json()
-#     wine_array = data["items"]
-    
-#     # import pdb
-#     # pdb.set_trace()
-#     if result.status_code != 200:
-#        return jsonify(message="There was an issue making an request for rose wines to the API.") 
-    
-
-#     for wine in wine_array:
-#         new_wine = Wine(
-#             wine_id = wine["_id"],
-#             winery = wine["Winery"],
-#             country = wine["Country"],
-#             area = wine["Area"],
-#             vintage = wine["vintage"],
-#             varietal = wine["Varietal"],
-#             type = wine["Type"],
-#             name = wine["Name"],
-#             rating = wine["rating"]
-#         )
-        
-#         db.session.add(new_wine)
-#         db.session.commit()
- 
-#     return jsonify(message="Successful request. All rose wines imported into database.")
-
 
 # ===================================    HOME    =====================================
 
@@ -832,17 +718,14 @@ def send_results():
     sort_by = session['sort_by']
     wine_style = session['wine_style']
     wine_type = session['wine_type']
+    
+    # import pdb
+    # pdb.set_trace()
 
    
     wine_results = get_wine.wine_results(sort_by, varietals, wine_style, wine_type)
     
-    # session['wine_results'] = wine_results
-
-    # sliced = slice(0,10)
-    # sliced_results = wine_results[sliced]
-    
-    # import pdb
-    # pdb.set_trace()
+  
     user_reviews = []
     user_favorites = []
     
@@ -1008,6 +891,19 @@ def show_search_results():
     
 # ===================================    API CALLS    =====================================
 
+# ===================================    LOGOUT    =====================================
+
+
+@app.route('/import_wines')
+def import_wines():
+    
+    get_red_wines(1000, 0, 574)
+    get_white_wines(1000, 0, 598)
+    get_rose_wines(631, 0)
+    
+    return render_template('import_wines.html')
+
+
 def get_red_wines(amount, skip, remainder):
     """Get all top rated red wines from the API"""  
     
@@ -1129,10 +1025,8 @@ def get_rose_wines(amount, skip):
         
     print ("All rose wines have been pulled")
 
-        
-# get_red_wines(1000, 0, 574)
-# get_white_wines(1000, 0, 598)
-# get_rose_wines(631, 0)
+
+
 
 
 # asyncio.run(get_wines())
