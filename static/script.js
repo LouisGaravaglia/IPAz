@@ -549,6 +549,7 @@ $(document).ready(async function() {
     const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
     const sortedWine = sortWine(wineResults, sortByFilters)
     const numToPage = 10;
+    console.log(wineResults.length);
 
     paginatedWine = paginate(numToPage, sortedWine)
 
@@ -1311,6 +1312,8 @@ $(document).ready(async function() {
   const address = document.location.href;
 
   if (address.includes("/search")) {
+    $(".progress-bar-container").toggleClass("hidden")
+
     const searchValue = sessionStorage.getItem('searchValue');
     const res = await axios.get(`/search/${searchValue}`)
     const wineResults = res.data.wine_results;
@@ -1333,6 +1336,8 @@ $(document).ready(async function() {
     }
 
     populateWineResults(searchPaginatedWine[0], favs, reviews) 
+    $(".progress-bar-container").toggleClass("hidden")
+
   }
   
 });

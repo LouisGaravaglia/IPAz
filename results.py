@@ -71,28 +71,28 @@ class WineResults():
                     for varietal in varietals:
                         db_results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'White'))).all()
                         results.extend(db_results)
-                        
-                    for style in wine_style:
-                        if style == 'Single Varietals':
-                            for result in results:
-                                if re.search(r"^" + varietal + r"$", result.varietal):
-                                    rating = round(result.rating, 2)
-                                    wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
-                                    wine_results.append(wine)
-                                    
-                        elif style == 'Blends':
-                            for result in results:
-                                if not re.search(r"^" + varietal + r"$", result.varietal):
-                                    rating = round(result.rating, 2)
-                                    wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
-                                    wine_results.append(wine)
-                                
-                        else:
-                            for result in results:
+                    
+                for style in wine_style:
+                    if style == 'Single Varietals':
+                        for result in results:
+                            if re.search(r"^" + varietal + r"$", result.varietal):
                                 rating = round(result.rating, 2)
                                 wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                                 wine_results.append(wine)
-                
+                                
+                    elif style == 'Blends':
+                        for result in results:
+                            if not re.search(r"^" + varietal + r"$", result.varietal):
+                                rating = round(result.rating, 2)
+                                wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                                wine_results.append(wine)
+                            
+                    else:
+                        for result in results:
+                            rating = round(result.rating, 2)
+                            wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                            wine_results.append(wine)
+            
             ################# GETTING RESULTS FOR ROSE WINE TYPE #################
                         
             elif wine_type == 'Rose':
@@ -103,58 +103,59 @@ class WineResults():
                     for varietal in varietals:
                         db_results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
                         results.extend(db_results)
-                        
-                    for style in wine_style:
-                        if style == 'Single Varietals':
-                            for result in results:
-                                if re.search(r"^" + varietal + r"$", result.varietal):
-                                    rating = round(result.rating, 2)
-                                    wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
-                                    wine_results.append(wine)
-                                    
-                        elif style == 'Blends':
-                            for result in results:
-                                if not re.search(r"^" + varietal + r"$", result.varietal):
-                                    rating = round(result.rating, 2)
-                                    wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
-                                    wine_results.append(wine)
-                                
-                        else:
-                            for result in results:
+                    
+                for style in wine_style:
+                    if style == 'Single Varietals':
+                        for result in results:
+                            if re.search(r"^" + varietal + r"$", result.varietal):
                                 rating = round(result.rating, 2)
                                 wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                                 wine_results.append(wine)
-                    
+                                
+                    elif style == 'Blends':
+                        for result in results:
+                            if not re.search(r"^" + varietal + r"$", result.varietal):
+                                rating = round(result.rating, 2)
+                                wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                                wine_results.append(wine)
+                            
+                    else:
+                        for result in results:
+                            rating = round(result.rating, 2)
+                            wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                            wine_results.append(wine)
+                
             ################# GETTING RESULTS FOR ALL WINE TYPES #################
 
             elif wine_type == 'All of the above':
+                results = []
                 if varietals == ['All']:
-                    varietal_list = varietal_cls.get_all_varietals()
-                    varietals = varietal_list["all"]
-                
-                for varietal in varietals:
-                    results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).all()
-                    
-                    for style in wine_style:
-                        if style == 'Single Varietals':
-                            for result in results:
-                                if re.search(r"^" + varietal + r"$", result.varietal):
-                                    rating = round(result.rating, 2)
-                                    wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
-                                    wine_results.append(wine)
-                                    
-                        elif style == 'Blends':
-                            for result in results:
-                                if not re.search(r"^" + varietal + r"$", result.varietal):
-                                    rating = round(result.rating, 2)
-                                    wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
-                                    wine_results.append(wine)
-                                
-                        else:
-                            for result in results:
+                    results = Wine.query.all()
+                else:
+                    for varietal in varietals:
+                        db_results = Wine.query.filter(Wine.varietal.ilike(f'%{varietal}%')).all()
+                        results.extend(db_results)
+            
+                for style in wine_style:
+                    if style == 'Single Varietals':
+                        for result in results:
+                            if re.search(r"^" + varietal + r"$", result.varietal):
                                 rating = round(result.rating, 2)
                                 wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                                 wine_results.append(wine)
+                                
+                    elif style == 'Blends':
+                        for result in results:
+                            if not re.search(r"^" + varietal + r"$", result.varietal):
+                                rating = round(result.rating, 2)
+                                wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                                wine_results.append(wine)
+                            
+                    else:
+                        for result in results:
+                            rating = round(result.rating, 2)
+                            wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                            wine_results.append(wine)
                 
         ################# REMOVING DUPLICATES #################
         
