@@ -12,6 +12,8 @@
 var paginatedWine;
 var unPaginatedWine;
 var searchPaginatedWine;
+var favs;
+var reviews;
 
 
 // =================================================  REFRESH HOME PAGE WITH BACKSPACE  ================================================
@@ -55,7 +57,6 @@ const address = document.location.href;
   if (!address.includes("/search") && !address.includes("/show_results") && !address.includes("/favorites") && !address.includes("/reviews") && !address.includes("/user") && !address.includes("/signup") && !address.includes("/login")) {
    const sortByArray = []
    sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
-    // $(".progress-bar-container").toggleClass("hidden")
 
   const response = await axios.get('/get_varietals')
   const redVarietals = response.data.red_varietals;
@@ -358,8 +359,6 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
  */
 function paginateAndPopulate(numToPage, wineResults, favs, reviews){
   paginatedWine = paginate(numToPage, wineResults)
-  sessionStorage.setItem("favs", JSON.stringify(favs))
-  sessionStorage.setItem("reviews", JSON.stringify(reviews))
   sessionStorage.setItem("currentPage", 0)
 
   // ##### CONDITIONALS FOR PAGINATION NEXT AND PREVIOUS BUTTONS
@@ -541,14 +540,11 @@ $(document).ready(async function() {
 
   if (address.includes("/show_results")) {
     $(".progress-bar-container").toggleClass("hidden")
-    const allVarietals = JSON.parse(sessionStorage.getItem("allVarietals"))
     const res = await axios.get(`/show_results/json`)
     const wineResults = res.data.wines;
-    const favs = res.data.user_favorites;
-    const reviews = res.data.user_reviews;
+    favs = res.data.user_favorites;
+    reviews = res.data.user_reviews;
     unPaginatedWine = wineResults;
-    sessionStorage.setItem("favs", JSON.stringify(favs))
-    sessionStorage.setItem("reviews", JSON.stringify(reviews))
     sessionStorage.setItem("currentPage", 0)
     const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
     const sortedWine = sortWine(wineResults, sortByFilters)
@@ -578,8 +574,6 @@ $(document).ready(async function() {
  */
 $("#main-pagination").on("click", ".main-pagination-next", function() {
   const currentPage = sessionStorage.getItem("currentPage");
-  const favs = JSON.parse(sessionStorage.getItem("favs"));
-  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
   const nextPage = parseInt(currentPage) + 1;
   sessionStorage.setItem("currentPage", nextPage)
 
@@ -603,8 +597,6 @@ $("#main-pagination").on("click", ".main-pagination-next", function() {
  */
 $("#main-pagination").on("click", ".main-pagination-previous", function() {
   const currentPage = sessionStorage.getItem("currentPage");
-  const favs = JSON.parse(sessionStorage.getItem("favs"));
-  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
   let previousPage = parseInt(currentPage) - 1;
 
   if (previousPage <= 0) {
@@ -699,16 +691,14 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
     const icon = $(`#fav-box-${wineId}`)
     const json = await axios.post(`/user/add_favorite/${wineId}`)
     const noUserObj = json.data
-    const favs = json.data.favs
-    const reviews = json.data.reviews
-    sessionStorage.setItem("favs", JSON.stringify(favs))
-    sessionStorage.setItem("reviews", JSON.stringify(reviews))
-
+  
     if (Object.keys(noUserObj).length == 1) {
       flashMessage(noUserObj)
   
     } else {
       toggleStar(icon, wineId)
+      favs = json.data.favs
+      reviews = json.data.reviews
     } 
 
   } else if (target.tagName == "path") {
@@ -716,16 +706,14 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
     const icon = $(`#fav-box-${wineId}`)
     const json = await axios.post(`/user/add_favorite/${wineId}`)
     const noUserObj = json.data
-    const favs = json.data.favs
-    const reviews = json.data.reviews
-    sessionStorage.setItem("favs", JSON.stringify(favs))
-    sessionStorage.setItem("reviews", JSON.stringify(reviews))
-
+ 
     if (Object.keys(noUserObj).length == 1) {
       flashMessage(noUserObj)
        
     } else {
       toggleStar(icon, wineId)
+      favs = json.data.favs
+      reviews = json.data.reviews
 
     }
 
@@ -734,16 +722,14 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
     const icon = $(`#fav-box-${wineId}`)
     const json = await axios.post(`/user/add_favorite/${wineId}`)
     const noUserObj = json.data
-    const favs = json.data.favs
-    const reviews = json.data.reviews
-    sessionStorage.setItem("favs", JSON.stringify(favs))
-    sessionStorage.setItem("reviews", JSON.stringify(reviews))
-
+    
     if (Object.keys(noUserObj).length == 1) { 
       flashMessage(noUserObj)
 
     } else {
       toggleStar(icon, wineId)
+      favs = json.data.favs
+      reviews = json.data.reviews
     } 
 
   } else if (target.tagName == "svg") {
@@ -751,16 +737,14 @@ $("#wine-results").on("click", ".favorite-button", async function(e) {
       const icon = $(`#fav-box-${wineId}`)
       const json = await axios.post(`/user/add_favorite/${wineId}`)
       const noUserObj = json.data
-      const favs = json.data.favs
-      const reviews = json.data.reviews
-      sessionStorage.setItem("favs", JSON.stringify(favs))
-      sessionStorage.setItem("reviews", JSON.stringify(reviews))
 
     if (Object.keys(noUserObj).length == 1) { 
       flashMessage(noUserObj)
 
     } else {
       toggleStar(icon, wineId)
+      favs = json.data.favs
+      reviews = json.data.reviews
     }
   }
 })
@@ -802,8 +786,8 @@ $("#wine-results").on("click", ".review-delete", async function(e) {
     const res = await axios.get(`/user/reviews/${wineId}/delete`)
     const wine_results = await axios.get(`/wine_style/""`)
     const wines = wine_results.data.wine_results;
-    const favs = wine_results.data.user_favorites;
-    const reviews = wine_results.data.reviews;
+    favs = wine_results.data.user_favorites;
+    reviews = wine_results.data.reviews;
     const fav_wines = res.data.fav_wines;
     const wine_reviews = res.data.wine_reviews;
 
@@ -815,8 +799,8 @@ $("#wine-results").on("click", ".review-delete", async function(e) {
     const res = await axios.get(`/user/reviews/${wineId}/delete`)
     const wine_results = await axios.get(`/wine_style/""`)
     const wines = wine_results.data.wine_results;
-    const favs = wine_results.data.user_favorites;
-    const reviews = wine_results.data.reviews;
+    favs = wine_results.data.user_favorites;
+    reviews = wine_results.data.reviews;
     const fav_wines = res.data.fav_wines;
     const wine_reviews = res.data.wine_reviews;
 
@@ -828,8 +812,8 @@ $("#wine-results").on("click", ".review-delete", async function(e) {
     const res = await axios.get(`/user/reviews/${wineId}/delete`)
     const wine_results = await axios.get(`/wine_style/""`)
     const wines = wine_results.data.wine_results;
-    const favs = wine_results.data.user_favorites;
-    const reviews = wine_results.data.reviews;
+    favs = wine_results.data.user_favorites;
+    reviews = wine_results.data.reviews;
     const fav_wines = res.data.fav_wines;
     const wine_reviews = res.data.wine_reviews;
 
@@ -841,8 +825,8 @@ $("#wine-results").on("click", ".review-delete", async function(e) {
     const res = await axios.get(`/user/reviews/${wineId}/delete`)
     const wine_results = await axios.get(`/wine_style/""`)
     const wines = wine_results.data.wine_results;
-    const favs = wine_results.data.user_favorites;
-    const reviews = wine_results.data.reviews;
+    favs = wine_results.data.user_favorites;
+    reviews = wine_results.data.reviews;
     const fav_wines = res.data.fav_wines;
     const wine_reviews = res.data.wine_reviews;
 
@@ -914,8 +898,8 @@ $("#wine-type-checkboxes").on("click", ".panel-block", async function(e) {
     unPaginatedWine = wineResults;
     const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
     const sortedWine = sortWine(wineResults, sortByFilters)
-    const favs = response.data.user_favorites;
-    const reviews = response.data.reviews;
+    favs = response.data.user_favorites;
+    reviews = response.data.reviews;
     const numToPage = 10;
     
     paginateAndPopulate(numToPage, sortedWine, favs, reviews)
@@ -947,8 +931,8 @@ $("#wine-style-checkboxes").on("click", ".panel-block", async function(e) {
     unPaginatedWine = wineResults;
     const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
     const sortedWine = sortWine(wineResults, sortByFilters)
-    const favs = response.data.user_favorites;
-    const reviews = response.data.reviews;
+    favs = response.data.user_favorites;
+    reviews = response.data.reviews;
     const numToPage = 10;
 
     paginateAndPopulate(numToPage, sortedWine, favs, reviews)
@@ -1155,8 +1139,6 @@ $("#sort-by-checkboxes").on("click", ".panel-block", async function(e) {
     toggleOpposites(target)
     const sortFilters = JSON.parse(sessionStorage.getItem("sortBy"))
     const wineResults = unPaginatedWine;
-    const favs = JSON.parse(sessionStorage.getItem("favs"));
-    const reviews = JSON.parse(sessionStorage.getItem("reviews"));
     const numToPage = 10;
     const sortedWine = sortWine(wineResults, sortFilters)
     console.log(wineResults.length);
@@ -1243,14 +1225,11 @@ $("#varietals-modal").on("click", ".varietals", async function(e) {
 $("#modal").on("click", ".toggle-off", async function() {
   const modal = $(".modal");
   const response = await axios.get(`/wine_style/""`)
-  // $(".progress-bar-container").toggleClass("hidden")
   modal.toggleClass("is-active")
   const wineResults = response.data.wine_results;
   unPaginatedWine = wineResults;
   const sortByFilters = JSON.parse(sessionStorage.getItem("sortBy"))
   const sortedWine = sortWine(wineResults, sortByFilters)
-  const favs = JSON.parse(sessionStorage.getItem("favs"));
-  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
   const numToPage = 10;
   paginateAndPopulate(numToPage, sortedWine, favs, reviews)
 })
@@ -1335,8 +1314,8 @@ $(document).ready(async function() {
     const searchValue = sessionStorage.getItem('searchValue');
     const res = await axios.get(`/search/${searchValue}`)
     const wineResults = res.data.wine_results;
-    const favs = res.data.favs;
-    const reviews = res.data.reviews;
+    favs = res.data.favs;
+    reviews = res.data.reviews;
     
     if (wineResults.length == 0) {
       const message = {"message":"No results"}
@@ -1345,8 +1324,6 @@ $(document).ready(async function() {
 
     searchPaginatedWine = paginate(9, wineResults)
 
-    sessionStorage.setItem("favs", JSON.stringify(favs))
-    sessionStorage.setItem("reviews", JSON.stringify(reviews))
     sessionStorage.setItem("searchCurrentPage", 0)
 
     $(".search-pagination-previous").toggleClass("hidden")
@@ -1369,8 +1346,6 @@ $(document).ready(async function() {
  */
 $("#search-pagination").on("click", ".search-pagination-next", function() {
   const currentPage = sessionStorage.getItem("searchCurrentPage");
-  const favs = JSON.parse(sessionStorage.getItem("favs"));
-  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
   const nextPage = parseInt(currentPage) + 1;
   sessionStorage.setItem("searchCurrentPage", nextPage)
 
@@ -1395,8 +1370,6 @@ $("#search-pagination").on("click", ".search-pagination-next", function() {
  */
 $("#search-pagination").on("click", ".search-pagination-previous", function() {
   const currentPage = sessionStorage.getItem("searchCurrentPage");
-  const favs = JSON.parse(sessionStorage.getItem("favs"));
-  const reviews = JSON.parse(sessionStorage.getItem("reviews"));
   let previousPage = parseInt(currentPage) - 1;
 
   if (previousPage <= 0) {
@@ -1413,107 +1386,6 @@ $("#search-pagination").on("click", ".search-pagination-previous", function() {
   populateWineResults(searchPaginatedWine[previousPage], favs, reviews) 
 
 })
-
-
-
-// =================================================  FAVORITE BUTTON / SEARCH RESULTS PAGE  ================================================
-
-
-
-/**
- * Click event for the favorite star on the search result wine cards to then call
- * logSearchFav() to eventually replace the wine card with the bolded favorite star
- * @event document#click
- * @type {object}
- * @property {element} 
- */
- $("#search-results").on("click", ".favorite-button", async function(e) {
-
-    const target = e.target;
-
-    if (target.tagName == "BUTTON") {
-      let wineId = target.children[0].children[0].dataset.id;
-      const icon = $(`#fav-box-${wineId}`)
-      const json = await axios.post(`/user/add_favorite/${wineId}`)
-      const noUserObj = json.data
-      const favs = json.data.favs
-      const reviews = json.data.reviews
-      sessionStorage.setItem("favs", favs)
-      sessionStorage.setItem("reviews", reviews)
-
-    if (Object.keys(noUserObj).length == 1) {
-      
-      flashMessage(noUserObj)
-       
-    } else {
-      
-      toggleStar(icon, wineId)
-
-    }
-
-    } else if (target.tagName == "path") {
-    let wineId = target.parentElement.dataset.id;
-      const icon = $(`#fav-box-${wineId}`)
-      const json = await axios.post(`/user/add_favorite/${wineId}`)
-      const noUserObj = json.data
-      const favs = json.data.favs
-      const reviews = json.data.reviews
-      sessionStorage.setItem("favs", favs)
-      sessionStorage.setItem("reviews", reviews)
-
-    if (Object.keys(noUserObj).length == 1) {
-      
-      flashMessage(noUserObj)
-       
-    } else {
-      
-      toggleStar(icon, wineId)
-
-    };
-
-    } else if (target.tagName == "SPAN") {
-      let wineId = target.parentElement.parentElement.dataset.id;
-      const icon = $(`#fav-box-${wineId}`)
-      const json = await axios.post(`/user/add_favorite/${wineId}`)
-      const noUserObj = json.data
-      const favs = json.data.favs
-      const reviews = json.data.reviews
-      sessionStorage.setItem("favs", favs)
-      sessionStorage.setItem("reviews", reviews)
-
-    if (Object.keys(noUserObj).length == 1) {
-      
-      flashMessage(noUserObj)
-       
-    } else {
-      
-      toggleStar(icon, wineId)
-
-    }
-
-    } else if (target.tagName == "svg") {
-      let wineId = target.dataset.id;
-      const icon = $(`#fav-box-${wineId}`)
-      const json = await axios.post(`/user/add_favorite/${wineId}`)
-      const noUserObj = json.data
-      const favs = json.data.favs
-      const reviews = json.data.reviews
-      sessionStorage.setItem("favs", favs)
-      sessionStorage.setItem("reviews", reviews)
-
-    if (Object.keys(noUserObj).length == 1) {
-      
-      flashMessage(noUserObj)
-       
-    } else {
-      
-      toggleStar(icon, wineId)
-
-    }
-
-    }
-
-  })
 
 
 // =================================================  NAVBAR  ================================================

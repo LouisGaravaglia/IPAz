@@ -262,8 +262,12 @@ def view_favorites():
     user_reviews = []
     for post in g.user.posts:
         user_reviews.append(post.wine_id)
+        
+    def round_rating(rating):
+        return round(rating, 2)
+    
 
-    return render_template("favorites.html", faved_wines=faved_wines, user_reviews=user_reviews)
+    return render_template("favorites.html", faved_wines=faved_wines, user_reviews=user_reviews, round_rating=round_rating)
 
 
 
@@ -332,8 +336,11 @@ def view_reviews():
     user_favs = g.user.fav_wines
     for fav in user_favs:
         user_favorites.append(fav.id) 
+        
+    def round_rating(rating):
+        return round(rating, 2)
    
-    return render_template('view_reviews.html', wine_reviews=wine_reviews, user_favorites=user_favorites)
+    return render_template('view_reviews.html', wine_reviews=wine_reviews, user_favorites=user_favorites, round_rating=round_rating)
 
 
 
