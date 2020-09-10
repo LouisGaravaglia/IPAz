@@ -431,18 +431,31 @@ def homepage():
     
     session['varietals'] = ['All']
     session['filters'] = ['Red', 'White', 'Rose', 'All of the above', 'Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
-    session['sort_by'] = ['None']
     session['wine_type'] = ['All of the above']
     session['wine_style'] = ['All']
     session['wine_type_options'] = ['Red', 'White', 'Rose']
     session['wine_style_options'] = ['Blends', 'Single Varietals']
     session['sort_by_options'] = ['Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
  
-    all_varietals = [wine.varietal.split(",") for wine in Wine.query.all()]
-
-    varietals = varietal_cls.get_all_varietals(all_varietals)
   
-    return render_template("new_home.html", varietals=varietals)
+    return render_template("new_home.html")
+
+
+# @app.route('/')
+# def homepage():
+#     """Show homepage"""
+    
+#     session['varietals'] = ['All']
+#     session['filters'] = ['Red', 'White', 'Rose', 'All of the above', 'Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
+#     session['wine_type'] = ['All of the above']
+#     session['wine_style'] = ['All']
+#     session['wine_type_options'] = ['Red', 'White', 'Rose']
+#     session['wine_style_options'] = ['Blends', 'Single Varietals']
+#     session['sort_by_options'] = ['Rating (Highest)', 'Rating (Lowest)', 'Vintage (Oldest)', 'Vintage (Youngest)', 'Winery (Alphabetically)']
+ 
+#     varietals = varietal_cls.get_all_varietals(session['wine_type'])
+  
+#     return render_template("new_home.html", varietals=varietals)
 
 
 
@@ -483,7 +496,6 @@ def get_wine_style_choices(new_wine_style):
 
 
     varietals = session['varietals']
-    sort_by = session['sort_by']
     wine_type = session['wine_type']
     wine_style = session['wine_style']
 
@@ -504,7 +516,7 @@ def get_wine_style_choices(new_wine_style):
         
     session['wine_style'] = wine_style    
 
-    wine_results = get_wine.wine_results(sort_by, varietals, wine_style, wine_type)
+    wine_results = get_wine.wine_results(varietals, wine_style, wine_type)
        
     if wine_results == []:
         wine_results = ['No Results']   
@@ -536,11 +548,91 @@ def get_varietals():
 
 
     selected_varietals = session['varietals']
-    wine_type = session['wine_type']
+    # wine_type = session['wine_type']
+    
+    
+    # if wine_type == 'Red':
+    
+    # if wine_type == 'All of the above':
+    # if wine_type == 'All of the above':
+              
 
-    varietals = varietal_cls.get_all_varietals(wine_type)
+    varietals = varietal_cls.get_all_varietals()
+    
+    red_varietals = varietals["red"]
+    white_varietals = varietals["white"]
+    rose_varietals = varietals["rose"]
+    all_varietals = varietals["all"]
 
-    return jsonify(varietals=varietals, selected_varietals=selected_varietals)
+    return jsonify(red_varietals=red_varietals, white_varietals=white_varietals, rose_varietals=rose_varietals, all_varietals=all_varietals, selected_varietals=selected_varietals)
+
+
+
+
+# @app.route('/get_varietals')
+# def get_varietals():
+#     """Sending all varietal options that exist for a given wine type 
+#     so user can choose which ones they want to view"""
+
+
+#     selected_varietals = session['varietals']
+#     wine_type = session['wine_type']
+#     varietals = []
+    
+    
+#     varietals = varietal_cls.get_all_varietals()
+    
+#     red_varietals = varietals["red"]
+#     white_varietals = varietals["white"]
+#     rose_varietals = varietals["rose"]
+#     all_varietals = varietals["all"]
+    
+#     if 'Red' in wine_type:
+#         for item in red_varietals:
+#             varietals.append(item)
+        
+#     if 'White' in wine_type:
+#         for item in white_varietals:
+#             varietals.append(item)
+        
+#     if 'Rose' in wine_type:
+#         for item in rose_varietals:
+#             varietals.append(item)
+            
+#     if (not 'Red' in wine_type and not 'White' in wine_type and not 'Rose' in wine_type) or 'All of the above' in wine_type:
+#         for item in all_varietals:
+#             varietals.append(item)
+              
+
+
+
+#     return jsonify(varietals selected_varietals=selected_varietals)
+
+
+
+@app.route('/get_selected_varietals')
+def get_selected_varietals():
+    """Sending all varietal options that exist for a given wine type 
+    so user can choose which ones they want to view"""
+
+    selected_varietals = session['varietals']
+    wine_types = session['wine_type']
+
+    return jsonify(selected_varietals=selected_varietals, wine_types=wine_types)
+
+
+# @app.route('/get_varietals')
+# def get_varietals():
+#     """Sending all varietal options that exist for a given wine type 
+#     so user can choose which ones they want to view"""
+
+
+#     selected_varietals = session['varietals']
+#     wine_type = session['wine_type']
+
+#     varietals = varietal_cls.get_all_varietals(wine_type)
+
+#     return jsonify(varietals=varietals, selected_varietals=selected_varietals)
 
 # ===================================    RECEIVING VARIETAL PICKS   =====================================
     
@@ -580,14 +672,17 @@ def show_results():
 @app.route('/show_results/json')
 def send_results():
     """Sending the wine results to the front end to be paginated and appended."""
-
+    
     
     varietals = session['varietals']
-    sort_by = session['sort_by']
     wine_style = session['wine_style']
     wine_type = session['wine_type']
     
-    wine_results = get_wine.wine_results(sort_by, varietals, wine_style, wine_type)
+    # if (varietals == 'All') {
+    #     varietals = 
+    # }
+    
+    wine_results = get_wine.wine_results(varietals, wine_style, wine_type)
     
     user_reviews = []
     user_favorites = []
@@ -657,7 +752,6 @@ def import_wines():
     """Calls three functions which will make calls to the Quini API and store the
     wine in the database."""
 
-    
     get_red_wines(1000, 0, 574)
     get_white_wines(1000, 0, 598)
     get_rose_wines(631, 0)
@@ -728,7 +822,6 @@ def get_white_wines(amount, skip, remainder):
         
         skip = skip + 1000
         
-       
         headers = {'authorization': API_KEY}
         
         result = requests.get(f"{baseURL}", headers=headers)

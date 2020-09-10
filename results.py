@@ -12,63 +12,66 @@ from models import db, connect_db, User, Post, Wine, Favorite
     
 class WineResults():
     
-    def wine_results(self, sort_by, varietals, wine_style, wine_type_list):
-        """Returns wine results if the parameters include:
-
-        'All of the above' for wine type and 'Single Varietals' for wine style.
-        
-        Also, takes in the sort_by filter the user chose and will filter the results from a SQL Alchemy query 
-        
-        to then be returned based of the varietals chosen.
+    def wine_results(self, varietals, wine_style, wine_type_list):
+        """Returns wine results based of user selected varietals,
+        wine style, and wine type.
         """     
         
         # import pdb
         # pdb.set_trace()
         
         varietal_cls = Varietals()
-        
         wine_results = []
         
-        if varietals == ['All']:
-            varietals = varietal_cls.get_all_varietals(wine_type_list)
+        
 
         for wine_type in wine_type_list:
         
             ################# GETTING RESULTS FOR RED WINE TYPE #################
             
             if wine_type == 'Red':
+                results = []
                 
-                for varietal in varietals:
-                    results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Red'))).all()
+                if varietals == ['All']:
+                    results = Wine.query.filter(Wine.type == 'Red').all()
                     
-                    for style in wine_style:
-                        if style == 'Single Varietals':
-                            for result in results:
-                                if re.search(r"^" + varietal + r"$", result.varietal):
-                                    rating = round(result.rating, 2)
-                                    wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
-                                    wine_results.append(wine)
-                                    
-                        elif style == 'Blends':
-                            for result in results:
-                                if not re.search(r"^" + varietal + r"$", result.varietal):
-                                    rating = round(result.rating, 2)
-                                    wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
-                                    wine_results.append(wine)
-                                
-                        else:
-                            for result in results:
+                else:
+                    for varietal in varietals:
+                        db_results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Red'))).all()
+                        results.extend(db_results)
+                    
+                for style in wine_style:
+                    if style == 'Single Varietals':
+                        for result in results:
+                            if re.search(r"^" + varietal + r"$", result.varietal):
                                 rating = round(result.rating, 2)
                                 wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
                                 wine_results.append(wine)
+                                
+                    elif style == 'Blends':
+                        for result in results:
+                            if not re.search(r"^" + varietal + r"$", result.varietal):
+                                rating = round(result.rating, 2)
+                                wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                                wine_results.append(wine)
+                            
+                    else:
+                        for result in results:
+                            rating = round(result.rating, 2)
+                            wine = {'ID':result.id, 'Rating':rating, 'Winery':result.winery, 'Country':result.country, 'Vintage':result.vintage, 'Area':result.area, 'Varietal':result.varietal, 'Type':result.type, 'Name':result.name}                  
+                            wine_results.append(wine)
             
             ################# GETTING RESULTS FOR WHITE WINE TYPE #################
                         
             elif wine_type == 'White':
-                
-                for varietal in varietals:
-                    results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'White'))).all()
-                    
+                results = []
+                if varietals == ['All']:
+                    results = Wine.query.filter(Wine.type == 'White').all()
+                else:
+                    for varietal in varietals:
+                        db_results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'White'))).all()
+                        results.extend(db_results)
+                        
                     for style in wine_style:
                         if style == 'Single Varietals':
                             for result in results:
@@ -93,10 +96,14 @@ class WineResults():
             ################# GETTING RESULTS FOR ROSE WINE TYPE #################
                         
             elif wine_type == 'Rose':
-                
-                for varietal in varietals:
-                    results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
-                    
+                results = []
+                if varietals == ['All']:
+                    results = Wine.query.filter(Wine.type == 'Red').all()
+                else:
+                    for varietal in varietals:
+                        db_results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
+                        results.extend(db_results)
+                        
                     for style in wine_style:
                         if style == 'Single Varietals':
                             for result in results:
@@ -121,6 +128,9 @@ class WineResults():
             ################# GETTING RESULTS FOR ALL WINE TYPES #################
 
             elif wine_type == 'All of the above':
+                if varietals == ['All']:
+                    varietal_list = varietal_cls.get_all_varietals()
+                    varietals = varietal_list["all"]
                 
                 for varietal in varietals:
                     results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%'))).all()
@@ -149,12 +159,16 @@ class WineResults():
         ################# REMOVING DUPLICATES #################
         
         wine_results = [dict(s) for s in set(frozenset(d.items()) for d in wine_results)]
+
+        # import pdb
+        # pdb.set_trace()
     
         return wine_results
     
     
     
     def search_results(self, search_term):
+        """Returns wine based off what keyword the user types into the search bar."""
         
         results = [] 
         wine_results = []
