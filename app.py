@@ -142,6 +142,9 @@ def profile_page():
     
     user = User.query.get_or_404(user_id)
     
+    def round_rating(rating):
+        return round(rating, 2)
+    
     if g.user.posts and g.user.fav_wines:
         reviews = g.user.posts
         num_of_reviews = len(reviews) 
@@ -152,7 +155,7 @@ def profile_page():
         most_recent = Favorite.query.filter(Favorite.user_id == user_id).order_by(Favorite.id.desc()).first()
         most_recent_fav = Wine.query.get_or_404(most_recent.wine_id)
         
-        return render_template("profile.html", user=user, num_of_favs=num_of_favs, num_of_reviews=num_of_reviews, top_rated_review=top_rated_review, top_rated_wine=top_rated_wine, most_recent_fav=most_recent_fav)
+        return render_template("profile.html", user=user, num_of_favs=num_of_favs, num_of_reviews=num_of_reviews, top_rated_review=top_rated_review, top_rated_wine=top_rated_wine, most_recent_fav=most_recent_fav, round_rating=round_rating)
    
     elif g.user.posts:
         reviews = g.user.posts
@@ -160,7 +163,7 @@ def profile_page():
         top_rated_review = Post.query.order_by(Post.rating.desc()).first()
         top_rated_wine = Wine.query.get_or_404(top_rated_review.wine_id)
         
-        return render_template("profile.html", user=user, num_of_reviews=num_of_reviews, top_rated_review=top_rated_review, top_rated_wine=top_rated_wine)
+        return render_template("profile.html", user=user, num_of_reviews=num_of_reviews, top_rated_review=top_rated_review, top_rated_wine=top_rated_wine, round_rating=round_rating)
     
     elif g.user.fav_wines:
         likes = g.user.fav_wines
@@ -168,7 +171,7 @@ def profile_page():
         most_recent = Favorite.query.filter(Favorite.user_id == user_id).order_by(Favorite.id.desc()).first()
         most_recent_fav = Wine.query.get_or_404(most_recent.wine_id)
         
-        return render_template("profile.html", user=user, num_of_favs=num_of_favs, most_recent_fav=most_recent_fav)
+        return render_template("profile.html", user=user, num_of_favs=num_of_favs, most_recent_fav=most_recent_fav, round_rating=round_rating)
 
     else:
     

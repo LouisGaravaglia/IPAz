@@ -71,7 +71,7 @@
 <div class="column is-half mt-5 pb-6">
   <div class="has-text-centered">
 <a href="/user/favorites"><h1 class="block-text">FAVORITES</h1></a>
-<a href="/user/favorites"><h2 class="profile-subtitle">Most recent favorite</h2></a>
+<a href="/user/favorites"><h2 class="profile-subtitle">Most Recent Favorite</h2></a>
 </div>
 
 {% if not most_recent_fav %}
@@ -101,7 +101,7 @@
     <p><strong>VINTAGE: </strong>{{most_recent_fav.vintage}}</p>
     <p><strong>VARIETAL: </strong>{{most_recent_fav.varietal}}</p>
     <p><strong>TYPE: </strong>{{most_recent_fav.type}}</p>
-    <p><strong>RATING: </strong>{{most_recent_fav.rating}}</p>
+    <p><strong>RATING: </strong>{{round_rating(most_recent_fav.rating)}}</p>
   </div>
 
 
@@ -144,7 +144,7 @@
     <p><strong>VINTAGE: </strong>{{top_rated_wine.vintage}}</p>
     <p><strong>VARIETAL: </strong>{{top_rated_wine.varietal}}</p>
     <p><strong>TYPE: </strong>{{top_rated_wine.type}}</p>
-    <p><strong>RATING: </strong>{{top_rated_wine.rating}}</p>
+    <p><strong>RATING: </strong>{{round_rating(top_rated_wine.rating)}}</p>
   </div>
 
 <hr class="dropdown-divider"> 
