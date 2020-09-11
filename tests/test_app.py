@@ -29,16 +29,12 @@ class FlaskTests(TestCase):
 
     def setUp(self):
         """Create test client, add sample data."""
-
         db.drop_all()
         db.create_all()
         app.config['TESTING'] = True
-        
         self.client = app.test_client()
         # CREATING A USER
-        self.u1 = User.signup(name="testname",
-                                    username="testusername",
-                                    password="testpassword",)
+        self.u1 = User.signup(name="testname", username="testusername", password="testpassword",)
         self.u1_id = 5555
         self.u1.id = self.u1_id
         db.session.commit()
@@ -51,6 +47,11 @@ class FlaskTests(TestCase):
         fav1 = Favorite(wine_id=wine1.id, user_id=self.u1_id)
         db.session.add(fav1)
         db.session.commit()
+        # ADDING A REVIEW FOR THE WINE
+        review1 = Post(rating=98, review="My first and most favorite wine", wine_id=wine1.id, user_id=self.u1_id)
+        db.session.add(review1)
+        db.session.commit()
+        
 
     def tearDown(self):
         resp = super().tearDown()
@@ -113,4 +114,14 @@ class FlaskTests(TestCase):
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
             self.assertIn('<h1 class="block-text">REVIEWS</h1>', html)
+            self.assertIn('<p><strong>NAME: </strong>first-wine</p>', html)
+            self.assertIn('<p><strong>WINERY: </strong>winery1</p>', html)
+            self.assertIn('<p><strong>COUNTRY: </strong>USA</p>', html)
+            self.assertIn('<p><strong>AREA: </strong>Santa Barbara</p>', html)
+            self.assertIn('<p><strong>VINTAGE: </strong>2020</p>', html)
+            self.assertIn('<p><strong>VARIETAL: </strong>Barbera</p>', html)
+            self.assertIn('<p><strong>TYPE: </strong>Red</p>', html)
+            self.assertIn('<p><strong>RATING: </strong>94.55</p>', html)
+            self.assertIn('<p><strong>MY RATING: </strong>98</p>', html)
+            self.assertIn('<p><strong>REVIEW: </strong>My first and most favorite wine</p>', html)
 
