@@ -1,22 +1,17 @@
 {% extends "base.html" %}
-
 {% block title %} FAVORITES {% endblock %}
-
-
 {% block content %}
 <div id="flash"></div>
-<!-- <h1 class="title is-1 has-text-grey has-text-centered mt-5 pb-2 new">MY FAVORITES</h1> -->
+
+<!-- ================================= TITLE ================================= -->
 
 <div class="has-text-centered mt-6">
 <h1 class="block-text">FAVORITES</h1>
-
 </div>
-
-    <!-- <div class="container is-fluid is-info">  
-    <hr>
-</div> -->
-
 <div class="columns my-5 mx-3 is-multiline" id="wine-results">
+
+<!-- =====================================  NO FAVORITES CONDITIONAL  =====================================  -->
+
  {% if faved_wines[0] == Undefined %}
     <section class="hero is-small is-light mt-6 mx-6">
   <div class="hero-body">
@@ -28,16 +23,15 @@
   </div>
 </section>
   {% else %}
-{% for wine in faved_wines %}
- 
 
+<!-- =====================================  WINE  =====================================  -->
+
+{% for wine in faved_wines %}
 <div class="column is-one-third">
   <article class="message is-info">
-  
   <div class="message-header">
     <p>{{wine.name}}</p>
   </div>
-
   <div class="message-body">
     <p><strong>NAME: </strong>{{wine.name}}</p>
     <p><strong>WINERY: </strong>{{wine.winery}}</p>
@@ -48,7 +42,6 @@
     <p><strong>TYPE: </strong>{{wine.type}}</p>
     <p><strong>RATING: </strong>{{round_rating(wine.rating)}}</p>
   </div>
-
     <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0">
       <button class="button is-text fav-button favorite-button" data-id="{{wine.id}}" type="submit">
@@ -58,7 +51,6 @@
                     </div>
         </span>
       </button>
-      
     </div>
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
       <a href="/user/review/{{wine.id}}" class="button is-text review-btn" data-id="{{wine.id}}">
@@ -72,14 +64,9 @@
       </a>
     </div>
   </div>
-
 </article>
-</div>
-
-  
+</div> 
 {% endfor %}
 {% endif %}
 </div>
-
-
 {% endblock %}

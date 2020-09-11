@@ -1,28 +1,18 @@
 {% extends 'base.html' %}
-
-{% block title %} REVIEW {% endblock %}
-
+{% block title %} EDIT REVIEW {% endblock %}
 {% block content %}
 
-<!-- =====================================  REVIEW  =====================================  -->
+<!-- =====================================  WINE  =====================================  -->
 
 <div class="columns-edit-review is-vcentered ">
   <div class="column-edit-review is-paddingless is-centered review-block">
-  
-
-
 <div class="has-text-centered mt-6">
 <h1 class="block-text-review">REVIEW</h1>
 </div>
- 
-
-
   <article class="message is-info form-container mx-6">
-  
   <div class="message-header">
     <p>{{original_post['Name']}}</p>
   </div>
-
   <div class="message-body">
     <p><strong>NAME: </strong>{{original_post['Name']}}</p>
     <p><strong>WINERY: </strong>{{original_post['Winery']}}</p>
@@ -34,10 +24,8 @@
     <p><strong>RATING: </strong>{{original_post['Rating']}}</p>
   </div>
 
-
-
-   
-
+<!-- =====================================  REVIEW  =====================================  -->
+  
 <hr class="dropdown-divider"> 
 <br>
  <div class=" has-text-info-dark ml-5">
@@ -45,73 +33,48 @@
     <p><strong>REVIEW: </strong>{{original_post['Post_review']}}</p>
   </div>
   <br>
-
-  
-
 </article>
-
-
-
-
-
 </div>
 
-<!-- <div class="column is-one-fifth"></div> -->
 <!-- =====================================  EDIT REVIEW FORM  =====================================  -->
 
-
-
-  <div class="column-edit-review is-paddingless edit-review-block">
-
+<div class="column-edit-review is-paddingless edit-review-block">
   <div class="has-text-centered pt-6">
-<h1 class="block-text-review-edit">EDIT REVIEW</h1>
-</div>
-
-<form method="POST" id="user_form">
-  {{ form.hidden_tag() }} 
-
-<div class="field form-container mx-6">
-  {{form.rating.label(class_="label")}}
-  <div class="control has-icons-left">
-    {{form.rating(class_="input", placeholder="Enter a rating between 1 - 100", type="text")}}
-  </div>
-  {% if form.rating.errors %}
-  {% for err in form.rating.errors %}
-      <p class="help is-danger">{{ err  }}</p>
-  {% endfor %}
-  {% endif %}
-</div>
-
-
-<div class="field form-container mx-6">
-  {{form.review.label(class_="label")}}
-  <div class="control has-icons-left">
-     {{form.review(class_="textarea", placeholder="Enter a review", rows="6")}}
-  </div>
-  {% if form.review.errors %}
-  {% for err in form.review.errors %}
-      <p class="help is-danger">{{ err  }}</p>
-  {% endfor %}
-  {% endif %}
-</div>
-
-
-<div class="field is-grouped mx-6 button-group">
-  <div class="control">
-    <button class="button is-link" type="submit">Submit</button>
-  </div>
-  <div class="control">
-    <button class="button is-link is-light"><a href="/user/reviews">Cancel</a></button>
-    
+    <h1 class="block-text-review-edit">EDIT REVIEW</h1>
+    </div>
+    <form method="POST" id="user_form">
+      {{ form.hidden_tag() }} 
+    <div class="field form-container mx-6">
+      {{form.rating.label(class_="label")}}
+      <div class="control has-icons-left">
+        {{form.rating(class_="input", placeholder="Enter a rating between 1 - 100", type="text")}}
+      </div>
+      {% if form.rating.errors %}
+      {% for err in form.rating.errors %}
+          <p class="help is-danger">{{ err  }}</p>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <div class="field form-container mx-6">
+      {{form.review.label(class_="label")}}
+      <div class="control has-icons-left">
+        {{form.review(class_="textarea", placeholder="Enter a review", rows="6")}}
+      </div>
+      {% if form.review.errors %}
+      {% for err in form.review.errors %}
+          <p class="help is-danger">{{ err  }}</p>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <div class="field is-grouped mx-6 button-group">
+      <div class="control">
+        <button class="button is-link" type="submit">Submit</button>
+      </div>
+      <div class="control">
+        <button class="button is-link is-light"><a href="/user/reviews">Cancel</a></button>
+      </div>
+    </div>
+    </form>
   </div>
 </div>
-</form>
-  </div>
-
-
-
-</div>
-
-
-
 {% endblock %}

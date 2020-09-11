@@ -1,16 +1,16 @@
 {% extends "base.html" %} {% block title %} HOME {% endblock %} {% block content
 %}
 
+<!-- ========================= HERO LANDING SECTION ========================= -->
+
 <section class="hero is-info is-bold is-fullheight-with-navbar">
   <div class="hero-body">
     <div class="container">
       <p class="hero-text">
-        
         Let's find you a new <span class="hero-block-text">wine</span> to try!
       </p>
     </div>
   </div>
-  
   <div class="has-text-centered">
   <a href="#wine-type"><i class="fas fa-chevron-down" id="landing-down-arrow"></i></a>
   </div>
@@ -18,24 +18,16 @@
 
 <!-- ========================= WINE TYPE ========================= -->
 
-<!-- <div class="container"> -->
   <div id="wine-type" class="wine-type-container has-text-centered">
-    
     <h3 class="title wine-type-title">Choose your wine type</h3>
     <div class="button-box has-text-centered">
     {% for type in session['wine_type_options'] %}
-    
       <button class="button is-info is-light is-rounded mt-3 mb-2 mx-2 wine-type">{{type}}</button>
     {% endfor %}
     </div>
   </div>
 
-  <!-- <div class="container is-fluid is-info">  
-    <hr>
-</div> -->
-
 <!-- ========================= VARIETALS ========================= -->
-
 
   <div class="varietals-container has-text-centered">
     <h3 class="title varietals-title">Choose your varietals</h3>
@@ -50,42 +42,27 @@
     </div>
   </div>
 
-    <!-- <div class="container is-fluid is-info">  
-    <hr>
-</div> -->
-
-
 <!-- ========================= SORT BY ========================= -->
 
   <div id="filter-by" class="filter-by-container has-text-centered sort-by-container">
     <h3 class="title sort-by-title">Sort your results</h3>
     <div class="button-box has-text-centered">
     {% for sort in session['sort_by_options'] %}
-
     <button
       class="button is-info is-light is-rounded mt-3 mb-2 mx-2 filter-by"
     >
       {{sort}}
     </button>
-
     {% endfor %}
     </div>
   </div>
 
-    <!-- <div class="container is-fluid is-info">  
-    <hr>
-</div> -->
-
-
 <!-- ========================= RESULTS BUTTON ========================= -->
      
-
   <div class="has-text-centered results-button" id="find-wine-btn">
      <h3 class="title results-btn-title">Find your wines</h3>
     <a href="/show_results" class="button is-info is-light results-arrow"
       ><i class="fas fa-long-arrow-alt-right"></i></a
     >
   </div>
-
   {% endblock %}
-<!-- </div> -->

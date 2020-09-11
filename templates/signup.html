@@ -1,81 +1,65 @@
 {% extends 'base.html' %}
-
 {% block title %} SIGN UP {% endblock %}
-
 {% block content %}
 
-
-
-
+<!-- ===============================  TITLE  ===============================  -->
 
 <div class="has-text-centered mt-6">
 <h1 class="block-text">SIGN UP</h1>
 </div>
 
+<!-- ===============================  SIGN UP FORM  ===============================  -->
+
 <div class="columns form-container">
   <div class="column is-one-third">
-    
   </div>
-
   <div class="column is-one-third">
-<form method="POST" id="user_form">
-  {{ form.hidden_tag() }} 
-<div class="field">
-{{form.name.label(class_="label")}}
-  <div class="control">
-    {{form.name(class_="input", type="text", placeholder="Enter your name")}}
+    <form method="POST" id="user_form">
+      {{ form.hidden_tag() }} 
+    <div class="field">
+    {{form.name.label(class_="label")}}
+      <div class="control">
+        {{form.name(class_="input", type="text", placeholder="Enter your name")}}
+      </div>
+      {% for err in form.name.errors %}
+          <p class="help is-danger">{{ err  }}</p>
+      {% endfor %}
+    </div>
+    <div class="field">
+      {{form.username.label(class_="label")}}
+      <div class="control has-icons-left">
+        {{form.username(class_="input", placeholder="Enter a username", type="text")}}
+        <span class="icon is-small is-left">
+          <i class="fas fa-user"></i>
+        </span>
+      </div>
+      {% for err in form.username.errors %}
+          <p class="help is-danger">{{ err }}</p>
+      {% endfor %}
+    </div>
+    <div class="field">
+      {{form.password.label(class_="label")}}
+      <div class="control has-icons-left">
+        {{form.password(class_="input", placeholder="Enter a password", type="text")}}
+        <span class="icon is-small is-left">
+          <i class="fas fa-lock"></i>
+        </span>
+      </div>
+      {% for err in form.password.errors %}
+          <p class="help is-danger">{{ err  }}</p>
+      {% endfor %}
+    </div>
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-link" type="submit">Submit</button>
+      </div>
+      <div class="control">
+        <button class="button is-link is-light"><a href="/">Cancel</a></button>
+      </div>
+    </div>
+    </form>
   </div>
-  {% for err in form.name.errors %}
-      <p class="help is-danger">{{ err  }}</p>
-  {% endfor %}
-</div>
-
-<div class="field">
-  {{form.username.label(class_="label")}}
-  <div class="control has-icons-left">
-    {{form.username(class_="input", placeholder="Enter a username", type="text")}}
-    <span class="icon is-small is-left">
-      <i class="fas fa-user"></i>
-    </span>
-  </div>
-  {% for err in form.username.errors %}
-      <p class="help is-danger">{{ err }}</p>
-  {% endfor %}
-</div>
-
-
-<div class="field">
-  {{form.password.label(class_="label")}}
-  <div class="control has-icons-left">
-     {{form.password(class_="input", placeholder="Enter a password", type="text")}}
-    <span class="icon is-small is-left">
-      <i class="fas fa-lock"></i>
-    </span>
-  </div>
-  {% for err in form.password.errors %}
-      <p class="help is-danger">{{ err  }}</p>
-  {% endfor %}
-</div>
-
-
-<div class="field is-grouped">
-  <div class="control">
-    <button class="button is-link" type="submit">Submit</button>
-  </div>
-  <div class="control">
-    <button class="button is-link is-light"><a href="/">Cancel</a></button>
-  </div>
-</div>
-</form>
-  </div>
-  
-
   <div class="column is-one-third">
   </div>
 </div>
-
-
-
-
-
 {% endblock %}

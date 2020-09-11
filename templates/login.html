@@ -1,82 +1,62 @@
 {% extends 'base.html' %}
-
-{% block title %} LOG IN {% endblock %}
-
+{% block title %} LOGIN {% endblock %}
 {% block content %}
-
-
-
 
 <!-- ================================= TITLE ================================= -->
 
 <div class="has-text-centered mt-6">
-<h1 class="block-text">LOGIN</h1>
-
+  <h1 class="block-text">LOGIN</h1>
 </div>
-    <!-- <div class="container is-fluid is-info">  
-    <hr>
-</div> -->
 
 <!-- ================================= USERNAME ================================= -->
 
 <div class="columns form-container">
   <div class="column is-one-third">
-    
   </div>
-
   <div class="column is-one-third">
-<form method="POST" id="user_form">
-  {{ form.hidden_tag() }} 
-
-<div class="field">
-  {{form.username.label(class_="label")}}
-  <div class="control has-icons-left">
-    {{form.username(class_="input", placeholder="Enter a username", type="text")}}
-    <span class="icon is-small is-left">
-      <i class="fas fa-user"></i>
-    </span>
-  </div>
-  {% for err in form.username.errors %}
-      <p class="help is-danger">{{ err  }}</p>
-  {% endfor %}
-</div>
+    <form method="POST" id="user_form">
+      {{ form.hidden_tag() }} 
+    <div class="field">
+      {{form.username.label(class_="label")}}
+      <div class="control has-icons-left">
+        {{form.username(class_="input", placeholder="Enter a username", type="text")}}
+        <span class="icon is-small is-left">
+          <i class="fas fa-user"></i>
+        </span>
+      </div>
+      {% for err in form.username.errors %}
+          <p class="help is-danger">{{ err  }}</p>
+      {% endfor %}
+    </div>
 
 <!-- ================================= PASSWORD ================================= -->
 
-<div class="field">
-  {{form.password.label(class_="label")}}
-  <div class="control has-icons-left">
-     {{form.password(class_="input", placeholder="Enter a password", type="text")}}
-    <span class="icon is-small is-left">
-      <i class="fas fa-lock"></i>
-    </span>
-  </div>
-  {% for err in form.password.errors %}
-      <p class="help is-danger">{{ err  }}</p>
-  {% endfor %}
-</div>
-
+    <div class="field">
+      {{form.password.label(class_="label")}}
+      <div class="control has-icons-left">
+        {{form.password(class_="input", placeholder="Enter a password", type="text")}}
+        <span class="icon is-small is-left">
+          <i class="fas fa-lock"></i>
+        </span>
+      </div>
+      {% for err in form.password.errors %}
+          <p class="help is-danger">{{ err  }}</p>
+      {% endfor %}
+    </div>
 
 <!-- ================================= BUTTONS ================================= -->
 
-<div class="field is-grouped" id="login-submit">
-  <div class="control">
-    <button class="button is-info" type="submit">Submit</button>
+    <div class="field is-grouped" id="login-submit">
+      <div class="control">
+        <button class="button is-info" type="submit">Submit</button>
+      </div>
+      <div class="control">
+        <button class="button is-info is-light"><a href="/">Cancel</a></button>
+      </div>
+    </div>
+    </form>
   </div>
-  <div class="control">
-    <button class="button is-info is-light"><a href="/">Cancel</a></button>
-  </div>
-</div>
-</form>
-  </div>
-
   <div class="column is-one-third">
   </div>
-
 </div>
-
-
-
-
-
 {% endblock %}

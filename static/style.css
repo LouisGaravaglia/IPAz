@@ -6,7 +6,6 @@ body {
   scroll-behavior: smooth;
 }
 
-
 /* use viewport-relative units to cover page fully */
 body {
   height: 100vh;
@@ -23,17 +22,13 @@ body {
   padding: 0;
 }
 
-
 /* ================================  NAVBAR  ================================  */
 
 .logo-navbar {
-  /* background-color: #fff; */
   display: inline;
   font-size: 2rem;
   font-family: 'Roboto', sans-serif;
   font-weight: 800;
-  /* padding: 1px 10px 1px; */
-  /* color: #3298dc; */
   color: #fff;
   margin: -15px 0;
 }
@@ -41,8 +36,6 @@ body {
 a {
     text-decoration: none !important;
 }
-
-
 
 /* ================================  ICONS  ================================  */
 
@@ -73,34 +66,15 @@ a {
   color: #3298dc;
 }
 
-
 .fa-chevron-down {
   font-size: 3rem;
   color: #fff;
   margin-bottom: 30px;
 }
 
-
 /* ================================  PAGE TITLES  ================================  */
 
-/* 
-.page-title {
-  font-size: 5vw;
-  color: #ffffff;  
-} */
-
-/* .block-text {
-  background-color: #7a7a7a;
-  display: inline;
-  font-size: 4rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 900;
-  padding: 13px 25px 10px;
-  color: #ffffff;
-} */
-
 .block-text {
-  /* background-color: #7a7a7a; */
   display: inline;
   font-size: 4rem;
   font-family: 'Roboto', sans-serif;
@@ -109,23 +83,17 @@ a {
   color: #a5d4f4;
 }
 
-
-
-
 /* ================================  WINE TYPE SECTION / LANDING PAGE  ================================  */
 
 .wine-type-container {
   background-color: #fff;
-  /* padding-bottom: 120px; */
   padding-top: 120px;
-  /* width: 100vw; */
 }
 
 .wine-type-title {
   font-size: 4rem;
   font-family: 'Roboto', sans-serif;
   font-weight: 900;
-  /* color: #3198db; */
   color: #a5d4f4;
 }
 
@@ -134,24 +102,11 @@ a {
   padding-bottom: 120px;
 }
 
-/* .wine-type-span {
-  background-color: #3298dc;
-  display: inline;
-  font-size: 3rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-  padding: 5px 15px 5px;
-  color: #ffffff;
-} */
-
-
 /* ================================  VARIETALS / LANDING PAGE  ================================  */
 
 .varietals-container {
   background-color: #a5d4f4;
-  /* padding-top: 120px; */
   padding: 120px 40px 0;
-  /* width: 100vw; */
 }
 
 .varietals-title {
@@ -166,7 +121,6 @@ a {
 .sort-by-container {
   background-color: #fff;
   padding-top: 120px;
-  /* width: 100vw; */
 }
 
 .sort-by-title {
@@ -175,8 +129,6 @@ a {
   font-weight: 900;
   color: #a5d4f4;
 }
-
-
 
 /* ================================  RESULTS BUTTON / LANDING PAGE  ================================  */
 
@@ -191,7 +143,6 @@ a {
   font-family: 'Roboto', sans-serif;
   font-weight: 900;
   color: #fff;
-  
 }
 
 .results-arrow {
@@ -202,9 +153,6 @@ a {
 .fa-long-arrow-alt-right {
   font-size: 5rem;
 }
-
-
-
 
 /* ================================  SORT SIDE BAR / RESULTS PAGE  ================================  */
 
@@ -305,7 +253,6 @@ a {
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
   white-space: nowrap;
-  /* color: #3198db */
   color: #fff;
 }
 
@@ -373,10 +320,6 @@ flex: 50%;
   cursor: pointer;
 }
 
-/* #search-bar-box{
-
-} */
-
 /* ================================  PROGRESS BAR  ================================  */
 
 .progress-bar-container {
@@ -386,7 +329,6 @@ flex: 50%;
   z-index: 1;
   background-color: rgba(255, 255, 255, .8)
 }
-
 
 .progress-bar-box { 
   position: fixed;
@@ -410,6 +352,3 @@ flex: 50%;
   display: block;
   margin: 0 auto;
 }
-
-
-

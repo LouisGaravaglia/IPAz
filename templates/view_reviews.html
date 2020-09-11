@@ -1,19 +1,15 @@
 {% extends "base.html" %}
-
 {% block title %} VIEW REVIEWS {% endblock %}
-
-
 {% block content %}
 <div id="flash"></div>
-<!-- <h1 class="title is-1 has-text-grey has-text-centered mt-5 pb-2 new">MY REVIEWS</h1> -->
-    <div class="has-text-centered mt-6">
-<h1 class="block-text">REVIEWS</h1>
 
+<!-- ===============================  TITLE  ===============================  -->
+
+<div class="has-text-centered mt-6">
+  <h1 class="block-text">REVIEWS</h1>
 </div>
-    
-    <!-- <div class="container is-fluid is-info">  
-    <hr>
-</div> -->
+
+<!-- ===============================  CONDITIONAL IF THERE ARE NO REVIEWS  ===============================  -->
 
 <div class="columns my-5 mx-3 is-multiline" id="wine-results">
  {% if wine_reviews[0] == Undefined %}
@@ -26,17 +22,16 @@
     </div>
   </div>
 </section>
-  {% else %}
-{% for wine in wine_reviews %}
- 
 
+<!-- ===============================  WINE  ===============================  -->
+
+{% else %}
+{% for wine in wine_reviews %}
 <div class="column is-one-third">
   <article class="message is-info">
-  
   <div class="message-header">
     <p>{{wine['Name']}}</p>
   </div>
-
   <div class="message-body">
     <p><strong>NAME: </strong>{{wine['Name']}}</p>
     <p><strong>WINERY: </strong>{{wine['Winery']}}</p>
@@ -47,9 +42,6 @@
     <p><strong>TYPE: </strong>{{wine['Type']}}</p>
     <p><strong>RATING: </strong>{{round_rating(wine['Rating'])}}</p>
   </div>
-
-
-
     <div class="columns">
     <div class="column is-half has-text-centered mx-0 my-0">
       <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
@@ -65,9 +57,7 @@
         {% endif %}
         </span>
       </button>
-      
     </div>
-
     <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
     <a href="/user/review/{{wine['ID']}}" class="button is-text review-btn" data-id="{{wine['ID']}}">
         <span class="icon review-btn">
@@ -75,40 +65,28 @@
         </span>
       </a>
     </div>
-
   </div>
 
 <!-- ==================================  USER REVIEW  ================================== -->
 
 <hr class="dropdown-divider"> 
 <br>
-
-
  <div class="ml-5 has-text-info-dark">
     <p><strong>MY RATING: </strong>{{wine['Post_rating']}}</p>
     <p><strong>REVIEW: </strong>{{wine['Post_review']}}</p>
   </div>
   <br>
-
-
-  
     <div class="field is-grouped ml-5" id="review-delete">
     <button class="button is-info is-outlined review-delete mb-5" data-id="{{wine['ID']}}">
     <span class="review-delete">Delete</span>
   </button>
-
-
   <a href="/user/reviews/{{wine['ID']}}" class="button is-info is-outlined edit-review mb-5 ml-2">
     <span>Edit</span>
   </a>
 </div>
-
 </article>
 </div>
-
-  
 {% endfor %}
 {% endif %}
 </div>
-
 {% endblock %}

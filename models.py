@@ -6,22 +6,18 @@ from flask_sqlalchemy import SQLAlchemy
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
-
 def connect_db(app):    
     db.app = app
     db.init_app(app)
 
-
 # ===========================================================   USER   =========================================================== 
     
-    
 class User(db.Model):
-    
     __tablename__ = "users" 
 
-    def __repr__(self):
-        u=self
-        return f"<User id={u.id} name={u.name} username={u.username}>"
+    # def __repr__(self):
+    #     u=self
+    #     return f"<User id={u.id} name={u.name} username={u.username}>"
     
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(50), nullable=False)
@@ -29,57 +25,43 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     posts = db.relationship("Post", backref="user", cascade="all, delete-orphan")
     
-    
     @classmethod
     def signup(cls, name, username, password):
         """Sign up user.
-
         Hashes password and adds user to system.
         """
-
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
-
         user = User(
             name=name,
             username=username,
             password=hashed_pwd
         )
-
         db.session.add(user)
         return user
 
     @classmethod
     def authenticate(cls, username, password):
         """Find user with `username` and `password`.
-
         This is a class method (call it on the class, not an individual user.)
         It searches for a user whose password hash matches this password
         and, if it finds such a user, returns that user object.
-
         If can't find matching user (or if password is wrong), returns False.
         """
-
         user = cls.query.filter_by(username=username).first()
-
         if user:
             is_auth = bcrypt.check_password_hash(user.password, password)
             if is_auth:
                 return user
-
         return False
-
 
 # ===========================================================   POST   =========================================================== 
 
-
 class Post(db.Model):
-    
     __tablename__ = "posts"
-        
-    
-    def __repr__(self):
-        p=self
-        return f"<User id={p.id} title={p.title} content={p.content} created_at={p.created_at} owner_id={p.owner_id}>"
+           
+    # def __repr__(self):
+    #     p=self
+    #     return f"<User id={p.id} title={p.title} content={p.content} created_at={p.created_at} owner_id={p.owner_id}>"
     
     id = db.Column(db.Integer,
                    primary_key = True,
@@ -93,12 +75,9 @@ class Post(db.Model):
 
 # ===========================================================   WINE   =========================================================== 
     
-
 class Wine(db.Model):
-    
     __tablename__ = "wines"
-
-    
+     
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     wine_id = db.Column(db.String(200), nullable=False)
     winery = db.Column(db.String(200), nullable=False)
@@ -127,47 +106,11 @@ class Wine(db.Model):
             'rating': self.rating
         }
     
-
 # ===========================================================   FAVORITES   =========================================================== 
 
-
 class Favorite(db.Model):
-    
     __tablename__ = "favorites"
     
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     wine_id = db.Column(db.Integer, db.ForeignKey('wines.id'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-
-
-    
-
-   # ===========================================================   notes   =========================================================== 
- 
-    
-    # to run this class use the following
-    # ipython3
-    # %run app.py
-    # db.create_all()
-    
-    # if you add or update the table and then want to update it,
-    # you need to go to the Postgres Shell and run DROP table_name,
-    # then re run db.create_all()
-    
-    # Then make sure you import the class name in your app.py file
-    
-    # To create a instance of this class, type this in ipython, do the follwoing:
-    # stevie = Pet(name="Stevie Chicks", species="Chicken", hunger=13)
-    
-    # then you can use, stevie.name, stevie.hunger, stevie.SMTPRecipientsRefused
-    
-    # then to sync all of the pets youve created once your done, do the following:
-    # db.session.add(stevie)
-    # db.session.commit()
-    
-    # to create a lot of instances at once, you can do the following using sip:
-    # names = ['Sushi', 'scout', 'piggie', 'carrot face']
-    # species = ['pig', 'cat', 'bunny', 'bunny']
-    # pets = [Pet(name=n, species=s) for n,s in zip(names, species)]
-    # db.session.add_all(pets) *add_all needs to be ZipFile The class for reading and writing ZIP files.  See section 
-    # db.session.commit()

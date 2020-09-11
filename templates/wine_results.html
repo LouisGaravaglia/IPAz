@@ -1,21 +1,17 @@
 {% extends "base.html" %}
-
 {% block title %} WINE RESULTS {% endblock %}
-
-
 {% block content %}
 
+<!-- ===============================  TITLE  ===============================  -->
 
-<!-- ===============================  SORT BY SIDE BAR  ===============================  -->
 <div id="flash" class=""></div>
-<!-- <h1 class="title is-1 has-text-grey has-text-centered mt-5 pb-2 new">WINE RESULTS</h1> -->
 <div class="has-text-centered mt-6">
-<h1 class="block-text">WINE RESULTS</h1>
+  <h1 class="block-text">WINE RESULTS</h1>
 </div>
 
+<!-- ===============================  SORT BY SIDE BAR  ===============================  -->
 
 <div class="columns my-3 mx-3">
-
 <div class="column is-one-fifth mt-5">
 <aside class="menu sticky">
   <ul class="menu-list">
@@ -60,130 +56,40 @@
       </ul>
     </li>
   </ul>
-
   <ul class="menu-list">
     <li><p id="choose-varietals"  class="sort-label noselect">Varietals</p></li>
 </ul>
-  
 </aside>
 </div>
-
 
 <!-- ===============================  WINE CARDS  ===============================  -->
 
 <div class="column is-three-quarters">
 <div class="columns my-3 mx-3 is-multiline" id="wine-results">
-<!-- {% for wine in wines%}
-  {% if wine == 'No Results' %}
-  <section class="hero is-small is-light mt-6 mx-6">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title has-text-info">
-        No wines available.
-      </h1>
-    </div>
-  </div>
-</section>
-{% else %}
-
-<div class="column is-half">
-  <div class="has-text-centered">
-  </div>
-  
-  <article class="message is-info">
-  
-  <div class="message-header">
-    <p>{{wine['Name']}}</p>
-  </div>
-
-  <div class="message-body">
-    <p><strong>NAME: </strong>{{wine['Name']}}</p>
-    <p><strong>WINERY: </strong>{{wine['Winery']}}</p>
-    <p><strong>COUNTRY: </strong>{{wine['Country']}}</p>
-    <p><strong>AREA: </strong>{{wine['Area']}}</p>
-    <p><strong>VINTAGE: </strong>{{wine['Vintage']}}</p>
-    <p><strong>VARIETAL: </strong>{{wine['Varietal']}}</p>
-    <p><strong>TYPE: </strong>{{wine['Type']}}</p>
-    <p><strong>RATING: </strong>{{wine['Rating']}}</p>
-  </div>
-
-  <div class="columns">
-    <div class="column is-half has-text-centered mx-0 my-0">
-            <button class="button is-text fav-button favorite-button" data-id="{{wine['ID']}}" type="submit">
-              <span class="icon">
-                {% if wine['ID'] in user_favorites %}
-                <div id="fav-box-{{wine['ID']}}" data-id="{{wine['ID']}}" class="myFas">
-                    <i class="fas fa-star" data-id="{{wine['ID']}}"></i>
-                    </div>
-                {% else %}
-                <div id="fav-box-{{wine['ID']}}" class="myFar">
-                    <i class="far fa-star" data-id="{{wine['ID']}}"></i>
-                    </div>
-                {% endif %}
-        </span>
-      </button>
-    </div>
-    <div class="column is-half has-text-centered mx-0 my-0" id="review-btn">
-        <a href="/user/review/{{wine['ID']}}" class="button is-text review-btn" data-id="{{wine['ID']}}">
-        <span class="icon review-btn">
-            {% if wine['ID'] in user_reviews %}
-                <i class="fas fa-edit review-btn"></i>
-            {% else %}
-                <i class="far fa-edit review-btn"></i>
-            {% endif %}
-        
-        </span>
-        </a>
-    </div>
-  </div>
-</article>
-
-
-
-
-</div>
-  
-  
-  {% endif %}
-{% endfor %} -->
 </div>
 
 <!-- ===============================  PAGINATION  ===============================  -->
 
 <nav class="pagination" role="navigation" aria-label="pagination" id="main-pagination">
   <div class="is-grouped pagination-box">
-<a class="main-pagination-previous button has-text-white is-info">Previous</a>
-  <a class="main-pagination-next button has-text-white is-info">Next</a>
-
+    <a class="main-pagination-previous button has-text-white is-info">Previous</a>
+    <a class="main-pagination-next button has-text-white is-info">Next</a>
   </div>
-  
 </nav>
 
-
-
 <!-- ===============================  MODAL FOR VARIETALS  ===============================  -->
-
 
 <div id="modal" class="modal">
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">Varietals</p>
-      <!-- <button class="delete toggle-off" aria-label="close"></button> -->
     </header>
     <section id="varietals-modal" class="modal-card-body">
-      <!-- Content ... -->
     </section>
     <footer class="modal-card-foot">
       <button class="button is-info toggle-off">Save</button>
-      <!-- <button class="button toggle-off">Cancel</button> -->
     </footer>
   </div>
 </div>
-
-
-
 {% endblock %}
-
-
-

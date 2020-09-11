@@ -1,71 +1,55 @@
 {% extends "base.html" %}
-
 {% block title %} PROFILE {% endblock %}
-
-
 {% block content %}
 
-
 <!-- ===========================================  HERO BANNER  =========================================== -->
-
 
 <section class="hero is-medium is-info is-bold">
   <div class="hero-body">
     <div class="container">
+      <div class="columns">
+        <div class="column is-half">
 
-<div class="columns">
-  <div class="column is-half">
-
-      <h1 class="title profile-name">
-        {{user.name}}
-      </h1>
-      <a href="/user/edit/{{user.id}}" class="subtitle button is-white is-outlined">
-    <span>Edit</span>
-  </a>
-
- </div>
+            <h1 class="title profile-name">
+              {{user.name}}
+            </h1>
+            <a href="/user/edit/{{user.id}}" class="subtitle button is-white is-outlined">
+          <span>Edit</span>
+        </a>
+        </div>
 
  <!-- ===========================================  LEVEL FOR LIKES / REVIEWS  =========================================== -->
 
-  <div class="column is-half">
-    
-<nav class="level">
-  <div class="level-item has-text-centered">
-    <div>
-    
-      <a href="/user/favorites"><p class="heading profile-stat-title">Favorites</p></a>
-      {% if num_of_favs %}
-      <a href="/user/favorites"><p class="title profile-stat">{{num_of_favs}}</p></a>
-      {% else %}
-      <a href="/user/favorites"><p class="title profile-stat">0</p></a>
-      {% endif %}
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <a href="/user/reviews"><p class="heading profile-stat-title">Reviews</p></a>
-      {% if num_of_reviews %}
-      <a href="/user/reviews"><p class="title profile-stat">{{num_of_reviews}}</p></a>
-      {% else %}
-      <a href="/user/reviews"><p class="title profile-stat">0</p></a>
-      {% endif %}
-    </div>
-  </div>
-</nav>
-
-
-
+  <div class="column is-half"> 
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div>     
+          <a href="/user/favorites"><p class="heading profile-stat-title">Favorites</p></a>
+          {% if num_of_favs %}
+          <a href="/user/favorites"><p class="title profile-stat">{{num_of_favs}}</p></a>
+          {% else %}
+          <a href="/user/favorites"><p class="title profile-stat">0</p></a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <a href="/user/reviews"><p class="heading profile-stat-title">Reviews</p></a>
+          {% if num_of_reviews %}
+          <a href="/user/reviews"><p class="title profile-stat">{{num_of_reviews}}</p></a>
+          {% else %}
+          <a href="/user/reviews"><p class="title profile-stat">0</p></a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
   </div>
   </div>
-
-
-
     </div>
   </div>
 </section>
 
-
-<!-- ===========================================  MOST RECENT FAVORITE  =========================================== -->
+<!-- ===========================================  MOST RECENT FAVORITE / TITLE  =========================================== -->
 
 <div class="columns">
 <div class="column is-half mt-5 pb-6">
@@ -73,6 +57,8 @@
 <a href="/user/favorites"><h1 class="block-text">FAVORITES</h1></a>
 <a href="/user/favorites"><h2 class="profile-subtitle">Most Recent Favorite</h2></a>
 </div>
+
+<!-- ===========================================  MOST RECENT FAVORITE / CONDITIONAL IF NO FAVORITE  =========================================== -->
 
 {% if not most_recent_fav %}
     <section class="hero is-small is-light mt-6 mx-6">
@@ -84,15 +70,14 @@
     </div>
   </div>
 </section>
+
+<!-- ===========================================  MOST RECENT FAVORITE / WINE  =========================================== -->
+
   {% else %}
 <article class="message is-info form-container mx-6">
-
-  
-  
   <div class="message-header">
     <p>{{most_recent_fav.name}}</p>
   </div>
-
   <div class="message-body">
     <p><strong>NAME: </strong>{{most_recent_fav.name}}</p>
     <p><strong>WINERY: </strong>{{most_recent_fav.winery}}</p>
@@ -103,21 +88,19 @@
     <p><strong>TYPE: </strong>{{most_recent_fav.type}}</p>
     <p><strong>RATING: </strong>{{round_rating(most_recent_fav.rating)}}</p>
   </div>
-
-
-
 </article>
 {% endif %}
-
 </div>
 
-<!-- ===========================================  TOP RATED REVIEW  =========================================== -->
+<!-- ===========================================  TOP RATED REVIEW / TITLE  =========================================== -->
 
 <div class="column is-half mt-5 pb-6">
 <div class="has-text-centered">
 <a href="/user/reviews"><h1 class="block-text">REVIEWS</h1></a>
 <a href="/user/reviews"><h2 class="profile-subtitle">Top Rated Review</h2></a>
   </div> 
+
+<!-- ===========================================  MOST RECENT REVIEW / CONDITIONAL IF NO REVIEW  =========================================== -->
 
 {% if not top_rated_review %}
    <section class="hero is-small is-light mt-6 mx-6">
@@ -129,13 +112,14 @@
     </div>
   </div>
 </section>
+
+<!-- ===========================================  MOST RECENT REVIEW / WINE  =========================================== -->
+
   {% else %}
    <article class="message is-info form-container mx-6">
-  
   <div class="message-header">
     <p>{{top_rated_wine.name}}</p>
   </div>
-
   <div class="message-body">
     <p><strong>NAME: </strong>{{top_rated_wine.name}}</p>
     <p><strong>WINERY: </strong>{{top_rated_wine.winery}}</p>
@@ -146,7 +130,6 @@
     <p><strong>TYPE: </strong>{{top_rated_wine.type}}</p>
     <p><strong>RATING: </strong>{{round_rating(top_rated_wine.rating)}}</p>
   </div>
-
 <hr class="dropdown-divider"> 
 <br>
  <div class=" has-text-info-dark ml-5">
@@ -154,18 +137,8 @@
     <p><strong>REVIEW: </strong>{{top_rated_review.review}}</p>
   </div>
   <br>
-
-  
-
 </article>
 {% endif %}
-
 </div>
 </div>
-
-
-
-
-
-
 {% endblock %}

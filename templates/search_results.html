@@ -1,35 +1,22 @@
 {% extends "base.html" %}
-
 {% block title %} SEARCH RESULTS {% endblock %}
-
-
 {% block content %}
 <div id="flash"></div>
-<!-- <h1 class="title is-1 has-text-grey has-text-centered mt-5 pb-2 new">MY FAVORITES</h1> -->
+
+<!-- ===============================  TITLE  ===============================  -->
 
 <div class="has-text-centered mt-6">
-<h1 class="block-text">SEARCH RESULTS</h1>
+  <h1 class="block-text">SEARCH RESULTS</h1>
 </div>
-
-    <!-- <div class="container is-fluid is-info">  
-    <hr>
-</div> -->
-
-<div class="columns my-5 mx-3 is-multiline" id="wine-results">
-</div>
-
 
 <!-- ===============================  PAGINATION  ===============================  -->
 
-
+<div class="columns my-5 mx-3 is-multiline" id="wine-results">
+</div>
 <nav class="pagination" role="navigation" aria-label="pagination" id="search-pagination">
   <div class="is-grouped pagination-box">
-<a class="search-pagination-previous button has-text-white is-info">Previous</a>
-  <a class="search-pagination-next button has-text-white is-info">Next</a>
-
+    <a class="search-pagination-previous button has-text-white is-info">Previous</a>
+    <a class="search-pagination-next button has-text-white is-info">Next</a>
   </div>
-  
 </nav>
-
-
 {% endblock %}
