@@ -49,6 +49,7 @@ class FlaskTests(TestCase):
         db.session.commit()
         # ADDING A REVIEW FOR THE WINE
         review1 = Post(rating=98, review="My first and most favorite wine", wine_id=wine1.id, user_id=self.u1_id)
+        review1.id = 1
         db.session.add(review1)
         db.session.commit()
         
@@ -103,6 +104,9 @@ class FlaskTests(TestCase):
             self.assertIn('<p><strong>TYPE: </strong>Red</p>', html)
             ####SUCCESSFULLY ROUNDED RATING OF 94.54999999 TO 94.55
             self.assertIn('<p><strong>RATING: </strong>94.55</p>', html)
+            # favorite = Favorite.query.filter(Favorite.wine_id==1).all()
+            # self.assertEqual(len(favorite), 1)
+            # self.assertEqual(favorite[0].user_id, self.u1_id)
 
 
     def test_reviews_page(self):
@@ -124,4 +128,91 @@ class FlaskTests(TestCase):
             self.assertIn('<p><strong>RATING: </strong>94.55</p>', html)
             self.assertIn('<p><strong>MY RATING: </strong>98</p>', html)
             self.assertIn('<p><strong>REVIEW: </strong>My first and most favorite wine</p>', html)
+            # first_review = Post.query.filter(Post.id==1).all()
+            # self.assertEqual(len(first_review), 1)
+            # self.assertEqual(first_review[0].user_id, self.u1_id)
+
+    def test_profile_page(self):
+        """ Making sure that the profile page renders correct html. """
+        with self.client as client:
+            with client.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.u1_id
+            res = self.client.get("/user")
+            html = res.get_data(as_text=True)
+            self.assertEqual(res.status_code, 200)
+            ####HEADERS SHOWING ON PROFILE PAGE
+            self.assertIn('<h1 class="title profile-name">', html)
+            self.assertIn('<a href="/user/favorites"><p class="title profile-stat">1</p>', html)
+            self.assertIn('<a href="/user/reviews"><p class="title profile-stat">1</p>', html)
+            self.assertIn('<h2 class="profile-subtitle">Most Recent Favorite</h2>', html)
+            self.assertIn('<h2 class="profile-subtitle">Top Rated Review</h2>', html)
+            ####FAVORITE SHOWING ON PROFILE PAGE
+            self.assertIn('<p><strong>NAME: </strong>first-wine</p>', html)
+            self.assertIn('<p><strong>WINERY: </strong>winery1</p>', html)
+            self.assertIn('<p><strong>COUNTRY: </strong>USA</p>', html)
+            self.assertIn('<p><strong>AREA: </strong>Santa Barbara</p>', html)
+            self.assertIn('<p><strong>VINTAGE: </strong>2020</p>', html)
+            self.assertIn('<p><strong>VARIETAL: </strong>Barbera</p>', html)
+            self.assertIn('<p><strong>TYPE: </strong>Red</p>', html)
+            self.assertIn('<p><strong>RATING: </strong>94.55</p>', html)
+            ####REVIEW SHOWING ON PROFILE PAGE
+            self.assertIn('<p><strong>MY RATING: </strong>98</p>', html)
+            self.assertIn('<p><strong>REVIEW: </strong>My first and most favorite wine</p>', html)
+
+    def test_login_page(self):
+        """ Making sure that the login page renders correct html. """
+        with self.client as client:
+            res = self.client.get("/login")
+            html = res.get_data(as_text=True)
+            self.assertEqual(res.status_code, 200)
+            self.assertIn('<h1 class="block-text">LOGIN</h1>', html)
+            self.assertIn('<form method="POST" id="user_form">', html)
+            self.assertIn('<button class="button is-info" type="submit">Submit</button>', html)
+
+    def test_signup_page(self):
+        """ Making sure that the signup page renders correct html. """
+        with self.client as client:
+            res = self.client.get("/signup")
+            html = res.get_data(as_text=True)
+            self.assertEqual(res.status_code, 200)
+            self.assertIn('<h1 class="block-text">SIGN UP</h1>', html)
+            self.assertIn('<form method="POST" id="user_form">', html)
+            self.assertIn('<button class="button is-link" type="submit">Submit</button>', html)
+
+    def test_search_page(self):
+        """ Making sure that the search page renders correct html. """
+        with self.client as client:
+            res = self.client.get("/search")
+            html = res.get_data(as_text=True)
+            self.assertEqual(res.status_code, 200)
+            self.assertIn('<h1 class="block-text">SEARCH RESULTS</h1>', html)
+            self.assertIn('<a class="search-pagination-previous button has-text-white is-info">Previous</a>', html)
+            self.assertIn('<a class="search-pagination-next button has-text-white is-info">Next</a>', html)
+            ####MAKING SURE WINE SHOWS IN JSON RESULTS WHEN SEARCHING FOR BARBERA
+            resp = client.get("/search/Barbera", follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('first-wine', resp.get_data(as_text=True))
+            resp = client.get("/search/Barbera", follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('first-wine', resp.get_data(as_text=True))
+            ####NEEDS TO BE CASE AND LENGTH INSENSITIVE
+            resp = client.get("/search/bar", follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('first-wine', resp.get_data(as_text=True))
+            resp = client.get("/search/RED", follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('first-wine', resp.get_data(as_text=True))
+            resp = client.get("/search/2020", follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('first-wine', resp.get_data(as_text=True))
+            ####SHOULD NOT RETURN WINE WHEN SEARCH TERMS DO NOT HAVE ANYTHING IN COMMON WITH WINE
+            resp = client.get("/search/Cabernet", follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn('first-wine', resp.get_data(as_text=True))
+            resp = client.get("/search/1999", follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn('first-wine', resp.get_data(as_text=True))
+            
+           
+
 
