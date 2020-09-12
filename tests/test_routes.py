@@ -54,23 +54,78 @@ class FlaskTests(TestCase):
         review1.id = 1
         db.session.add(review1)
         db.session.commit()
-        
 
     def tearDown(self):
         resp = super().tearDown()
         db.session.rollback()
         return resp
-    
-    # def test_login_page(self):
-    #     """ Making sure that the login page renders correct html. """
-    #     with self.client as client:
-    #         res = self.client.get("/login", follow_redirects=True)
-    #         html = res.get_data(as_text=True)
-    #         self.assertEqual(res.status_code, 200)            
-    #         self.assertIn('Invalid credentials.',
-    #                 res.get_data(as_text=True))
 
-    
+    def test_u1(self):
+        """Does u1 contains posts and favorites"""
+        # User should have no posted reviews and no favorite wines
+        self.assertEqual(len(self.u1.posts), 1)
+        self.assertEqual(len(self.u1.fav_wines), 1)
+
+    ##### Testing User Model
+    def test_user_model(self):
+        """Does basic model work?"""
+        u = User(
+            name="testtestname",
+            username="testtestusername",
+            password="HASHED_PASSWORD"
+        )
+        db.session.add(u)
+        db.session.commit()
+        # User should have no posted reviews and no favorite wines
+        self.assertEqual(len(u.posts), 0)
+        self.assertEqual(len(u.fav_wines), 0)
+
+    ##### Signup Tests
+    def test_valid_signup(self):
+        u_test = User.signup("testtestname", "testtestusername", "testtestpassword")
+        uid = 99999
+        u_test.id = uid
+        db.session.commit()
+        u_test = User.query.get(uid)
+        self.assertIsNotNone(u_test)
+        self.assertEqual(u_test.username, "testtestusername")
+        self.assertEqual(u_test.name, "testtestname")
+        self.assertNotEqual(u_test.password, "testtestpassword")
+        # Bcrypt strings should start with $2b$
+        self.assertTrue(u_test.password.startswith("$2b$"))
+
+    def test_invalid_username_signup(self):
+        invalid = User.signup("testtestname", None, "testtestpassword")
+        uid = 123456789
+        invalid.id = uid
+        with self.assertRaises(exc.IntegrityError) as context:
+            db.session.commit()
+
+    def test_invalid_name_signup(self):
+        invalid = User.signup(None, "testtestusername", "testtestpassword")
+        uid = 123789
+        invalid.id = uid
+        with self.assertRaises(exc.IntegrityError) as context:
+            db.session.commit()
+
+    def test_invalid_password_signup(self):
+        with self.assertRaises(ValueError) as context:
+            User.signup("testtestname", "testtestusername", "")
+        with self.assertRaises(ValueError) as context:
+            User.signup("testtestname", "testtestusername", None)
+
+    ##### Authentication Tests
+    def test_valid_authentication(self):
+        u = User.authenticate(self.u1.username, "testpassword")
+        self.assertIsNotNone(u)
+        self.assertEqual(u.id, self.u1_id)
+
+    def test_invalid_username(self):
+        self.assertFalse(User.authenticate("badusername", "testpassword"))
+
+    def test_wrong_password(self):
+        self.assertFalse(User.authenticate(self.u1.username, "badpassword"))
+
     # def test_signup_page(self):
     #     """ Making sure that the signup page renders correct html. """
     #     with self.client as client:
@@ -93,57 +148,16 @@ class FlaskTests(TestCase):
             #     db.session.commit()
             
             
-    ##### Signup Tests
-            
-    def test_valid_signup(self):
-        u_test = User.signup("testtestname", "testtestusername", "testtestpassword")
-        uid = 99999
-        u_test.id = uid
-        db.session.commit()
-        
-        u_test = User.query.get(uid)
-        self.assertIsNotNone(u_test)
-        self.assertEqual(u_test.username, "testtestusername")
-        self.assertEqual(u_test.name, "testtestname")
-        self.assertNotEqual(u_test.password, "testtestpassword")
-        # Bcrypt strings should start with $2b$
-        self.assertTrue(u_test.password.startswith("$2b$"))
-        
-    def test_invalid_username_signup(self):
-        invalid = User.signup("testtestname", None, "testtestpassword")
-        uid = 123456789
-        invalid.id = uid
-        with self.assertRaises(exc.IntegrityError) as context:
-            db.session.commit()
+    # def test_login_page(self):
+    #     """ Making sure that the login page renders correct html. """
+    #     with self.client as client:
+    #         res = self.client.get("/login", follow_redirects=True)
+    #         html = res.get_data(as_text=True)
+    #         self.assertEqual(res.status_code, 200)            
+    #         self.assertIn('Invalid credentials.',
+    #                 res.get_data(as_text=True))
 
-    def test_invalid_name_signup(self):
-        invalid = User.signup(None, "testtestusername", "testtestpassword")
-        uid = 123789
-        invalid.id = uid
-        with self.assertRaises(exc.IntegrityError) as context:
-            db.session.commit()
     
-    def test_invalid_password_signup(self):
-        with self.assertRaises(ValueError) as context:
-            User.signup("testtestname", "testtestusername", "")
-        
-        with self.assertRaises(ValueError) as context:
-            User.signup("testtestname", "testtestusername", None)
-            
-    ##### Authentication Tests
-    def test_valid_authentication(self):
-        u = User.authenticate(self.u1.username, "testpassword")
-        self.assertIsNotNone(u)
-        self.assertEqual(u.id, self.u1_id)
-    
-    def test_invalid_username(self):
-        self.assertFalse(User.authenticate("badusername", "testpassword"))
-
-    def test_wrong_password(self):
-        self.assertFalse(User.authenticate(self.u1.username, "badpassword"))
-
-
-
     
        
 
