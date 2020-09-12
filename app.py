@@ -55,7 +55,7 @@ def signup():
     If form not valid, present form.
     """
     form = UserAddForm()
-    if form.validate_on_submit():       
+    if form.validate_on_submit():
         try:
             user = User.signup(
                 name=form.name.data,
@@ -104,7 +104,6 @@ def profile_page():
         return redirect("/show_results")
     user_id = session[CURR_USER_KEY]
     user = User.query.get_or_404(user_id)
-
     def round_rating(rating):
         return round(rating, 2)
     if g.user.posts and g.user.fav_wines:
