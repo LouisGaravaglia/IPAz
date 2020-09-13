@@ -27,7 +27,7 @@ db.create_all()
 
 app.config['WTF_CSRF_ENABLED'] = False
 
-class FlaskTests(TestCase):
+class AuthenticationTests(TestCase):
 
     def setUp(self):
         """Create test client, add sample data."""
