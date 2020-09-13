@@ -11,6 +11,9 @@ class WineResults():
         """Returns wine results based of user selected varietals,
         wine style, and wine type.
         """
+        # import pdb
+        # pdb.set_trace()
+        
         varietal_cls = Varietals()
         wine_results = []
         for wine_type in wine_type_list:
@@ -72,7 +75,7 @@ class WineResults():
             elif wine_type == 'Rose':
                 results = []
                 if varietals == ['All']:
-                    results = Wine.query.filter(Wine.type == 'Red').all()
+                    results = Wine.query.filter(Wine.type == 'Rose').all()
                 else:
                     for varietal in varietals:
                         db_results = Wine.query.filter((Wine.varietal.ilike(f'%{varietal}%') & (Wine.type == 'Rose'))).all()
