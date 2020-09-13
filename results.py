@@ -11,9 +11,6 @@ class WineResults():
         """Returns wine results based of user selected varietals,
         wine style, and wine type.
         """
-        # import pdb
-        # pdb.set_trace()
-        
         varietal_cls = Varietals()
         wine_results = []
         for wine_type in wine_type_list:

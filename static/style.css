@@ -243,7 +243,7 @@ a {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   white-space: nowrap;
-  color: #3198db
+  color: #3198db;
 }
 
 /* ================================  FORMS  ================================  */
@@ -351,4 +351,39 @@ flex: 50%;
 .pagination-box {
   display: block;
   margin: 0 auto;
+}
+
+/* ================================  Footer  ================================  */
+/* 
+.foot {
+  width: 100%;
+  height: 80px; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color:#3198db;
+} */
+
+/* .footer {
+    background-color: orange;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+} */
+
+/* ================================  POWERED BY QUINI  ================================  */
+
+.quini-subtitle {
+  margin-top: 25px;
+  font-size: 4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  color: #fff;
+}
+
+.quini-logo {
+  max-width: 200px;
+  height:auto;
 }
