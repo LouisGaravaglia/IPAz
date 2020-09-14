@@ -1095,15 +1095,17 @@ $(document).ready(async function() {
     if (wineResults.length == 0) {
       const message = {"message":"No results"}
       flashMessage(message)
+      $(".progress-bar-container").toggleClass("hidden")
+    } else {
+      searchPaginatedWine = paginate(9, wineResults)
+      sessionStorage.setItem("searchCurrentPage", 0)
+      $(".search-pagination-previous").toggleClass("hidden")
+      if (searchPaginatedWine.length == 1) {
+        $(".search-pagination-next").toggleClass("hidden")
+      }
+      populateWineResults(searchPaginatedWine[0], favs, reviews) 
+      $(".progress-bar-container").toggleClass("hidden")
     }
-    searchPaginatedWine = paginate(9, wineResults)
-    sessionStorage.setItem("searchCurrentPage", 0)
-    $(".search-pagination-previous").toggleClass("hidden")
-    if (searchPaginatedWine.length == 1) {
-      $(".search-pagination-next").toggleClass("hidden")
-    }
-    populateWineResults(searchPaginatedWine[0], favs, reviews) 
-    $(".progress-bar-container").toggleClass("hidden")
   }
 });
 

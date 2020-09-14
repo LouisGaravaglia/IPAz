@@ -353,37 +353,20 @@ flex: 50%;
   margin: 0 auto;
 }
 
-/* ================================  Footer  ================================  */
-/* 
-.foot {
-  width: 100%;
-  height: 80px; 
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-color:#3198db;
-} */
-
-/* .footer {
-    background-color: orange;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 100px;
-    width: 100%;
-} */
-
 /* ================================  POWERED BY QUINI  ================================  */
 
 .quini-subtitle {
-  margin-top: 25px;
-  font-size: 4rem;
+  margin-top: 45px;
+  font-size: 2.5rem;
   font-family: 'Roboto', sans-serif;
-  font-weight: 900;
+  font-weight: 600;
   color: #fff;
+
+  /* color: rgb(18, 18, 18); */
 }
 
 .quini-logo {
-  max-width: 200px;
+  max-width: 170px;
   height:auto;
+  margin-left: 10px;
 }

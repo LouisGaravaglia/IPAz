@@ -50,6 +50,20 @@ class Varietals():
                 has_cab_malbec = re.search(r"^" + "Cabernet Malbec" + r"$", item)
                 has_cab_syrah = re.search(r"^" + "Cabernet Syrah" + r"$", item)
                 has_cms = re.search(r"^" + "Carmenere Merlot Syrah" + r"$", item)
+                has_cms = re.search(r"^" + "Muscat Canellii" + r"$", item)
+                has_cms = re.search(r"^" + "Aligoté" + r"$", item)
+                has_cms = re.search(r"^" + "Albariño" + r"$", item)
+                has_cms = re.search(r"^" + "Aglianico Primitivo" + r"$", item)
+                has_cms = re.search(r"^" + "Alfrocheiro E Jaen" + r"$", item)
+                has_cms = re.search(r"^" + "Alicante B" + r"$", item)
+                has_cms = re.search(r"^" + "Alicante Bouschet" + r"$", item)
+                has_cms = re.search(r"^" + "Alicante Henri Bouschet" + r"$", item)
+                has_cms = re.search(r"^" + "And Tinta Barroca" + r"$", item)
+                has_cms = re.search(r"^" + "Aragones" + r"$", item)
+                has_cms = re.search(r"^" + "Argonez" + r"$", item)
+                has_cms = re.search(r"^" + "Muscat Canellii" + r"$", item)
+                has_cms = re.search(r"^" + "Muscat Canellii" + r"$", item)
+                has_cms = re.search(r"^" + "Muscat Canellii" + r"$", item)
                 ################# LIST OF ALL ABOVE REGEX EXCEPTIONS #################
                 conditions = [has_number, has_blend, has_plus, has_slash, has_period, has_ampersand, has_double_chardonay, has_cms, has_chardonay_pinot, has_chenin_chardonay, has_cabf_syrah, has_cab_malbec, has_cab_syrah ]
                 ################# ADD TO VARIETAL SETS #################
