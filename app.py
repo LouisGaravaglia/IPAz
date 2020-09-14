@@ -21,6 +21,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'topsecret_haisijoaijsifjo1991asasdfa2222')
 app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False 
+new_api_key = os.environ.get('API_KEY_HEROKU', API_KEY)
 # app.config["TESTING"] = True
 # app.config["DEBUG_TB_HOSTS"] = ["dont-show-debug-toolbar"]
 connect_db(app)
@@ -491,7 +492,7 @@ def get_red_wines(amount, skip, remainder):
         else:
             baseURL = f"https://quiniwine.com/api/pub/wineCategory/tre/{skip}/{remainder}"
         skip = skip + 1000
-        headers = {'authorization': API_KEY}
+        headers = {'authorization': new_api_key}
         result = requests.get(f"{baseURL}", headers=headers)
         data = result.json()
         wine_array = data["items"]
@@ -523,7 +524,7 @@ def get_white_wines(amount, skip, remainder):
         else:
             baseURL = f"https://quiniwine.com/api/pub/wineCategory/twh/{skip}/{remainder}"       
         skip = skip + 1000
-        headers = {'authorization': API_KEY}
+        headers = {'authorization': new_api_key}
         result = requests.get(f"{baseURL}", headers=headers)
         data = result.json()
         wine_array = data["items"]
@@ -548,7 +549,7 @@ def get_white_wines(amount, skip, remainder):
 def get_rose_wines(amount, skip):
     """Get all top rated rose wines from the API"""  
     baseURL = f"https://quiniwine.com/api/pub/wineCategory/tro/{skip}/{amount}"
-    headers = {'authorization': API_KEY}
+    headers = {'authorization': new_api_key}
     result = requests.get(f"{baseURL}", headers=headers)
     data = result.json()
     wine_array = data["items"]
