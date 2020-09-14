@@ -19,11 +19,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///wine_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', "topsecret_haisijoaijsifjo1991asasdfa2222")
+app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'topsecret_haisijoaijsifjo1991asasdfa2222')
 app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False 
-print ("*******************************")
-print (app.config['SECRET_KEY'])
-print ("*******************************")
 # app.config["TESTING"] = True
 # app.config["DEBUG_TB_HOSTS"] = ["dont-show-debug-toolbar"]
 connect_db(app)
