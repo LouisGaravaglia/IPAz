@@ -3,6 +3,7 @@ from random import choice, randint
 from unittest import TestCase
 import requests
 import re
+import os
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 from flask_cors import CORS
@@ -18,8 +19,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///wine_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config["SECRET_KEY"] = "4534gdghjk5d#$RGR^HDG"
+app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', "topsecret_haisijoaijsifjo1991asasdfa2222")
 app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False 
+print ("*******************************")
+print (app.config['SECRET_KEY'])
+print ("*******************************")
 # app.config["TESTING"] = True
 # app.config["DEBUG_TB_HOSTS"] = ["dont-show-debug-toolbar"]
 connect_db(app)
