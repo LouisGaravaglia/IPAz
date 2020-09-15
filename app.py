@@ -21,7 +21,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'topsecret_haisijoaijsifjo1991asasdfa2222')
 app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False 
-new_api_key = os.environ.get('API_KEY_HEROKU', API_KEY)
+global new_api_key
+new_api_key = os.environ.get('API_KEY_HEROKU')
+if new_api_key == None:
+    from secrets import API_KEY
+    new_api_key = API_KEY
 # app.config["TESTING"] = True
 # app.config["DEBUG_TB_HOSTS"] = ["dont-show-debug-toolbar"]
 connect_db(app)
