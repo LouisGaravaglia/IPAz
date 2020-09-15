@@ -35,39 +35,11 @@ class Varietals():
         all_flat_list = [varietal for sublist in alls for varietal in sublist]
         varietal_dict.update({"all":all_flat_list}) 
         ################# CREATING EXCEPTIONS THAT WILL NOT BE INCLUDED #################
+        
         for key,items in varietal_dict.items():
             for item in items:
-                has_number = re.search("\d", item)
-                has_blend = re.search(" Blend", item)
-                has_plus = re.search("\+", item)
-                has_slash = re.search("/", item)
-                has_period = re.search("\.", item)
-                has_ampersand = re.search("&", item)
-                has_double_chardonay = re.search(r"^" + "Chardonnay Chardonnay" + r"$", item)
-                has_chardonay_pinot = re.search(r"^" + "Chardonnay Pinot Noir" + r"$", item)
-                has_chenin_chardonay = re.search(r"^" + "Chenin Blanc Chardonnay" + r"$", item)
-                has_cabf_syrah = re.search(r"^" + "Cabernet Franc Syrah" + r"$", item)
-                has_cab_malbec = re.search(r"^" + "Cabernet Malbec" + r"$", item)
-                has_cab_syrah = re.search(r"^" + "Cabernet Syrah" + r"$", item)
-                has_cms = re.search(r"^" + "Carmenere Merlot Syrah" + r"$", item)
-                has_cms = re.search(r"^" + "Muscat Canellii" + r"$", item)
-                has_cms = re.search(r"^" + "Aligoté" + r"$", item)
-                has_cms = re.search(r"^" + "Albariño" + r"$", item)
-                has_cms = re.search(r"^" + "Aglianico Primitivo" + r"$", item)
-                has_cms = re.search(r"^" + "Alfrocheiro E Jaen" + r"$", item)
-                has_cms = re.search(r"^" + "Alicante B" + r"$", item)
-                has_cms = re.search(r"^" + "Alicante Bouschet" + r"$", item)
-                has_cms = re.search(r"^" + "Alicante Henri Bouschet" + r"$", item)
-                has_cms = re.search(r"^" + "And Tinta Barroca" + r"$", item)
-                has_cms = re.search(r"^" + "Aragones" + r"$", item)
-                has_cms = re.search(r"^" + "Argonez" + r"$", item)
-                has_cms = re.search(r"^" + "Muscat Canellii" + r"$", item)
-                has_cms = re.search(r"^" + "Muscat Canellii" + r"$", item)
-                has_cms = re.search(r"^" + "Muscat Canellii" + r"$", item)
-                ################# LIST OF ALL ABOVE REGEX EXCEPTIONS #################
-                conditions = [has_number, has_blend, has_plus, has_slash, has_period, has_ampersand, has_double_chardonay, has_cms, has_chardonay_pinot, has_chenin_chardonay, has_cabf_syrah, has_cab_malbec, has_cab_syrah ]
-                ################# ADD TO VARIETAL SETS #################
-                if item != "" and len(item) < 25 and not any(conditions):
+                is_redundant = re.search("\d| Blend|\+|/|\.|&|Aligoté|Albariño|Aragones|Argonez|Babera|Aglianico Primitivo|Alfrocheiro E Jaen|Alicante B|Alicante Bouschet|Alicante Henri Bouschet|And Tinta Barroca|Arinto E Azal|Assyrtiko Athiri|Agiorgitkio|Baco Noir Reserve|Barbera D'Alba|Blind|Blueberry|Bourboulene|Chardonnay Chardonnay|Chardonnay Pinot Noir|Chenin Blanc Chardonnay|Cabernet Franc Syrah|Cabernet Malbec|Cabernet Syrah|Carmenere Merlot Syrah|Muscat Canellii|Cabernet Sauvginon|Cab-Foch|Cab Sauvignon Blanc|Cab Sauvignon|Cabernet Franc Reserve|Cabernet Foch|Cabarnet Franc|Cabernet France|Caberent France|Cabernet Sauvingnon|Cabernet Savignon|Cabenet Sauvignon|Cabernet Merlot|Cab Franc|Canaiola Bianco|Canaiolo Nero|Caniolo|Caramenere|Carbenet|Carigan|Carignan Syrah|Carignan Syrah Grenache|Carignane Grenache|Carmenere Merlot Syrah|Carmenere Reserva|Cattarrato|Cayuga White|Cghbvf|Chardinnay|Chardonel|Chardonnay (Fiano)|Chardonnay Musque|Chateauneuf Du Pape|Clairette Blanche|Colombard Ugni Blanc|Corvina Veronese|Corvina Veroneze|Dornfender|Dry Riesling|Fernao Pires|Fiano Minutolo|French Colombard|Fruilano|Fruit|Fruit And Spiced Wine|Furmint Harslevelü Zeta|Gamay Noir|Garnacha Tintoera|Garnacha Tintorera|Garnacho Tinto|Garnatxa Cabernet|Garnaxta Negra|Gewurtztraminer|Gewurz|Gewurztraminer Riesling|Gewutztraminer|Glera (Glera)|Glera (Prosecco)|Green Apple Cassis|Grenache Blanc|Grenache Blanca|Grenache Bourboulene|Grenache Carignana|Grenache Gris|Grenache Noir|Grenache Syrah|Grenache Syrah Mourvedre|Grenache Tintorera|Grillo Chardonnay|Gsm|Hazelnut Essence|Hondarrabi Beltza|Hondarrabi Zuri|Jaen Alfrocheiro|Kekfrankos Kadarka|L'Acadia Blanc|Lambrusco Salamino|Lambrusco Sorbara|Lucy Kuhlmann|Macabeo Pinot Noir|Malbec Bonarda Syrah|Malbec Merlot|Malbec Reserva|Malvasia - Trebbiano|Malvasia Bianca|Malvasia De Candia|Malvasia Del Lazio|Malvasia Di Candia|Malvasia Di Lipari|Malvasia Istriana|Malvasia Nera|Merlot Cabernet Franc|Merlot-Cabernet|Molinara Di Marano|Monastell|Monastrell Carignan|Monastrell Tempranillo|Montepulciano D'Abruzzo|Mosacatel De Alejandria|Moscatel De Alejandria|Moscatel De Setubal|Moscatel Graudo|Moscatella|Moscato Bianco|Moscato D'Asti|Moscato Ottonel|Mourvedra|Mourvedre Syrah Grenache|Mouvedre|Nebbiolo Barbera|Old Vine Zinfandel|Palomino Pedro Ximenez|Petit Sirah Petit Verdot|Petit Verdot Merlot|Petite Sirah Syrah|Picpoul Blanc|Picpoul Gris|Pink Moscato|Pinot Pinot Noir|Portugese White|Portuguese White|Raspberry|Reisling|Riesling Feinherb|Riesling Gg|Riesling Icewine|Riesling Spaltese|Rioja - Tempranillo|Rolle Semillon|Rondinella Molinara|Rondo Regent|Rousanne And Viognier|Sangiovese Grosso|Sangiovese Grosso|Sangiovese Merlot|Sangiovese Sangiovese|Sauv Sauvignon Blanc|Sauvignn Blanc|Sauvignon Blanc Riesling|Sauvignon Blanc Semillon|Sauvingon Blanc|Savignon Blanc|Schoenburger|Schonburger|Seyval Blanc|Seyval Phoenix|Siegrebbe|Sirah Cinsault Grenache|Syrah Cabernet|Syrah Cabernet Sauvignon|Syrah Grenache|Syrah Grenache Mourvedre|Syrah Mourvedre|Syrah Rose|Syrah-Sangiovese|Tempanillo|Tempranilla|Tempranillo Blanco|Tempranillo Garnacha|Tempranillo Grenache|Tempranillo Valdepenas|Touriga Franca|Touriga Francesa|Touriga Francesca|Touriga Nacional|Touriga-Nacional|Tourigal Nacional|Trebbiano D'Abruzzo|Trebbiano Spoletino|Trebbiano Toscano|Ugni Blanc Colombard|Unknown|Viognier-Chardonnay", item)
+                if item != "" and len(item) < 25 and not is_redundant:
                     title_case_item = item.title()
                     if key == 'red':
                         red_varietal_set.add(title_case_item.strip())
