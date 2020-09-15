@@ -7,7 +7,6 @@ import os
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 from flask_cors import CORS
-from secrets import API_KEY
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import ReviewForm, UserAddForm, LoginForm, EditReviewForm, EditUserForm
 from models import db, connect_db, User, Post, Wine, Favorite
