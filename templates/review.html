@@ -36,7 +36,7 @@
     <form method="POST" id="user_form">
       {{ form.hidden_tag() }} 
     <div class="field form-container mx-6">
-      {{form.rating.label(class_="label")}}
+      {{form.rating.label(class_="review-label")}}
       <div class="control has-icons-left">
         {{form.rating(class_="input", placeholder="Enter a rating between 1 - 100", type="text")}}
       </div>
@@ -47,7 +47,7 @@
       {% endif %}
     </div>
     <div class="field form-container mx-6">
-      {{form.review.label(class_="label")}}
+      {{form.review.label(class_="review-label")}}
       <div class="control has-icons-left">
         {{form.review(class_="textarea", placeholder="Enter a review", rows="6")}}
       </div>

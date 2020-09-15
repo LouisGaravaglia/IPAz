@@ -253,6 +253,14 @@ a {
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
   white-space: nowrap;
+  color: #a5d4f4;
+}
+
+.review-label {
+  font-size: 1.3rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  white-space: nowrap;
   color: #fff;
 }
 

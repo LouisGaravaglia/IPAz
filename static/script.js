@@ -1052,7 +1052,7 @@ $("#search-form").on("click", ".magnify-glass", function() {
 $("#search-bar-box").on("click", ".search-bar", function() {
   const searchValue = $("#search-bar").val()
   sessionStorage.setItem('searchValue', searchValue);
-  window.location.assign("http://127.0.0.1:5000/search");
+  window.location.assign("https://wine-not-app.herokuapp.com//search");
 })
 
 // =================================================  PAGINATION  / SEARCH PAGE ================================================
