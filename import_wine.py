@@ -9,8 +9,7 @@ def import_wines():
     wine in the database."""
     get_red_wines(1000, 0, 574)
     get_white_wines(1000, 0, 598)
-    get_rose_wines(631, 0)  
-    
+    get_rose_wines(631, 0)
 
 # ===================================    API CALL FUNCTIONS    =====================================
 
@@ -102,7 +101,7 @@ def get_rose_wines(amount, skip):
         db.session.add(new_wine)
         db.session.commit()
     print ("All rose wines have been pulled")
-    
+
 # ===================================    UNDER 10K WINES VERSION    =====================================
 
 # @app.route('/import_wines')

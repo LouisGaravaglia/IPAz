@@ -95,8 +95,8 @@ def login():
 
 @app.route('/logout')
 def logout():
-    """Handle user logout."""  
-    do_logout()  
+    """Handle user logout."""
+    do_logout()
     return redirect('/login')
 
 # ===================================    PROFILE ROUTE   =====================================
@@ -166,7 +166,7 @@ def add_like(wine_id):
         g.user.fav_wines = [wine for wine in g.user.fav_wines if wine != faved_wine]
     else:
         g.user.fav_wines.append(faved_wine)
-    db.session.commit()  
+    db.session.commit()
     fav_wines = []
     wine_reviews = []
     favs= []
@@ -204,7 +204,7 @@ def view_favorites():
 
 @app.route('/user/review/<int:wine_id>', methods=['GET', 'POST'])
 def review(wine_id):
-    """Handle going to review form for a specific wine, 
+    """Handle going to review form for a specific wine,
     and adding the review to the user.posts.
     """
     if not g.user:
@@ -245,10 +245,10 @@ def view_reviews():
     user_favorites = []
     user_favs = g.user.fav_wines
     for fav in user_favs:
-        user_favorites.append(fav.id) 
+        user_favorites.append(fav.id)
 
     def round_rating(rating):
-        return round(rating, 2)  
+        return round(rating, 2)
     return render_template('view_reviews.html', wine_reviews=wine_reviews, user_favorites=user_favorites, round_rating=round_rating)
 
 # ===================================    EDIT REVIEWS   =====================================
@@ -258,7 +258,7 @@ def patch_reviews(wine_id):
     """Editing a review"""
     if not g.user:
         flash("Please log in or sign up to see your reviews!", "error")
-        return redirect("/show_results")   
+        return redirect("/show_results")
     form = EditReviewForm()
     if form.validate_on_submit():
         post = Post.query.filter(Post.wine_id == wine_id).first()
@@ -406,7 +406,7 @@ def get_selected_varietals():
 
 @app.route('/log_varietals/<new_varietal>')
 def log_varietal_choice(new_varietal):
-    """Adding the chosen varietals to the session.""" 
+    """Adding the chosen varietals to the session."""
     varietals = session['varietals']
     if new_varietal in varietals:
         varietals.remove(new_varietal)
@@ -417,7 +417,7 @@ def log_varietal_choice(new_varietal):
     if session['varietals'] == []:
         session['varietals'] = ['All']
     else:
-        session['varietals'] = [wine for wine in varietals]  
+        session['varietals'] = [wine for wine in varietals]
     return jsonify(varietals=varietals)
 
 # ===================================    SHOWING RESULTS   =====================================
@@ -454,7 +454,7 @@ def get_search_results(search_term):
     if search_term == '':
         wine_results = ['Please add a search value.']
     else:
-        wine_results = get_wine.search_results(search_term)  
+        wine_results = get_wine.search_results(search_term)
     favs= []
     reviews = []
     if g.user:
@@ -469,5 +469,5 @@ def get_search_results(search_term):
 
 @app.route('/search')
 def show_search_results():
-    """Displays wine results of search query"""  
+    """Displays wine results of search query"""
     return render_template("search_results.html")

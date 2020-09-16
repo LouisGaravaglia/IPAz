@@ -1,4 +1,3 @@
-
 from flask import Flask, request, render_template, session, make_response, redirect, flash, jsonify, g
 from sqlalchemy import desc
 import re

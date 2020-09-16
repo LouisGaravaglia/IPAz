@@ -217,7 +217,7 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
           const cardSize = 'is-one-third';
           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
           wineHtml.append(html)
-      } 
+      }
     }
   } else if (address.includes("/search")) {
     for (wine of wine_results) { 
@@ -257,7 +257,7 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
           const cardSize = 'is-one-third';
           const html = addWineCard(wine, favBtn, reviewBtn, reviewHTML, cardSize)
           wineHtml.append(html)
-      } 
+      }
     }
   } else {
     for (wine of wine_results) { 
@@ -306,10 +306,10 @@ function populateWineResults(wine_results, favorites, reviews, fav_wines, wine_r
  * Function that paginates the wine results, appends the results to the DOM, and runs conditionals
  * to see which pagination buttons need to be present based on the amount of results and which page
  * the user is currently on
- * @param {integer} numToPage 
- * @param {array} wineResults 
- * @param {array} favs 
- * @param {array} reviews 
+ * @param {integer} numToPage
+ * @param {array} wineResults
+ * @param {array} favs
+ * @param {array} reviews
  */
 function paginateAndPopulate(numToPage, wineResults, favs, reviews){
   paginatedWine = paginate(numToPage, wineResults)
@@ -340,10 +340,10 @@ async function makeVarietalsArray(){
   const allVarietals = JSON.parse(sessionStorage.getItem("allVarietals"))
   if (wineTypes.includes('Red')) {
     for (item of redVarietals) varietals.push(item)
-  }      
+  }
   if (wineTypes.includes('White')) {
     for (item of whiteVarietals) varietals.push(item)
-  }     
+  }
   if (wineTypes.includes('Rose')) {
     for (item of roseVarietals) varietals.push(item)
   }
@@ -357,7 +357,7 @@ async function makeVarietalsArray(){
  * Click event that logs the wine type in the backend session.
  * @event document#click
  * @type {object}
- * @property {element} 
+ * @property {element}
  */
 $("#wine-type").on("click", ".wine-type", async function(e) {
   const selected_button = e.target;
@@ -422,7 +422,7 @@ async function sendVarietals(varietal) {
  * This click event logs the sort by parameters in the backend session.
  * @event document#click
  * @type {object}
- * @property {element} 
+ * @property {element}
  */
 $("#filter-by").on("click", ".filter-by", async function(e) {
   const selected_button = e.target;
@@ -465,7 +465,7 @@ $(document).ready(async function() {
     if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
       $(".main-pagination-next").addClass("hidden")
     }
-    populateWineResults(paginatedWine[0], favs, reviews) 
+    populateWineResults(paginatedWine[0], favs, reviews)
     $(".progress-bar-container").toggleClass("hidden")
   }
 });
@@ -515,8 +515,8 @@ $("#main-pagination").on("click", ".main-pagination-previous", function() {
 
 /**
  * Appends HTML to the DOM to create a flash message to the user
- * @param {object} noUserObj 
- */    
+ * @param {object} noUserObj
+ */
 const flashMessage = function(noUserObj) {
   const message = `<section class="hero is-small is-light">
                     <div class="hero-body">
@@ -929,7 +929,7 @@ function toggleOpposites(target){
       sortByArray.splice(index, 1)
       sessionStorage.setItem("sortBy", JSON.stringify(sortByArray))
     }
-  } 
+  }
 }
 
 /**
@@ -1145,7 +1145,7 @@ $("#search-pagination").on("click", ".search-pagination-previous", function() {
     $(".search-pagination-next").toggleClass("hidden")
   }
   sessionStorage.setItem("searchCurrentPage", previousPage)
-  populateWineResults(searchPaginatedWine[previousPage], favs, reviews) 
+  populateWineResults(searchPaginatedWine[previousPage], favs, reviews)
 })
 
 // =================================================  NAVBAR  ================================================

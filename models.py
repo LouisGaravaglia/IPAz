@@ -6,25 +6,20 @@ from flask_sqlalchemy import SQLAlchemy
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
-def connect_db(app):    
+def connect_db(app):
     db.app = app
     db.init_app(app)
 
 # ===========================================================   USER   =========================================================== 
-    
-class User(db.Model):
-    __tablename__ = "users" 
 
-    # def __repr__(self):
-    #     u=self
-    #     return f"<User id={u.id} name={u.name} username={u.username}>"
-    
+class User(db.Model):
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     posts = db.relationship("Post", backref="user", cascade="all, delete-orphan")
-    
+
     @classmethod
     def signup(cls, name, username, password):
         """Sign up user.
@@ -58,11 +53,6 @@ class User(db.Model):
 
 class Post(db.Model):
     __tablename__ = "posts"
-           
-    # def __repr__(self):
-    #     p=self
-    #     return f"<User id={p.id} title={p.title} content={p.content} created_at={p.created_at} owner_id={p.owner_id}>"
-    
     id = db.Column(db.Integer,
                    primary_key = True,
                    autoincrement = True)
@@ -74,10 +64,9 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)    
 
 # ===========================================================   WINE   =========================================================== 
-    
+
 class Wine(db.Model):
     __tablename__ = "wines"
-     
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     wine_id = db.Column(db.String(200), nullable=False)
     winery = db.Column(db.String(200), nullable=False)
@@ -105,12 +94,11 @@ class Wine(db.Model):
             'description': self.description,
             'rating': self.rating
         }
-    
+
 # ===========================================================   FAVORITES   =========================================================== 
 
 class Favorite(db.Model):
     __tablename__ = "favorites"
-    
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     wine_id = db.Column(db.Integer, db.ForeignKey('wines.id'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
