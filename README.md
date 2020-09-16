@@ -43,6 +43,7 @@ SORTING - The main challenge of this app that I was excited about was sorting. I
 
 * HTML
 * CSS
+* Bulma
 * Javascript
 * Python
 * Flask
