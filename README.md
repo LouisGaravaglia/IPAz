@@ -1,4 +1,4 @@
-##WINE-NOT!
+
 **LINK TO FINISHED APP**
 
 https://wine-not-app.herokuapp.com/
