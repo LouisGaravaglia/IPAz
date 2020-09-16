@@ -31,13 +31,13 @@ If the user signs-up or logs-in, the navbar changes to accommodate with a Favori
 
 HERO IMAGE - I wanted the first thing the user sees, to be a clear and concise message about what the site is all about.
 
-WINE TYPE / VARIETALS / WINE STYLE BUTTONS - In hindsight, it may be a better UX to have a search bar in place of the buttons to select varietals, but I liked the visual rhythm and tactile-ness of the buttons. I split the difference and added a Search Bar to the navbar.
+WINE TYPE / VARIETALS / WINE STYLE BUTTONS - In hindsight, it may be a better UX to have a search bar in place of the buttons to select varietals, but I liked the visual rhythm and tactile-ness of the buttons. I split the difference and added a search bar to the navbar.
 
-SEARCH BAR - A way for the user to search for a specific wine, or a catch-all like wine type or varietal. Those these results are not sortable, they can still be favorited and reviewed if logged in.
+SEARCH BAR - A way for the user to search for a specific wine, or a catch-all like wine type or varietal. Though these results are not sortable, they can still be favorited and reviewed if logged in.
 
-PAGINATION - I implemented pagination out of necessity since it is possible for the user to be shown all wines in the database if they do not select anything prior to hitting the "Find my wine" button. This helped speed up AJAX loading as well.
+PAGINATION - I implemented pagination out of necessity since it is possible for the user to be shown all wines in the database if they do not select anything prior to hitting the "Find my wine" button. This helped speed up content loading, especially after implementing AJAX.
 
-SORTING - The main challenge of this app that I was excited about was sorting. I wanted a way to efficiently sort database items. It proved more difficult based on various types of sorting that are allowed. I ended up using a combination of SQLalchemy queries and regex.
+SORTING - The main challenge of this app that I was excited about was sorting. I wanted a way to efficiently sort database items. It proved more difficult based on various types of sorting that are allowed. I ended up using a combination of SQLalchemy queries and regex for the filters like wine type and wine style. And used javascript functions to sort the results based off of the sort parameters.
 
 **TECHNOLOGY STACK**
 
@@ -57,6 +57,10 @@ SORTING - The main challenge of this app that I was excited about was sorting. I
 
 **PERFORMANCE**
 
-I was pitted against several performance issues throughout this project, one that required a complete architecture overhaul and that was the issue of sorting.
+I was pitted against several performance issues throughout this project. One that stood out and required a complete architecture overhaul was the issue of sorting.
 
-I originally was using jinja templates to populate the wine results to the page, but this was proving to be time-consuming and let to a bad UX for waiting for the results to take effect when trying to sort the results. After also realizing that pagination would be necessary, I changed to a frontend centric model. All wine results would be sent to the frontend and a javascript function would loop over any necessary sorting functions based on the user's choices. Then a separate function would take those results and separate them into sub-arrays in order to be paginated.
+I originally was using jinja templates to populate the wine results to the DOM. Unfortunately, this was proving to be time-consuming and led to a bad UX when trying to sort the wine results. 
+
+Considering that pagination would also be necessary, I switched to a frontend centric model. All wine results would be sent to the frontend and stored as an array in a variable. 
+
+A javascript function would then loop over any necessary sorting functions based on the user's choices. Then a separate function would take those results and separate them into sub-arrays in order to be paginated.
