@@ -363,16 +363,13 @@ flex: 50%;
 
 /* ================================  POWERED BY QUINI  ================================  */
 
-.quini-subtitle {
-  margin-top: 45px;
-  font-size: 2.5rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 600;
-  color: #fff;
-}
-
 .quini-logo {
   max-width: 170px;
   height:auto;
   margin-left: 10px;
+}
+
+.quini-logo-box {
+  display: block;
+  margin-top: 45px;
 }

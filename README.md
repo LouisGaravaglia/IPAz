@@ -31,7 +31,7 @@ If the user signs-up or logs-in, the navbar changes to accommodate with a Favori
 
 HERO IMAGE - I wanted the first thing the user sees, to be a clear and concise message about what the site is all about.
 
-WINE TYPE / VARIETALS / WINE STYLE BUTTONS - In hindsight, it may be a better UX to have a search bar in place of the buttons to select varietals, but I liked the visual rhythm and tactile-ness of the buttons. I split the difference and added a search bar to the navbar.
+WINE TYPE / VARIETALS / WINE STYLE BUTTONS - In hindsight, it may be a better UX to have a search bar in place of the buttons to select varietals, but I liked the visual rhythm and tactile-ness of the buttons. As well as, the ability to see varietals that you may not know about in case you didn't know where to begin. So, I split the difference and added a search bar to the navbar.
 
 SEARCH BAR - A way for the user to search for a specific wine, or a catch-all like wine type or varietal. Though these results are not sortable, they can still be favorited and reviewed if logged in.
 
