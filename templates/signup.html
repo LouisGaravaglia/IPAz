@@ -16,6 +16,9 @@
   <div class="column is-one-third">
     <form method="POST" id="user_form">
       {{ form.hidden_tag() }} 
+
+<!-- ================================= NAME ================================= -->
+
     <div class="field">
     {{form.name.label(class_="label")}}
       <div class="control">
@@ -25,6 +28,9 @@
           <p class="help is-danger">{{ err  }}</p>
       {% endfor %}
     </div>
+
+<!-- ================================= USERNAME ================================= -->
+
     <div class="field">
       {{form.username.label(class_="label")}}
       <div class="control has-icons-left">
@@ -37,10 +43,13 @@
           <p class="help is-danger">{{ err }}</p>
       {% endfor %}
     </div>
+
+<!-- ================================= PASSWORD ================================= -->
+
     <div class="field">
       {{form.password.label(class_="label")}}
       <div class="control has-icons-left">
-        {{form.password(class_="input", placeholder="Enter a password", type="text")}}
+        {{form.password(class_="input", placeholder="Enter a password", type="password")}}
         <span class="icon is-small is-left">
           <i class="fas fa-lock"></i>
         </span>
@@ -49,6 +58,9 @@
           <p class="help is-danger">{{ err  }}</p>
       {% endfor %}
     </div>
+
+<!-- ================================= BUTTONS ================================= -->
+
     <div class="field is-grouped">
       <div class="control">
         <button class="button is-link" type="submit">Submit</button>

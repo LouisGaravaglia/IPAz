@@ -8,7 +8,7 @@
   <h1 class="block-text">LOGIN</h1>
 </div>
 
-<!-- ================================= USERNAME ================================= -->
+<!-- ================================= LOGIN FORM ================================= -->
 
 <div class="columns form-container">
   <div class="column is-one-third">
@@ -16,6 +16,9 @@
   <div class="column is-one-third">
     <form method="POST" id="user_form">
       {{ form.hidden_tag() }} 
+
+<!-- ================================= NAME ================================= -->
+
     <div class="field">
       {{form.username.label(class_="label")}}
       <div class="control has-icons-left">
@@ -34,7 +37,7 @@
     <div class="field">
       {{form.password.label(class_="label")}}
       <div class="control has-icons-left">
-        {{form.password(class_="input", placeholder="Enter a password", type="text")}}
+        {{form.password(class_="input", placeholder="Enter a password", type="password")}}
         <span class="icon is-small is-left">
           <i class="fas fa-lock"></i>
         </span>

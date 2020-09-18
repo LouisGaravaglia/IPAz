@@ -464,11 +464,24 @@ $(document).ready(async function() {
     }
     if (wineResults.length <= numToPage && !$(".main-pagination-next").hasClass("hidden")) {
       $(".main-pagination-next").addClass("hidden")
+    } else {
+      $(".main-pagination-next").removeClass("hidden")
     }
     populateWineResults(paginatedWine[0], favs, reviews)
     $(".progress-bar-container").toggleClass("hidden")
   }
 });
+
+/**
+ * Smooth scrolls to the top of window
+ */
+function scrollToTop() {
+  const c = document.documentElement.scrollTop || document.body.scrollTop;
+  if (c > 0) {
+    window.requestAnimationFrame(scrollToTop);
+    window.scrollTo(0, c - c / 1);
+  }
+};
 
 /**
  * Click event for the next button on the pagination of the Search Results page. 
@@ -479,14 +492,15 @@ $(document).ready(async function() {
 $("#main-pagination").on("click", ".main-pagination-next", function() {
   const currentPage = sessionStorage.getItem("currentPage");
   const nextPage = parseInt(currentPage) + 1;
-  sessionStorage.setItem("currentPage", nextPage)
+  sessionStorage.setItem("currentPage", nextPage);
   if (nextPage > 0 && $(".main-pagination-previous").hasClass("hidden")) {
-    $(".main-pagination-previous").removeClass("hidden")
+    $(".main-pagination-previous").removeClass("hidden");
   }
   if (currentPage == paginatedWine.length - 2 && !$(".main-pagination-next").hasClass("hidden")) {
-    $(".main-pagination-next").addClass("hidden")
+    $(".main-pagination-next").addClass("hidden");
   }
-  populateWineResults(paginatedWine[nextPage], favs, reviews) 
+  populateWineResults(paginatedWine[nextPage], favs, reviews);
+  scrollToTop();
 })
 
 /**
@@ -508,7 +522,8 @@ $("#main-pagination").on("click", ".main-pagination-previous", function() {
     $(".main-pagination-next").removeClass("hidden")
   }
   sessionStorage.setItem("currentPage", previousPage)
-  populateWineResults(paginatedWine[previousPage], favs, reviews) 
+  populateWineResults(paginatedWine[previousPage], favs, reviews)
+  scrollToTop()
 })
 
 // =================================================  FAVORITE BUTTON / RESULTS PAGE ================================================
@@ -531,9 +546,7 @@ const flashMessage = function(noUserObj) {
   flashDiv.html("");
   flashDiv.prepend(message)
   // ##### SCROLL BACK TO TOP OF PAGE TO RE CREATE THE SAME EFFECTS AS FLASH MESSAGING
-  $(document).ready(function(){
-    $(window).scrollTop(0);
-  });
+  scrollToTop();
   function hideMessage(){
     flashDiv.html("");
   }
@@ -1092,6 +1105,8 @@ $(document).ready(async function() {
     const wineResults = res.data.wine_results;
     favs = res.data.favs;
     reviews = res.data.reviews;
+    const numToPage = 9
+
     if (wineResults.length == 0) {
       const message = {"message":"No results"}
       flashMessage(message)
@@ -1099,11 +1114,15 @@ $(document).ready(async function() {
     } else {
       searchPaginatedWine = paginate(9, wineResults)
       sessionStorage.setItem("searchCurrentPage", 0)
-      $(".search-pagination-previous").toggleClass("hidden")
-      if (searchPaginatedWine.length == 1) {
-        $(".search-pagination-next").toggleClass("hidden")
+      if (!$(".search-pagination-previous").hasClass("hidden")) {
+        $(".search-pagination-previous").addClass("hidden")
       }
-      populateWineResults(searchPaginatedWine[0], favs, reviews) 
+      if (wineResults.length <= numToPage && !$(".search-pagination-next").hasClass("hidden")) {
+        $(".search-pagination-next").addClass("hidden")
+      } else {
+        $(".search-pagination-next").removeClass("hidden")
+      }
+      populateWineResults(searchPaginatedWine[0], favs, reviews)
       $(".progress-bar-container").toggleClass("hidden")
     }
   }
@@ -1126,6 +1145,7 @@ $("#search-pagination").on("click", ".search-pagination-next", function() {
     $(".search-pagination-next").toggleClass("hidden")
   }
   populateWineResults(searchPaginatedWine[nextPage], favs, reviews)
+  scrollToTop();
 })
 
 /**
@@ -1146,6 +1166,7 @@ $("#search-pagination").on("click", ".search-pagination-previous", function() {
   }
   sessionStorage.setItem("searchCurrentPage", previousPage)
   populateWineResults(searchPaginatedWine[previousPage], favs, reviews)
+  scrollToTop();
 })
 
 // =================================================  NAVBAR  ================================================

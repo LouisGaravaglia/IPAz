@@ -16,7 +16,7 @@ class UserAddForm(FlaskForm):
     """Form for adding users."""
     name = StringField('Name', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[Length(min=6)])
+    password = PasswordField('Password', validators=[DataRequired(message="Please enter a password."), Length(min=6)])
 
 class EditUserForm(FlaskForm):
     """Form for editing a user."""
@@ -26,4 +26,4 @@ class EditUserForm(FlaskForm):
 class LoginForm(FlaskForm):
     """Login form."""
     username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[Length(min=6)])
+    password = PasswordField('Password', validators=[DataRequired(message="Please enter a password."), Length(min=6)])
