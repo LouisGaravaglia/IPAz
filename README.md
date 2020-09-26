@@ -59,8 +59,8 @@ SORTING - The main challenge of this app that I was excited about was sorting. I
 
 I was pitted against several performance issues throughout this project. One that stood out and required a complete architecture overhaul was the issue of sorting.
 
-I originally was using jinja templates to populate the wine results to the DOM. Unfortunately, this was proving to be time-consuming and led to a bad UX when trying to sort the wine results. 
+I originally was using jinja templates to populate the wine results to the DOM. Unfortunately, this was proving to be time-consuming and led to a bad UX when trying to sort the wine results since it was leading to continuous backend calls when the DOM needed to be updated. 
 
 Considering that pagination would also be necessary, I switched to a frontend centric model. All wine results would be sent to the frontend and stored as an array in a variable. 
 
-A javascript function would then loop over any necessary sorting functions based on the user's choices. Then a separate function would take those results and separate them into sub-arrays in order to be paginated.
+A javascript function would then loop over any necessary sorting functions based on the user's choices. Then a separate function would take those results and separate them into sub-arrays in order to be paginated. This ended up shaving off a significant amount of time in took to display the results.
