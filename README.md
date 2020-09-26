@@ -64,3 +64,15 @@ I originally was using jinja templates to populate the wine results to the DOM. 
 Considering that pagination would also be necessary, I switched to a frontend centric model. All wine results would be sent to the frontend and stored as an array in a variable. 
 
 A javascript function would then loop over any necessary sorting functions based on the user's choices. Then a separate function would take those results and separate them into sub-arrays in order to be paginated. This ended up shaving off a significant amount of time in took to display the results.
+
+**TESTING**
+
+Added integration and unit-testing for all routes and python functions.
+
+Steps to run tests with VScode:
+
+1. Open up command pallete (Command + shift + p)
+2. Enter the following, Python: Run all tests
+3. If VScode says that testing needs to be configured, you can set it up by clicking on the prompt and choosing unittests, and then "test_" as the filename structure.
+4. Click on the "Tests" icon on the VScode sidebar.
+5. Click on the "Run All Tets" icon within the "Tests" panel.
