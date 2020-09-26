@@ -67,9 +67,9 @@ class FlaskViewsTest(TestCase):
             self.assertEqual(res.status_code, 200)
             self.assertIn('<section class="hero is-info is-bold is-fullheight-with-navbar">', html)
             self.assertIn('<h3 class="title wine-type-title">Choose your wine type</h3>', html)
-            self.assertIn('<h3 class="title varietals-title">Choose your varietals</h3>', html)
+            self.assertIn('<h3 class="title varietals-title">Pick your varietals</h3>', html)
             self.assertIn('<h3 class="title sort-by-title">Sort your results</h3>', html)
-            self.assertIn('<h3 class="title results-btn-title">Find your wines</h3>', html)
+            self.assertIn('<h3 class="title results-btn-title">Find my wine</h3>', html)
 
     def test_results_page(self):
         """ Making sure that the show wine results page renders correct html. """
@@ -186,8 +186,6 @@ class FlaskViewsTest(TestCase):
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
             self.assertIn('<h1 class="block-text">SEARCH RESULTS</h1>', html)
-            self.assertIn('<a class="search-pagination-previous button has-text-white is-info">Previous</a>', html)
-            self.assertIn('<a class="search-pagination-next button has-text-white is-info">Next</a>', html)
             ####MAKING SURE WINE SHOWS IN JSON RESULTS WHEN SEARCHING FOR BARBERA
             resp = client.get("/search/Barbera", follow_redirects=True)
             self.assertEqual(resp.status_code, 200)
