@@ -32,7 +32,7 @@ class Varietals():
         ################# ALL WINE QUERY #################
         alls = [wine.varietal.split(",") for wine in Wine.query.all()]
         all_flat_list = [varietal for sublist in alls for varietal in sublist]
-        varietal_dict.update({"all":all_flat_list}) 
+        varietal_dict.update({"all":all_flat_list})
         ################# FILTERING OUT EXCEPTIONS #################
         for key,items in varietal_dict.items():
             for item in items:
