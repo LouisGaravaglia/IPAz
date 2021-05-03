@@ -1,7 +1,7 @@
 
 **LINK TO FINISHED APP**
 
-https://wine-not-app.herokuapp.com/
+https://findwinenot.herokuapp.com/
 
 **API**
 
